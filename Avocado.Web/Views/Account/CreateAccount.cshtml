@@ -1,0 +1,66 @@
+﻿@model Avocado.Web.Models.CreateAccountViewModel
+           
+@{
+    ViewBag.Title = "CreateAccount";
+}
+
+<div id="fb-root"></div>
+<script type="text/javascript">
+    window.fbAsyncInit = function () {
+        FB.init({ appId: '183406445033444', status: true, cookie: true, xfbml: true });
+
+        FB.getLoginStatus(function (response) {
+            if (response.session) {
+                // logged in and connected user, someone you know
+                //login();
+                alert('You are logged into Facebook right now');
+            }
+        });
+
+        FB.api('/me', function (response) {
+            $('#Email').val(response.email);
+            $('#FullName').val(response.name);
+            $('#Password').val('');
+        });
+    };
+
+
+    (function () {
+        var e = document.createElement('script');
+        e.type = 'text/javascript';
+        e.src = document.location.protocol +
+            '//connect.facebook.net/en_US/all.js';
+        e.async = true;
+        document.getElementById('fb-root').appendChild(e);
+    } ());
+    
+</script>
+
+<h2>
+    Join CreativiMe
+    <span>It's easy and it's free! Start sharing your creativity in minutes. </span>
+</h2>
+<div>
+    
+
+    @using (Html.BeginForm("CreateAccount", "Account")) 
+    { 
+        @Html.ValidationSummary(excludePropertyErrors:false, message:"", htmlAttributes: new { @class="ui-state-error"})
+
+        @Html.LabelFor(x => x.Email)<br /> 
+        @Html.TextBoxFor(x => x.Email, new { @class="form-input" })
+        <br /><br />
+        
+        @Html.LabelFor(x => x.FullName)<br />
+        @Html.TextBoxFor(x => x.FullName, new { @class = "form-input" })
+        <br /><br />
+        
+        @Html.LabelFor(x => x.Password)<br />
+        @Html.PasswordFor(x => x.Password, new { @class="form-input" })
+        <br /><br />
+        
+        <div>
+            <input type="submit" value="Sign Up" />
+        </div>
+    }
+</div>

@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avocado.Domain", "Avocado.Domain\Avocado.Domain.csproj", "{2CB989DC-62E1-4958-9EF3-9114D74B7B6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avocado.Web", "Avocado.Web\Avocado.Web.csproj", "{18057162-4A67-46EC-8E3B-F1A6C2C65895}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2CB989DC-62E1-4958-9EF3-9114D74B7B6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CB989DC-62E1-4958-9EF3-9114D74B7B6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CB989DC-62E1-4958-9EF3-9114D74B7B6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CB989DC-62E1-4958-9EF3-9114D74B7B6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18057162-4A67-46EC-8E3B-F1A6C2C65895}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18057162-4A67-46EC-8E3B-F1A6C2C65895}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18057162-4A67-46EC-8E3B-F1A6C2C65895}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18057162-4A67-46EC-8E3B-F1A6C2C65895}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

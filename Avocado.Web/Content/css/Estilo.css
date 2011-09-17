@@ -1,0 +1,25 @@
+﻿.form-input
+{
+    border:1px solid #ccc;
+    border-radius:4px;
+    padding:5px;
+    width:300px;
+    height:25px;
+    font-size:150%;
+}
+
+h2
+{
+    font-weight:bold;
+    font-size:275%;
+}
+
+h2 span
+{
+    display:block;
+    margin:8px 0;
+    font-size:40%;
+    font-style:normal;
+    font-weight:lighter;
+    color:#a4a2a2;
+}
