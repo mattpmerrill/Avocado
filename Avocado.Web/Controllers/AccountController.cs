@@ -7,6 +7,7 @@ using Avocado.Domain.Abstract;
 using System.Web.Security;
 using Avocado.Web.Utilities;
 using Avocado.Web.Models;
+using Twitterizer;
 
 namespace Avocado.Web.Controllers
 {
@@ -60,6 +61,36 @@ namespace Avocado.Web.Controllers
                 return RedirectToAction("CreateAccount", "Account");
             }
             
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult SignInWithTwitter()
+        {
+            string consumerKey = "ep22vRe4UBW4VlYa3b6odQ";
+            string consumerSecrect = "Tmni15oL2XCuDGBTdgtOIjRHvfWhNGjl5xT9RqcCj3A";
+            OAuthTokenResponse reqToken = OAuthUtility.GetRequestToken(consumerKey, consumerSecrect, "http://localhost:58828/Account/TwitterAuth");
+            string twitterUrl = "https://twitter.com/oauth/authorize?oauth_token=" + reqToken.Token;
+
+            return Redirect(twitterUrl);
+        }
+
+        public ActionResult TwitterAuth()
+        {
+            string consumerKey = "ep22vRe4UBW4VlYa3b6odQ";
+            string consumerSecret = "Tmni15oL2XCuDGBTdgtOIjRHvfWhNGjl5xT9RqcCj3A";
+            string requestToken = Request.QueryString["oauth_token"];
+            string requestVerifier = Request.QueryString["oauth_verifier"];
+
+            OAuthTokenResponse responseToken = OAuthUtility.GetAccessToken(consumerKey, consumerSecret, requestToken, requestVerifier);
+
+            OAuthTokens accessToken = new OAuthTokens();
+            accessToken.AccessToken = responseToken.Token;
+            accessToken.AccessTokenSecret = responseToken.TokenSecret;
+            accessToken.ConsumerKey = consumerKey;
+            accessToken.ConsumerSecret = consumerSecret;
+
+            //todo: save the accesstoken in the database
+
             return RedirectToAction("Index", "Home");
         }
 

@@ -4,14 +4,45 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AvocadoModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="AvocadoModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="AvocadoModelStoreContainer">
           <EntitySet Name="aspnet_Membership" EntityType="AvocadoModel.Store.aspnet_Membership" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="aspnet_Users" EntityType="AvocadoModel.Store.aspnet_Users" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Categories" EntityType="AvocadoModel.Store.Categories" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Comments" EntityType="AvocadoModel.Store.Comments" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Likes" EntityType="AvocadoModel.Store.Likes" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Posts" EntityType="AvocadoModel.Store.Posts" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Saves" EntityType="AvocadoModel.Store.Saves" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Tags" EntityType="AvocadoModel.Store.Tags" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TagToPost" EntityType="AvocadoModel.Store.TagToPost" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="UserSettings" EntityType="AvocadoModel.Store.UserSettings" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK__aspnet_Me__UserI__22AA2996" Association="AvocadoModel.Store.FK__aspnet_Me__UserI__22AA2996">
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
             <End Role="aspnet_Membership" EntitySet="aspnet_Membership" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Posts" Association="AvocadoModel.Store.FK_Comments_Posts">
+            <End Role="Posts" EntitySet="Posts" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Likes_Posts" Association="AvocadoModel.Store.FK_Likes_Posts">
+            <End Role="Posts" EntitySet="Posts" />
+            <End Role="Likes" EntitySet="Likes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Posts_Categories" Association="AvocadoModel.Store.FK_Posts_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Posts" EntitySet="Posts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Saves_Posts" Association="AvocadoModel.Store.FK_Saves_Posts">
+            <End Role="Posts" EntitySet="Posts" />
+            <End Role="Saves" EntitySet="Saves" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TagToPost_Posts" Association="AvocadoModel.Store.FK_TagToPost_Posts">
+            <End Role="Posts" EntitySet="Posts" />
+            <End Role="TagToPost" EntitySet="TagToPost" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TagToPost_Tags" Association="AvocadoModel.Store.FK_TagToPost_Tags">
+            <End Role="Tags" EntitySet="Tags" />
+            <End Role="TagToPost" EntitySet="TagToPost" />
           </AssociationSet>
           <AssociationSet Name="FK_UserSettings_aspnet_Users" Association="AvocadoModel.Store.FK_UserSettings_aspnet_Users">
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
@@ -56,6 +87,68 @@
           <Property Name="IsAnonymous" Type="bit" Nullable="false" />
           <Property Name="LastActivityDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Comments">
+          <Key>
+            <PropertyRef Name="CommentId" />
+          </Key>
+          <Property Name="CommentId" Type="int" Nullable="false" />
+          <Property Name="PostId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" Nullable="false" MaxLength="250" />
+          <Property Name="InsertDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Likes">
+          <Key>
+            <PropertyRef Name="LikeId" />
+          </Key>
+          <Property Name="LikeId" Type="int" Nullable="false" />
+          <Property Name="PostId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="InsertDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Posts">
+          <Key>
+            <PropertyRef Name="PostId" />
+          </Key>
+          <Property Name="PostId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" Nullable="false" MaxLength="75" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="MainImage" Type="nvarchar" MaxLength="100" />
+          <Property Name="InsertDate" Type="datetime" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Saves">
+          <Key>
+            <PropertyRef Name="SaveId" />
+          </Key>
+          <Property Name="SaveId" Type="int" Nullable="false" />
+          <Property Name="PostId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SaveDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tags">
+          <Key>
+            <PropertyRef Name="TagId" />
+          </Key>
+          <Property Name="TagId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TagToPost">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="PostId" Type="int" Nullable="false" />
+          <Property Name="TagId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="UserSettings">
           <Key>
             <PropertyRef Name="UserSettingsId" />
@@ -79,6 +172,78 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Comments_Posts">
+          <End Role="Posts" Type="AvocadoModel.Store.Posts" Multiplicity="1" />
+          <End Role="Comments" Type="AvocadoModel.Store.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Posts">
+              <PropertyRef Name="PostId" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Likes_Posts">
+          <End Role="Posts" Type="AvocadoModel.Store.Posts" Multiplicity="1" />
+          <End Role="Likes" Type="AvocadoModel.Store.Likes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Posts">
+              <PropertyRef Name="PostId" />
+            </Principal>
+            <Dependent Role="Likes">
+              <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Posts_Categories">
+          <End Role="Categories" Type="AvocadoModel.Store.Categories" Multiplicity="1" />
+          <End Role="Posts" Type="AvocadoModel.Store.Posts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Posts">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Saves_Posts">
+          <End Role="Posts" Type="AvocadoModel.Store.Posts" Multiplicity="1" />
+          <End Role="Saves" Type="AvocadoModel.Store.Saves" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Posts">
+              <PropertyRef Name="PostId" />
+            </Principal>
+            <Dependent Role="Saves">
+              <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TagToPost_Posts">
+          <End Role="Posts" Type="AvocadoModel.Store.Posts" Multiplicity="1" />
+          <End Role="TagToPost" Type="AvocadoModel.Store.TagToPost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Posts">
+              <PropertyRef Name="PostId" />
+            </Principal>
+            <Dependent Role="TagToPost">
+              <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TagToPost_Tags">
+          <End Role="Tags" Type="AvocadoModel.Store.Tags" Multiplicity="1" />
+          <End Role="TagToPost" Type="AvocadoModel.Store.TagToPost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tags">
+              <PropertyRef Name="TagId" />
+            </Principal>
+            <Dependent Role="TagToPost">
+              <PropertyRef Name="TagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserSettings_aspnet_Users">
           <End Role="aspnet_Users" Type="AvocadoModel.Store.aspnet_Users" Multiplicity="1" />
           <End Role="UserSettings" Type="AvocadoModel.Store.UserSettings" Multiplicity="*" />
@@ -91,8 +256,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AvocadoModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
@@ -107,6 +271,37 @@
           <AssociationSet Name="FK_UserSettings_aspnet_Users" Association="AvocadoModel.FK_UserSettings_aspnet_Users">
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
             <End Role="UserSettings" EntitySet="UserSettings" />
+          </AssociationSet>
+          <EntitySet Name="Categories" EntityType="AvocadoModel.Category" />
+          <EntitySet Name="Comments" EntityType="AvocadoModel.Comment" />
+          <EntitySet Name="Likes" EntityType="AvocadoModel.Like" />
+          <EntitySet Name="Posts" EntityType="AvocadoModel.Post" />
+          <EntitySet Name="Saves" EntityType="AvocadoModel.Save" />
+          <EntitySet Name="Tags" EntityType="AvocadoModel.Tag" />
+          <EntitySet Name="TagToPosts" EntityType="AvocadoModel.TagToPost" />
+          <AssociationSet Name="FK_Posts_Categories" Association="AvocadoModel.FK_Posts_Categories">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Post" EntitySet="Posts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Posts" Association="AvocadoModel.FK_Comments_Posts">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Likes_Posts" Association="AvocadoModel.FK_Likes_Posts">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="Like" EntitySet="Likes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Saves_Posts" Association="AvocadoModel.FK_Saves_Posts">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="Save" EntitySet="Saves" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TagToPost_Posts" Association="AvocadoModel.FK_TagToPost_Posts">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="TagToPost" EntitySet="TagToPosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TagToPost_Tags" Association="AvocadoModel.FK_TagToPost_Tags">
+            <End Role="Tag" EntitySet="Tags" />
+            <End Role="TagToPost" EntitySet="TagToPosts" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="aspnet_Membership">
@@ -186,6 +381,152 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Type="Int32" Name="CategoryId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Posts" Relationship="AvocadoModel.FK_Posts_Categories" FromRole="Category" ToRole="Post" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentId" />
+          </Key>
+          <Property Type="Int32" Name="CommentId" Nullable="false" />
+          <Property Type="Int32" Name="PostId" Nullable="false" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="Comment1" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="InsertDate" Nullable="false" />
+          <NavigationProperty Name="Post" Relationship="AvocadoModel.FK_Comments_Posts" FromRole="Comment" ToRole="Post" />
+        </EntityType>
+        <EntityType Name="Like">
+          <Key>
+            <PropertyRef Name="LikeId" />
+          </Key>
+          <Property Type="Int32" Name="LikeId" Nullable="false" />
+          <Property Type="Int32" Name="PostId" Nullable="false" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="DateTime" Name="InsertDate" Nullable="false" />
+          <NavigationProperty Name="Post" Relationship="AvocadoModel.FK_Likes_Posts" FromRole="Like" ToRole="Post" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="PostId" />
+          </Key>
+          <Property Type="Int32" Name="PostId" Nullable="false" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="MainImage" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="InsertDate" Nullable="false" />
+          <Property Type="Int32" Name="CategoryId" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="AvocadoModel.FK_Posts_Categories" FromRole="Post" ToRole="Category" />
+          <NavigationProperty Name="Comments" Relationship="AvocadoModel.FK_Comments_Posts" FromRole="Post" ToRole="Comment" />
+          <NavigationProperty Name="Likes" Relationship="AvocadoModel.FK_Likes_Posts" FromRole="Post" ToRole="Like" />
+          <NavigationProperty Name="Saves" Relationship="AvocadoModel.FK_Saves_Posts" FromRole="Post" ToRole="Save" />
+          <NavigationProperty Name="TagToPosts" Relationship="AvocadoModel.FK_TagToPost_Posts" FromRole="Post" ToRole="TagToPost" />
+        </EntityType>
+        <EntityType Name="Save">
+          <Key>
+            <PropertyRef Name="SaveId" />
+          </Key>
+          <Property Type="Int32" Name="SaveId" Nullable="false" />
+          <Property Type="Int32" Name="PostId" Nullable="false" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="DateTime" Name="SaveDate" Nullable="false" />
+          <NavigationProperty Name="Post" Relationship="AvocadoModel.FK_Saves_Posts" FromRole="Save" ToRole="Post" />
+        </EntityType>
+        <EntityType Name="Tag">
+          <Key>
+            <PropertyRef Name="TagId" />
+          </Key>
+          <Property Type="Int32" Name="TagId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TagToPosts" Relationship="AvocadoModel.FK_TagToPost_Tags" FromRole="Tag" ToRole="TagToPost" />
+        </EntityType>
+        <EntityType Name="TagToPost">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="PostId" Nullable="false" />
+          <Property Type="Int32" Name="TagId" Nullable="false" />
+          <NavigationProperty Name="Post" Relationship="AvocadoModel.FK_TagToPost_Posts" FromRole="TagToPost" ToRole="Post" />
+          <NavigationProperty Name="Tag" Relationship="AvocadoModel.FK_TagToPost_Tags" FromRole="TagToPost" ToRole="Tag" />
+        </EntityType>
+        <Association Name="FK_Posts_Categories">
+          <End Type="AvocadoModel.Category" Role="Category" Multiplicity="1" />
+          <End Type="AvocadoModel.Post" Role="Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Posts">
+          <End Type="AvocadoModel.Post" Role="Post" Multiplicity="1" />
+          <End Type="AvocadoModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostId" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Likes_Posts">
+          <End Type="AvocadoModel.Post" Role="Post" Multiplicity="1" />
+          <End Type="AvocadoModel.Like" Role="Like" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostId" />
+            </Principal>
+            <Dependent Role="Like">
+              <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Saves_Posts">
+          <End Type="AvocadoModel.Post" Role="Post" Multiplicity="1" />
+          <End Type="AvocadoModel.Save" Role="Save" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostId" />
+            </Principal>
+            <Dependent Role="Save">
+              <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TagToPost_Posts">
+          <End Type="AvocadoModel.Post" Role="Post" Multiplicity="1" />
+          <End Type="AvocadoModel.TagToPost" Role="TagToPost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostId" />
+            </Principal>
+            <Dependent Role="TagToPost">
+              <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TagToPost_Tags">
+          <End Type="AvocadoModel.Tag" Role="Tag" Multiplicity="1" />
+          <End Type="AvocadoModel.TagToPost" Role="TagToPost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tag">
+              <PropertyRef Name="TagId" />
+            </Principal>
+            <Dependent Role="TagToPost">
+              <PropertyRef Name="TagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -232,6 +573,75 @@
             <ScalarProperty Name="FullName" ColumnName="FullName" />
             <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="AvocadoModel.Category">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="AvocadoModel.Comment">
+              <MappingFragment StoreEntitySet="Comments">
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="Comment1" ColumnName="Comment" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="PostId" ColumnName="PostId" />
+                <ScalarProperty Name="CommentId" ColumnName="CommentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Likes">
+            <EntityTypeMapping TypeName="AvocadoModel.Like">
+              <MappingFragment StoreEntitySet="Likes">
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="PostId" ColumnName="PostId" />
+                <ScalarProperty Name="LikeId" ColumnName="LikeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Posts">
+            <EntityTypeMapping TypeName="AvocadoModel.Post">
+              <MappingFragment StoreEntitySet="Posts">
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="MainImage" ColumnName="MainImage" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="PostId" ColumnName="PostId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Saves">
+            <EntityTypeMapping TypeName="AvocadoModel.Save">
+              <MappingFragment StoreEntitySet="Saves">
+                <ScalarProperty Name="SaveDate" ColumnName="SaveDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="PostId" ColumnName="PostId" />
+                <ScalarProperty Name="SaveId" ColumnName="SaveId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tags">
+            <EntityTypeMapping TypeName="AvocadoModel.Tag">
+              <MappingFragment StoreEntitySet="Tags">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TagId" ColumnName="TagId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TagToPosts">
+            <EntityTypeMapping TypeName="AvocadoModel.TagToPost">
+              <MappingFragment StoreEntitySet="TagToPost">
+                <ScalarProperty Name="TagId" ColumnName="TagId" />
+                <ScalarProperty Name="PostId" ColumnName="PostId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -253,7 +663,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="AvocadoEntities">
-        <EntityTypeShape EntityType="AvocadoModel.aspnet_Membership" Width="1.5" PointX="3" PointY="1.25" Height="5.2494108072916665" IsExpanded="true" />
+        <EntityTypeShape EntityType="AvocadoModel.aspnet_Membership" Width="2" PointX="3" PointY="1.25" Height="5.2494108072916665" IsExpanded="true" />
         <EntityTypeShape EntityType="AvocadoModel.aspnet_Users" Width="1.5" PointX="0.75" PointY="4" Height="2.7494921874999996" IsExpanded="true" />
         <EntityTypeShape EntityType="AvocadoModel.UserSetting" Width="1.5" PointX="3" PointY="7.25" Height="2.3648893229166665" IsExpanded="true" />
         <AssociationConnector Association="AvocadoModel.FK__aspnet_Me__UserI__22AA2996" ManuallyRouted="false">
@@ -264,6 +674,41 @@
           <ConnectorPoint PointX="1.5" PointY="6.7494921875" />
           <ConnectorPoint PointX="1.5" PointY="8.4324446614583337" />
           <ConnectorPoint PointX="3" PointY="8.4324446614583337" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="AvocadoModel.Category" Width="1.5" PointX="6.375" PointY="6.75" Height="1.5956835937499987" />
+        <EntityTypeShape EntityType="AvocadoModel.Comment" Width="1.5" PointX="10.875" PointY="3.75" Height="2.1725878906249996" />
+        <EntityTypeShape EntityType="AvocadoModel.Like" Width="1.5" PointX="10.875" PointY="6.625" Height="1.9802864583333308" />
+        <EntityTypeShape EntityType="AvocadoModel.Post" Width="1.5" PointX="8.625" PointY="5.875" Height="3.3263964843749987" />
+        <EntityTypeShape EntityType="AvocadoModel.Save" Width="1.5" PointX="10.875" PointY="9.375" Height="1.9802864583333317" />
+        <EntityTypeShape EntityType="AvocadoModel.Tag" Width="1.5" PointX="11.625" PointY="0.75" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="AvocadoModel.TagToPost" Width="1.5" PointX="14" PointY="4.125" Height="1.9802864583333353" />
+        <AssociationConnector Association="AvocadoModel.FK_Posts_Categories" >
+          <ConnectorPoint PointX="7.875" PointY="7.547841796875" />
+          <ConnectorPoint PointX="8.625" PointY="7.547841796875" />
+        </AssociationConnector>
+        <AssociationConnector Association="AvocadoModel.FK_Comments_Posts" >
+          <ConnectorPoint PointX="9.375" PointY="5.875" />
+          <ConnectorPoint PointX="9.375" PointY="4.8124994999999995" />
+          <ConnectorPoint PointX="10.875" PointY="4.8124994999999995" />
+        </AssociationConnector>
+        <AssociationConnector Association="AvocadoModel.FK_Likes_Posts" >
+          <ConnectorPoint PointX="10.125" PointY="7.6151432291666659" />
+          <ConnectorPoint PointX="10.875" PointY="7.6151432291666659" />
+        </AssociationConnector>
+        <AssociationConnector Association="AvocadoModel.FK_Saves_Posts" >
+          <ConnectorPoint PointX="9.375" PointY="9.201396484375" />
+          <ConnectorPoint PointX="9.375" PointY="10.365143229166666" />
+          <ConnectorPoint PointX="10.875" PointY="10.365143229166666" />
+        </AssociationConnector>
+        <AssociationConnector Association="AvocadoModel.FK_TagToPost_Posts" >
+          <ConnectorPoint PointX="10.125" PointY="8.9345914713541656" />
+          <ConnectorPoint PointX="14.75" PointY="8.9345914713541656" />
+          <ConnectorPoint PointX="14.75" PointY="6.1052864583333353" />
+        </AssociationConnector>
+        <AssociationConnector Association="AvocadoModel.FK_TagToPost_Tags" >
+          <ConnectorPoint PointX="12.78125" PointY="2.3456835937499996" />
+          <ConnectorPoint PointX="12.78125" PointY="6.0451871744791674" />
+          <ConnectorPoint PointX="14" PointY="6.0451871744791674" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

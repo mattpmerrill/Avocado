@@ -94,6 +94,12 @@ else
             });
         });
 
+        $(function () {
+            $('#customTwitterLogin').click(function () {
+                window.location = '/Account/SignInWithTwitter';
+            });
+        });
+
         function CustomButtonLogin() {
             FB.login(function (response) {
                 if (response.session) {
