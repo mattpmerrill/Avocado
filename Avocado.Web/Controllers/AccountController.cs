@@ -69,29 +69,40 @@ namespace Avocado.Web.Controllers
             string consumerKey = "ep22vRe4UBW4VlYa3b6odQ";
             string consumerSecrect = "Tmni15oL2XCuDGBTdgtOIjRHvfWhNGjl5xT9RqcCj3A";
             OAuthTokenResponse reqToken = OAuthUtility.GetRequestToken(consumerKey, consumerSecrect, "http://localhost:58828/Account/TwitterAuth");
-            string twitterUrl = "https://twitter.com/oauth/authorize?oauth_token=" + reqToken.Token;
+
+            string twitterUrl = "https://api.twitter.com/oauth/authenticate?oauth_token=" + reqToken.Token;
 
             return Redirect(twitterUrl);
         }
 
         public ActionResult TwitterAuth()
         {
-            string consumerKey = "ep22vRe4UBW4VlYa3b6odQ";
-            string consumerSecret = "Tmni15oL2XCuDGBTdgtOIjRHvfWhNGjl5xT9RqcCj3A";
-            string requestToken = Request.QueryString["oauth_token"];
-            string requestVerifier = Request.QueryString["oauth_verifier"];
+            if (Request.QueryString["denied"] == null)
+            {
+                string consumerKey = "ep22vRe4UBW4VlYa3b6odQ";
+                string consumerSecret = "Tmni15oL2XCuDGBTdgtOIjRHvfWhNGjl5xT9RqcCj3A";
+                string requestToken = Request.QueryString["oauth_token"];
+                string requestVerifier = Request.QueryString["oauth_verifier"];
 
-            OAuthTokenResponse responseToken = OAuthUtility.GetAccessToken(consumerKey, consumerSecret, requestToken, requestVerifier);
+                OAuthTokenResponse responseToken = OAuthUtility.GetAccessToken(consumerKey, consumerSecret, requestToken, requestVerifier);
 
-            OAuthTokens accessToken = new OAuthTokens();
-            accessToken.AccessToken = responseToken.Token;
-            accessToken.AccessTokenSecret = responseToken.TokenSecret;
-            accessToken.ConsumerKey = consumerKey;
-            accessToken.ConsumerSecret = consumerSecret;
+                OAuthTokens accessToken = new OAuthTokens();
+                accessToken.AccessToken = responseToken.Token;
+                accessToken.AccessTokenSecret = responseToken.TokenSecret;
+                accessToken.ConsumerKey = consumerKey;
+                accessToken.ConsumerSecret = consumerSecret;
 
-            //todo: save the accesstoken in the database
+                //todo: 1.save the accesstoken in the database
+                //      2.authenticate with membership services
+                //      3.redirect user to home page
 
-            return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                //return user back to login screen
+                return View("LogIn");
+            }
         }
 
         [HttpPost]

@@ -23,3 +23,8 @@ h2 span
     font-weight:lighter;
     color:#a4a2a2;
 }
+
+#customTwitterLogin
+{
+    cursor:pointer;
+}

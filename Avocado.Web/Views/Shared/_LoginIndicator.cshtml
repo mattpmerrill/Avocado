@@ -14,9 +14,9 @@ else
         <div style="float:left;">
             <h2>CreativiMe<span>Login now and start sharing YOUR creativity!</span></h2>
             <p>
-                @using (Html.BeginForm("Login","Account"))
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { autocomplete="off" }))
                 {
-                    @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "ui-state-error", style="width:325px; margin-bottom:20px;" })
+                    @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "ui-state-error", style = "width:325px; margin-bottom:20px;" })
 
                     @Html.LabelFor(x => x.Email)<br /> 
                     @Html.TextBoxFor(x => x.Email, new { @class = "form-input" })<br /><br />
@@ -69,11 +69,12 @@ else
                 if (response.session) {
                     // logged in and connected user, someone you know
                     //login();
-                    alert('You are logged into Facebook right now');
+                    //alert('You are logged into Facebook right now');
                 }
             });
         };
-        (function () {
+
+        $(function () {
             var e = document.createElement('script');
             e.type = 'text/javascript';
             e.src = document.location.protocol +
@@ -87,18 +88,6 @@ else
                 window.location = '/Account/LogInWithFacebook/?facebookEmail=' + response.email;
             });
         }
-
-        $(function () {
-            $('#customFBLogin').click(function () {
-                CustomButtonLogin();
-            });
-        });
-
-        $(function () {
-            $('#customTwitterLogin').click(function () {
-                window.location = '/Account/SignInWithTwitter';
-            });
-        });
 
         function CustomButtonLogin() {
             FB.login(function (response) {
@@ -114,7 +103,16 @@ else
                 }
             }, { perms: 'publish_stream,email' });
         }
+
         $(function () {
+            $('#customFBLogin').click(function () {
+                CustomButtonLogin();
+            });
+
+            $('#customTwitterLogin').click(function () {
+                window.location = '/Account/SignInWithTwitter';
+            });
+
             $('input:button, input:submit').button();
 
             $('#register-button').click(function () {

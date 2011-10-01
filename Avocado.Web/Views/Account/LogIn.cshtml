@@ -66,11 +66,11 @@
 
 
 <div style="float:left;">
-<h2>Log In</h2>
+<h2>Sign In</h2>
 
-@using (Html.BeginForm("LogIn", "Account"))
+@using (Html.BeginForm("LogIn", "Account", FormMethod.Post, new { autocomplete="off" }))
 {
-    @Html.ValidationSummary(excludePropertyErrors: false, message:"", htmlAttributes: new { @class="ui-state-error"})
+    @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "ui-state-error" })
 
     @Html.LabelFor(x => x.Email)<br /> 
     @Html.TextBoxFor(x => x.Email, new { @class = "form-input" })<br /><br />
@@ -85,7 +85,7 @@
 </div>
 
 <div style="float:right;">
-    <h2>Got Facebook?<span>You can also log in with your Facebook account.</span></h2>
+    <h2>Sign in like a boss!<span>You can also log in with your Facebook or Twitter account.</span></h2>
     <p>
         <fb:login-button 
             autologoutlink="true"
@@ -95,11 +95,9 @@
         </fb:login-button>
     </p>
     <p>
-        <input id="customFBLogin" type="button" value="My Custom FB Login" />
+        <img src="@Url.Content("~/content/images/sign-in-with-twitter-d.png")" alt="sign in with Twitter" id="customTwitterLogin" />
     </p>
-    <p>
-        <input id="customTwitterLogin" type="button" value="My Custom Twitter Login" />
-    </p>
+    <p><a href="https://api.twitter.com/oauth/authenticate">twitter auth</a></p>
 </div>
 
     
