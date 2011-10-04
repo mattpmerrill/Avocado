@@ -19,13 +19,13 @@ using System.Runtime.Serialization;
 #region EDM Relationship Metadata
 
 [assembly: EdmRelationshipAttribute("AvocadoModel", "FK__aspnet_Me__UserI__22AA2996", "aspnet_Users", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Avocado.Domain.Entities.aspnet_Users), "aspnet_Membership", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Avocado.Domain.Entities.aspnet_Membership), true)]
-[assembly: EdmRelationshipAttribute("AvocadoModel", "FK_UserSettings_aspnet_Users", "aspnet_Users", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Avocado.Domain.Entities.aspnet_Users), "UserSettings", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Avocado.Domain.Entities.UserSetting), true)]
 [assembly: EdmRelationshipAttribute("AvocadoModel", "FK_Posts_Categories", "Category", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Avocado.Domain.Entities.Category), "Post", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Avocado.Domain.Entities.Post), true)]
 [assembly: EdmRelationshipAttribute("AvocadoModel", "FK_Comments_Posts", "Post", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Avocado.Domain.Entities.Post), "Comment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Avocado.Domain.Entities.Comment), true)]
 [assembly: EdmRelationshipAttribute("AvocadoModel", "FK_Likes_Posts", "Post", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Avocado.Domain.Entities.Post), "Like", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Avocado.Domain.Entities.Like), true)]
 [assembly: EdmRelationshipAttribute("AvocadoModel", "FK_Saves_Posts", "Post", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Avocado.Domain.Entities.Post), "Save", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Avocado.Domain.Entities.Save), true)]
 [assembly: EdmRelationshipAttribute("AvocadoModel", "FK_TagToPost_Posts", "Post", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Avocado.Domain.Entities.Post), "TagToPost", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Avocado.Domain.Entities.TagToPost), true)]
 [assembly: EdmRelationshipAttribute("AvocadoModel", "FK_TagToPost_Tags", "Tag", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Avocado.Domain.Entities.Tag), "TagToPost", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Avocado.Domain.Entities.TagToPost), true)]
+[assembly: EdmRelationshipAttribute("AvocadoModel", "FK_UserSettings_aspnet_Users", "aspnet_Users", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Avocado.Domain.Entities.aspnet_Users), "UserSetting", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Avocado.Domain.Entities.UserSetting), true)]
 
 #endregion
 
@@ -108,22 +108,6 @@ namespace Avocado.Domain.Entities
             }
         }
         private ObjectSet<aspnet_Users> _aspnet_Users;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<UserSetting> UserSettings
-        {
-            get
-            {
-                if ((_UserSettings == null))
-                {
-                    _UserSettings = base.CreateObjectSet<UserSetting>("UserSettings");
-                }
-                return _UserSettings;
-            }
-        }
-        private ObjectSet<UserSetting> _UserSettings;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -236,6 +220,22 @@ namespace Avocado.Domain.Entities
             }
         }
         private ObjectSet<TagToPost> _TagToPosts;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<UserSetting> UserSettings
+        {
+            get
+            {
+                if ((_UserSettings == null))
+                {
+                    _UserSettings = base.CreateObjectSet<UserSetting>("UserSettings");
+                }
+                return _UserSettings;
+            }
+        }
+        private ObjectSet<UserSetting> _UserSettings;
 
         #endregion
         #region AddTo Methods
@@ -254,14 +254,6 @@ namespace Avocado.Domain.Entities
         public void AddToaspnet_Users(aspnet_Users aspnet_Users)
         {
             base.AddObject("aspnet_Users", aspnet_Users);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the UserSettings EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToUserSettings(UserSetting userSetting)
-        {
-            base.AddObject("UserSettings", userSetting);
         }
     
         /// <summary>
@@ -318,6 +310,14 @@ namespace Avocado.Domain.Entities
         public void AddToTagToPosts(TagToPost tagToPost)
         {
             base.AddObject("TagToPosts", tagToPost);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the UserSettings EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToUserSettings(UserSetting userSetting)
+        {
+            base.AddObject("UserSettings", userSetting);
         }
 
         #endregion
@@ -1185,18 +1185,18 @@ namespace Avocado.Domain.Entities
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("AvocadoModel", "FK_UserSettings_aspnet_Users", "UserSettings")]
+        [EdmRelationshipNavigationPropertyAttribute("AvocadoModel", "FK_UserSettings_aspnet_Users", "UserSetting")]
         public EntityCollection<UserSetting> UserSettings
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<UserSetting>("AvocadoModel.FK_UserSettings_aspnet_Users", "UserSettings");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<UserSetting>("AvocadoModel.FK_UserSettings_aspnet_Users", "UserSetting");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserSetting>("AvocadoModel.FK_UserSettings_aspnet_Users", "UserSettings", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserSetting>("AvocadoModel.FK_UserSettings_aspnet_Users", "UserSetting", value);
                 }
             }
         }
@@ -2501,15 +2501,11 @@ namespace Avocado.Domain.Entities
         /// </summary>
         /// <param name="userSettingsId">Initial value of the UserSettingsId property.</param>
         /// <param name="userId">Initial value of the UserId property.</param>
-        /// <param name="fullName">Initial value of the FullName property.</param>
-        /// <param name="displayName">Initial value of the DisplayName property.</param>
-        public static UserSetting CreateUserSetting(global::System.Int32 userSettingsId, global::System.Guid userId, global::System.String fullName, global::System.String displayName)
+        public static UserSetting CreateUserSetting(global::System.Int32 userSettingsId, global::System.Guid userId)
         {
             UserSetting userSetting = new UserSetting();
             userSetting.UserSettingsId = userSettingsId;
             userSetting.UserId = userId;
-            userSetting.FullName = fullName;
-            userSetting.DisplayName = displayName;
             return userSetting;
         }
 
@@ -2618,7 +2614,7 @@ namespace Avocado.Domain.Entities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String FullName
         {
@@ -2630,7 +2626,7 @@ namespace Avocado.Domain.Entities
             {
                 OnFullNameChanging(value);
                 ReportPropertyChanging("FullName");
-                _FullName = StructuralObject.SetValidValue(value, false);
+                _FullName = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("FullName");
                 OnFullNameChanged();
             }
@@ -2642,7 +2638,7 @@ namespace Avocado.Domain.Entities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String DisplayName
         {
@@ -2654,7 +2650,7 @@ namespace Avocado.Domain.Entities
             {
                 OnDisplayNameChanging(value);
                 ReportPropertyChanging("DisplayName");
-                _DisplayName = StructuralObject.SetValidValue(value, false);
+                _DisplayName = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("DisplayName");
                 OnDisplayNameChanged();
             }
@@ -2662,6 +2658,102 @@ namespace Avocado.Domain.Entities
         private global::System.String _DisplayName;
         partial void OnDisplayNameChanging(global::System.String value);
         partial void OnDisplayNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String TwitterAccessToken
+        {
+            get
+            {
+                return _TwitterAccessToken;
+            }
+            set
+            {
+                OnTwitterAccessTokenChanging(value);
+                ReportPropertyChanging("TwitterAccessToken");
+                _TwitterAccessToken = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("TwitterAccessToken");
+                OnTwitterAccessTokenChanged();
+            }
+        }
+        private global::System.String _TwitterAccessToken;
+        partial void OnTwitterAccessTokenChanging(global::System.String value);
+        partial void OnTwitterAccessTokenChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String TwitterAccessSecret
+        {
+            get
+            {
+                return _TwitterAccessSecret;
+            }
+            set
+            {
+                OnTwitterAccessSecretChanging(value);
+                ReportPropertyChanging("TwitterAccessSecret");
+                _TwitterAccessSecret = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("TwitterAccessSecret");
+                OnTwitterAccessSecretChanged();
+            }
+        }
+        private global::System.String _TwitterAccessSecret;
+        partial void OnTwitterAccessSecretChanging(global::System.String value);
+        partial void OnTwitterAccessSecretChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String TwitterUserId
+        {
+            get
+            {
+                return _TwitterUserId;
+            }
+            set
+            {
+                OnTwitterUserIdChanging(value);
+                ReportPropertyChanging("TwitterUserId");
+                _TwitterUserId = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("TwitterUserId");
+                OnTwitterUserIdChanged();
+            }
+        }
+        private global::System.String _TwitterUserId;
+        partial void OnTwitterUserIdChanging(global::System.String value);
+        partial void OnTwitterUserIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FacebookUserId
+        {
+            get
+            {
+                return _FacebookUserId;
+            }
+            set
+            {
+                OnFacebookUserIdChanging(value);
+                ReportPropertyChanging("FacebookUserId");
+                _FacebookUserId = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FacebookUserId");
+                OnFacebookUserIdChanged();
+            }
+        }
+        private global::System.String _FacebookUserId;
+        partial void OnFacebookUserIdChanging(global::System.String value);
+        partial void OnFacebookUserIdChanged();
 
         #endregion
     

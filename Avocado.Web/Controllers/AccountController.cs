@@ -8,15 +8,18 @@ using System.Web.Security;
 using Avocado.Web.Utilities;
 using Avocado.Web.Models;
 using Twitterizer;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Configuration;
 
 namespace Avocado.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private IMembershipService _membershipService;
+        private IAccountMembershipService _membershipService;
         private IFormsAuthenticationService _authenticationService;
 
-        public AccountController(IMembershipService membershipService, IFormsAuthenticationService authenticationService)
+        public AccountController(IAccountMembershipService membershipService, IFormsAuthenticationService authenticationService)
         {
             _membershipService = membershipService;
             _authenticationService = authenticationService;
@@ -47,14 +50,14 @@ namespace Avocado.Web.Controllers
                 return View();
         }
 
-        public ActionResult LogInWithFacebook(string facebookEmail)
+        public ActionResult LogInWithSocial(string socialId)
         {
             //TODO:Check if facebook email has been registered on our site yet
             //If not, send to registration page to create an account
             //otherwise, log in with the facebook email address
-            if (_membershipService.IsLinkedWithFacebook(facebookEmail))
+            if (_membershipService.IsLinkedWithSocial(socialId))
             {
-                FormsAuthentication.SetAuthCookie(facebookEmail, false);
+                FormsAuthentication.SetAuthCookie(socialId, false);
             }
             else
             {
@@ -66,8 +69,8 @@ namespace Avocado.Web.Controllers
 
         public ActionResult SignInWithTwitter()
         {
-            string consumerKey = "ep22vRe4UBW4VlYa3b6odQ";
-            string consumerSecrect = "Tmni15oL2XCuDGBTdgtOIjRHvfWhNGjl5xT9RqcCj3A";
+            string consumerKey = ConfigurationManager.AppSettings["consumerKey"];
+            string consumerSecrect = ConfigurationManager.AppSettings["consumerSecret"];
             OAuthTokenResponse reqToken = OAuthUtility.GetRequestToken(consumerKey, consumerSecrect, "http://localhost:58828/Account/TwitterAuth");
 
             string twitterUrl = "https://api.twitter.com/oauth/authenticate?oauth_token=" + reqToken.Token;
@@ -79,23 +82,27 @@ namespace Avocado.Web.Controllers
         {
             if (Request.QueryString["denied"] == null)
             {
-                string consumerKey = "ep22vRe4UBW4VlYa3b6odQ";
-                string consumerSecret = "Tmni15oL2XCuDGBTdgtOIjRHvfWhNGjl5xT9RqcCj3A";
+                string consumerKey = ConfigurationManager.AppSettings["consumerKey"];
+                string consumerSecret = ConfigurationManager.AppSettings["consumerSecret"];
                 string requestToken = Request.QueryString["oauth_token"];
                 string requestVerifier = Request.QueryString["oauth_verifier"];
 
                 OAuthTokenResponse responseToken = OAuthUtility.GetAccessToken(consumerKey, consumerSecret, requestToken, requestVerifier);
 
-                OAuthTokens accessToken = new OAuthTokens();
-                accessToken.AccessToken = responseToken.Token;
-                accessToken.AccessTokenSecret = responseToken.TokenSecret;
-                accessToken.ConsumerKey = consumerKey;
-                accessToken.ConsumerSecret = consumerSecret;
+                string accessToken = responseToken.Token;
+                string accessSecret = responseToken.TokenSecret;
 
-                //todo: 1.save the accesstoken in the database
-                //      2.authenticate with membership services
-                //      3.redirect user to home page
-
+                if (_membershipService.IsLinkedWithSocial(Convert.ToString(responseToken.UserId)))
+                {
+                    string email = _membershipService.GetEmailFromSocialId(Convert.ToString(responseToken.UserId));
+                    FormsAuthentication.SetAuthCookie(email, false);
+                }
+                else
+                {
+                    string redirect = "/Account/CreateAccount?social=twitter&at=" + accessToken + "&as=" + accessSecret;
+                    return Redirect(redirect);
+                }
+                
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -128,12 +135,15 @@ namespace Avocado.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                MembershipCreateStatus createStatus = _membershipService.CreateUser(model.Email, model.Password);
+                string social = Request.QueryString["social"];
+                string token = Request.QueryString["at"];
+                string secret = Request.QueryString["as"];
+
+                MembershipCreateStatus createStatus = _membershipService.CreateUser(model.Email, model.Password, model.FullName, social, token, secret);
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
-                    //todo: create the user in [User] table
-                    _authenticationService.LogIn(model.Email, true);
+                    _authenticationService.LogIn(userName: model.Email, createPersistentCookie: true);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -144,6 +154,5 @@ namespace Avocado.Web.Controllers
 
             return View(model);
         }
-
     }
 }

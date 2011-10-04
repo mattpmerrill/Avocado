@@ -23,9 +23,9 @@ namespace Avocado.Web.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [DataType(DataType.Password)]
-        [DisplayName("Confirm Password")]
-        [Compare("Password", ErrorMessage = "The Password and Confirmation Password must match.")]
-        public string ConfirmPassword { get; set; }
+        //[DataType(DataType.Password)]
+        //[DisplayName("Confirm Password")]
+        //[Compare("Password", ErrorMessage = "The Password and Confirmation Password must match.")]
+        //public string ConfirmPassword { get; set; }
     }
 }

@@ -157,8 +157,12 @@
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" />
-          <Property Name="FullName" Type="nvarchar" Nullable="false" MaxLength="100" />
-          <Property Name="DisplayName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="100" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="50" />
+          <Property Name="TwitterAccessToken" Type="nvarchar" MaxLength="50" />
+          <Property Name="TwitterAccessSecret" Type="nvarchar" MaxLength="100" />
+          <Property Name="TwitterUserId" Type="nvarchar" MaxLength="100" />
+          <Property Name="FacebookUserId" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <Association Name="FK__aspnet_Me__UserI__22AA2996">
           <End Role="aspnet_Users" Type="AvocadoModel.Store.aspnet_Users" Multiplicity="1" />
@@ -263,14 +267,9 @@
         <EntityContainer Name="AvocadoEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="aspnet_Membership" EntityType="AvocadoModel.aspnet_Membership" />
           <EntitySet Name="aspnet_Users" EntityType="AvocadoModel.aspnet_Users" />
-          <EntitySet Name="UserSettings" EntityType="AvocadoModel.UserSetting" />
           <AssociationSet Name="FK__aspnet_Me__UserI__22AA2996" Association="AvocadoModel.FK__aspnet_Me__UserI__22AA2996">
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
             <End Role="aspnet_Membership" EntitySet="aspnet_Membership" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserSettings_aspnet_Users" Association="AvocadoModel.FK_UserSettings_aspnet_Users">
-            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
-            <End Role="UserSettings" EntitySet="UserSettings" />
           </AssociationSet>
           <EntitySet Name="Categories" EntityType="AvocadoModel.Category" />
           <EntitySet Name="Comments" EntityType="AvocadoModel.Comment" />
@@ -302,6 +301,11 @@
           <AssociationSet Name="FK_TagToPost_Tags" Association="AvocadoModel.FK_TagToPost_Tags">
             <End Role="Tag" EntitySet="Tags" />
             <End Role="TagToPost" EntitySet="TagToPosts" />
+          </AssociationSet>
+          <EntitySet Name="UserSettings" EntityType="AvocadoModel.UserSetting" />
+          <AssociationSet Name="FK_UserSettings_aspnet_Users" Association="AvocadoModel.FK_UserSettings_aspnet_Users">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="UserSetting" EntitySet="UserSettings" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="aspnet_Membership">
@@ -343,19 +347,7 @@
           <Property Name="IsAnonymous" Type="Boolean" Nullable="false" />
           <Property Name="LastActivityDate" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="aspnet_Membership" Relationship="AvocadoModel.FK__aspnet_Me__UserI__22AA2996" FromRole="aspnet_Users" ToRole="aspnet_Membership" />
-          <NavigationProperty Name="UserSettings" Relationship="AvocadoModel.FK_UserSettings_aspnet_Users" FromRole="aspnet_Users" ToRole="UserSettings" />
-        </EntityType>
-        <EntityType Name="UserSetting">
-          <Key>
-            <PropertyRef Name="UserSettingsId" />
-          </Key>
-          <Property Name="UserSettingsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="FirstName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="LastName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="FullName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="aspnet_Users" Relationship="AvocadoModel.FK_UserSettings_aspnet_Users" FromRole="UserSettings" ToRole="aspnet_Users" />
+          <NavigationProperty Name="UserSettings" Relationship="AvocadoModel.FK_UserSettings_aspnet_Users" FromRole="aspnet_Users" ToRole="UserSetting" />
         </EntityType>
         <Association Name="FK__aspnet_Me__UserI__22AA2996">
           <End Role="aspnet_Users" Type="AvocadoModel.aspnet_Users" Multiplicity="1" />
@@ -365,18 +357,6 @@
               <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="aspnet_Membership">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserSettings_aspnet_Users">
-          <End Role="aspnet_Users" Type="AvocadoModel.aspnet_Users" Multiplicity="1" />
-          <End Role="UserSettings" Type="AvocadoModel.UserSetting" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="aspnet_Users">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="UserSettings">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -527,6 +507,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="UserSetting">
+          <Key>
+            <PropertyRef Name="UserSettingsId" />
+          </Key>
+          <Property Type="Int32" Name="UserSettingsId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="FirstName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LastName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FullName" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="DisplayName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="TwitterAccessToken" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="TwitterAccessSecret" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="TwitterUserId" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FacebookUserId" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="aspnet_Users" Relationship="AvocadoModel.FK_UserSettings_aspnet_Users" FromRole="UserSetting" ToRole="aspnet_Users" />
+        </EntityType>
+        <Association Name="FK_UserSettings_aspnet_Users">
+          <End Type="AvocadoModel.aspnet_Users" Role="aspnet_Users" Multiplicity="1" />
+          <End Type="AvocadoModel.UserSetting" Role="UserSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserSetting">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -564,14 +572,6 @@
             <ScalarProperty Name="MobileAlias" ColumnName="MobileAlias" />
             <ScalarProperty Name="IsAnonymous" ColumnName="IsAnonymous" />
             <ScalarProperty Name="LastActivityDate" ColumnName="LastActivityDate" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
-          <EntitySetMapping Name="UserSettings"><EntityTypeMapping TypeName="AvocadoModel.UserSetting"><MappingFragment StoreEntitySet="UserSettings">
-            <ScalarProperty Name="UserSettingsId" ColumnName="UserSettingsId" />
-            <ScalarProperty Name="UserId" ColumnName="UserId" />
-            <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-            <ScalarProperty Name="LastName" ColumnName="LastName" />
-            <ScalarProperty Name="FullName" ColumnName="FullName" />
-            <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="AvocadoModel.Category">
@@ -642,6 +642,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="UserSettings">
+            <EntityTypeMapping TypeName="AvocadoModel.UserSetting">
+              <MappingFragment StoreEntitySet="UserSettings">
+                <ScalarProperty Name="FacebookUserId" ColumnName="FacebookUserId" />
+                <ScalarProperty Name="TwitterUserId" ColumnName="TwitterUserId" />
+                <ScalarProperty Name="TwitterAccessSecret" ColumnName="TwitterAccessSecret" />
+                <ScalarProperty Name="TwitterAccessToken" ColumnName="TwitterAccessToken" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserSettingsId" ColumnName="UserSettingsId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -665,15 +681,9 @@
       <Diagram Name="AvocadoEntities">
         <EntityTypeShape EntityType="AvocadoModel.aspnet_Membership" Width="2" PointX="3" PointY="1.25" Height="5.2494108072916665" IsExpanded="true" />
         <EntityTypeShape EntityType="AvocadoModel.aspnet_Users" Width="1.5" PointX="0.75" PointY="4" Height="2.7494921874999996" IsExpanded="true" />
-        <EntityTypeShape EntityType="AvocadoModel.UserSetting" Width="1.5" PointX="3" PointY="7.25" Height="2.3648893229166665" IsExpanded="true" />
         <AssociationConnector Association="AvocadoModel.FK__aspnet_Me__UserI__22AA2996" ManuallyRouted="false">
           <ConnectorPoint PointX="2.25" PointY="5.2497054036458337" />
           <ConnectorPoint PointX="3" PointY="5.2497054036458337" />
-        </AssociationConnector>
-        <AssociationConnector Association="AvocadoModel.FK_UserSettings_aspnet_Users" ManuallyRouted="false">
-          <ConnectorPoint PointX="1.5" PointY="6.7494921875" />
-          <ConnectorPoint PointX="1.5" PointY="8.4324446614583337" />
-          <ConnectorPoint PointX="3" PointY="8.4324446614583337" />
         </AssociationConnector>
         <EntityTypeShape EntityType="AvocadoModel.Category" Width="1.5" PointX="6.375" PointY="6.75" Height="1.5956835937499987" />
         <EntityTypeShape EntityType="AvocadoModel.Comment" Width="1.5" PointX="10.875" PointY="3.75" Height="2.1725878906249996" />
@@ -709,6 +719,12 @@
           <ConnectorPoint PointX="12.78125" PointY="2.3456835937499996" />
           <ConnectorPoint PointX="12.78125" PointY="6.0451871744791674" />
           <ConnectorPoint PointX="14" PointY="6.0451871744791674" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="AvocadoModel.UserSetting" Width="1.5" PointX="3" PointY="7.75" Height="3.1340950520833317" />
+        <AssociationConnector Association="AvocadoModel.FK_UserSettings_aspnet_Users" >
+          <ConnectorPoint PointX="1.5" PointY="6.7494921875" />
+          <ConnectorPoint PointX="1.5" PointY="9.3170475260416659" />
+          <ConnectorPoint PointX="3" PointY="9.3170475260416659" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

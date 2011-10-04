@@ -4,8 +4,10 @@
     ViewBag.Title = "CreateAccount";
 }
 
-<div id="fb-root"></div>
+@*<div id="fb-root"></div>
+*@
 <script type="text/javascript">
+
     window.fbAsyncInit = function () {
         FB.init({ appId: '183406445033444', status: true, cookie: true, xfbml: true });
 
@@ -13,26 +15,26 @@
             if (response.session) {
                 // logged in and connected user, someone you know
                 //login();
-                alert('You are logged into Facebook right now');
+                //alert('You are logged into Facebook right now');
             }
         });
 
         FB.api('/me', function (response) {
-            $('#Email').val(response.email);
+            $('#EmailAddress').val(response.email);
             $('#FullName').val(response.name);
             $('#Password').val('');
         });
     };
 
 
-    (function () {
-        var e = document.createElement('script');
-        e.type = 'text/javascript';
-        e.src = document.location.protocol +
-            '//connect.facebook.net/en_US/all.js';
-        e.async = true;
-        document.getElementById('fb-root').appendChild(e);
-    } ());
+//    (function () {
+//        var e = document.createElement('script');
+//        e.type = 'text/javascript';
+//        e.src = document.location.protocol +
+//            '//connect.facebook.net/en_US/all.js';
+//        e.async = true;
+//        document.getElementById('fb-root').appendChild(e);
+//    } ());
     
 </script>
 
@@ -43,20 +45,23 @@
 <div>
     
 
-    @using (Html.BeginForm("CreateAccount", "Account")) 
+    @using (Html.BeginForm("CreateAccount", "Account", new { social = @Request.QueryString["social"], @at = @Request.QueryString["at"], @as = @Request.QueryString["as"] }, FormMethod.Post, new { autocomplete = "off" }))
     { 
-        @Html.ValidationSummary(excludePropertyErrors:false, message:"", htmlAttributes: new { @class="ui-state-error"})
+        @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "ui-state-error" })
 
         @Html.LabelFor(x => x.Email)<br /> 
-        @Html.TextBoxFor(x => x.Email, new { @class="form-input" })
+        @Html.TextBoxFor(x => x.Email, new { @class = "form-input", id = "EmailAddress" })
+        
         <br /><br />
         
         @Html.LabelFor(x => x.FullName)<br />
         @Html.TextBoxFor(x => x.FullName, new { @class = "form-input" })
+        
         <br /><br />
         
         @Html.LabelFor(x => x.Password)<br />
-        @Html.PasswordFor(x => x.Password, new { @class="form-input" })
+        @Html.PasswordFor(x => x.Password, new { @class = "form-input" })
+        
         <br /><br />
         
         <div>
