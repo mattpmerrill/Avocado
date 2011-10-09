@@ -2,57 +2,70 @@
 
 @if (Request.IsAuthenticated)
 { 
-    <span>Welcome @Context.User.Identity.Name</span> <span><a href="/Account/Logout">Logout</a></span>   
+    <ul class="nav">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle">Welcome @Context.User.Identity.Name</a>
+            <ul class="dropdown-menu">
+                <li><a href="/Account/Logout">Logout</a></li>
+            </ul>
+        </li>
+    </ul>
 }
 else
 {
-    <input id="register-button" type="button" value="New to CreativiMe? Join Today!" />
-    <input id="login-button" type="button" value="Log In" />
-    <input id="modal-button" type="button" value="test the modal" />
+    <div style="margin:5px 0 0 0;">
+        <button id="modal-button" class="btn primary">Sign In</button>
+        <button id="register-button" class="btn success">New? Join for free!</button>
+    </div>
     
-    <div id="myModal" class="reveal-modal xlarge">
-        <div style="float:left;">
-            <h2>CreativiMe<span>Login now and start sharing YOUR creativity!</span></h2>
-            <p>
-                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { autocomplete="off" }))
-                {
-                    @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "ui-state-error", style = "width:325px; margin-bottom:20px;" })
-
-                    @Html.LabelFor(x => x.Email)<br /> 
-                    @Html.TextBoxFor(x => x.Email, new { @class = "form-input" })<br /><br />
+    <div id="my-modal" class="reveal-modal xlarge">
         
-                    @Html.LabelFor(x => x.Password)<br />
-                    @Html.PasswordFor(x => x.Password, new { @class = "form-input" })<br /><br />
+        <div class="container">
+            <div class="row">
+                <div class="span8">
+                    <h1>Creativime </h1>
+                    <h4>Sign in now and start sharing your creativity!</h4>
+                    <p>
+                        @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { autocomplete = "off", id = "modal-form" }))
+                        {
+                            @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "ui-state-error", style = "width:325px; margin-bottom:20px;" })
+
+                            @Html.TextBoxFor(x => x.Email, new { @class = "form-input", placeholder = "email address" })<br /><br />
+        
+                            @Html.PasswordFor(x => x.Password, new { @class = "form-input", placeholder = "password" })<br /><br />
     
-                    <div>
-                        <input type="submit" value="Log In" />
-                    </div>
-                }
-            </p>
-            
+                            <button id="modal-login-button" class="btn large primary">Sign In</button>
+                        }
+                        
+                    </p>
+                </div>
+                
+                <div class="span6">
+                    <h1>Already Social?</h1>
+                    <h4>Sign in with your account below</h4>
+                    <p>
+                        <fb:login-button 
+                            autologoutlink="true"
+                            size="large" 
+                            perms="email,publish_stream">
+                            Sign in with Facebook
+                        </fb:login-button>
+                    </p>
+                    <p>
+                        <img src="@Url.Content("~/content/images/sign-in-with-twitter-d.png")" alt="sign in with Twitter" id="customTwitterLogin" />
+                    </p>
+                </div>
+            </div>
         </div>
-        
 
-        <div style="float:right;">
-            <h2>Got Facebook?<span>You can also log in with your Facebook account.</span></h2>
-            <p>
-                <fb:login-button 
-                    autologoutlink="true"
-                    size="large" 
-                    perms="email,publish_stream">
-                    Login with Facebook
-                </fb:login-button>
-            </p>
-            <p>
-                <input id="customFBLogin" type="button" value="My Custom FB Login" />
-            </p>
-        </div>
-
-        <p><a class="close-reveal-modal">&#215;</a></p>
     </div>    
         
     <script type="text/javascript">
         $(function () {
+            $("#modal-login-button").click(function () {
+                $("#modal-form").submit();
+            });
+
             $('#customFBLogin').click(function () {
                 CustomButtonLogin();
             });
@@ -60,8 +73,6 @@ else
             $('#customTwitterLogin').click(function () {
                 window.location = '/Account/SignInWithTwitter';
             });
-
-            $('input:button, input:submit').button();
 
             $('#register-button').click(function () {
                 window.location = '/Account/CreateAccount';
@@ -73,7 +84,7 @@ else
 
             $('#modal-button').click(function (e) {
                 e.preventDefault();
-                $('#myModal').reveal({
+                $('#my-modal').reveal({
                     animation: 'fadeAndPop',                   //fade, fadeAndPop, none
                     animationspeed: 400,                       //how fast animtions are
                     closeonbackgroundclick: true

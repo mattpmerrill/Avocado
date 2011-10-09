@@ -64,39 +64,42 @@
     }
 </script>*@
 
+<div class="container">
+    <div class="row">
+        <div class="span8">
+            <h1>Sign In</h1>
 
-<div style="float:left;">
-<h2>Sign In</h2>
+            @using (Html.BeginForm("LogIn", "Account", FormMethod.Post, new { autocomplete="off" }))
+            {
+                @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "ui-state-error" })
 
-@using (Html.BeginForm("LogIn", "Account", FormMethod.Post, new { autocomplete="off" }))
-{
-    @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "ui-state-error" })
-
-    @Html.LabelFor(x => x.Email)<br /> 
-    @Html.TextBoxFor(x => x.Email, new { @class = "form-input" })<br /><br />
+                @Html.TextBoxFor(x => x.Email, new { @class = "form-input", placeholder="your email address" })<br /><br />
         
-    @Html.LabelFor(x => x.Password)<br />
-    @Html.PasswordFor(x => x.Password, new { @class = "form-input" })<br /><br />
+                @Html.PasswordFor(x => x.Password, new { @class = "form-input", placeholder="password" })<br /><br />
     
-    <div>
-        <input type="submit" value="Log In" />
-    </div>
-}
-</div>
+                <div>
+                    <input type="submit" class="btn primary large" value="Log In" />
+                </div>
+            }        
+        </div>
 
-<div style="float:right;">
-    <h2>Sign in like a boss!<span>You can also log in with your Facebook or Twitter account.</span></h2>
-    <p>
-        <fb:login-button 
-            autologoutlink="true"
-            size="large" 
-            perms="email,publish_stream">
-            Login with Facebook
-        </fb:login-button>
-    </p>
-    <p>
-        <img src="@Url.Content("~/content/images/sign-in-with-twitter-d.png")" alt="sign in with Twitter" id="customTwitterLogin" />
-    </p>
+        <div class="span8">
+            <h1>Already Social?</h1>
+            <h4>Sign in with your account below.</h4>
+            <p>
+                <fb:login-button 
+                    autologoutlink="true"
+                    size="large" 
+                    perms="email,publish_stream">
+                    Login with Facebook
+                </fb:login-button>
+            </p>
+            <p>
+                <img src="@Url.Content("~/content/images/sign-in-with-twitter-d.png")" alt="sign in with Twitter" id="customTwitterLogin" />
+            </p>
+        </div>
+    </div>
 </div>
+    
 
     

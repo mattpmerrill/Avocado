@@ -38,34 +38,32 @@
     
 </script>
 
-<h2>
-    Join CreativiMe
-    <span>It's easy and it's free! Start sharing your creativity in minutes. </span>
-</h2>
-<div>
-    
+<div class="container">
+    <h1>
+        Join Creativime
+    </h1>
+        
+    <h4>It's free! Join now ans start sharing your creativity.</h4>
 
     @using (Html.BeginForm("CreateAccount", "Account", new { social = @Request.QueryString["social"], @at = @Request.QueryString["at"], @as = @Request.QueryString["as"] }, FormMethod.Post, new { autocomplete = "off" }))
     { 
         @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "ui-state-error" })
 
-        @Html.LabelFor(x => x.Email)<br /> 
-        @Html.TextBoxFor(x => x.Email, new { @class = "form-input", id = "EmailAddress" })
+        @Html.TextBoxFor(x => x.Email, new { @class = "form-input", id = "EmailAddress", placeholder="your email address" })
         
         <br /><br />
         
-        @Html.LabelFor(x => x.FullName)<br />
-        @Html.TextBoxFor(x => x.FullName, new { @class = "form-input" })
+        @Html.TextBoxFor(x => x.FullName, new { @class = "form-input", placeholder = "full name" })
         
         <br /><br />
         
-        @Html.LabelFor(x => x.Password)<br />
-        @Html.PasswordFor(x => x.Password, new { @class = "form-input" })
+        @Html.PasswordFor(x => x.Password, new { @class = "form-input", placeholder = "password" })
         
         <br /><br />
         
         <div>
-            <input type="submit" value="Sign Up" />
+            <input type="submit" class="btn primary large" value="Join Creativime!" />
         </div>
     }
 </div>
+
