@@ -61,8 +61,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IBrowseService.cs" />
     <Compile Include="Abstract\IFormsAuthenticationService.cs" />
     <Compile Include="Abstract\IAccountMembershipService.cs" />
+    <Compile Include="Concrete\BrowseService.cs" />
     <Compile Include="Entities\AvocadoEntities.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

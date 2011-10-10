@@ -51,6 +51,7 @@ namespace Avocado.Web
             //register services with Ninject DI container
             kernel.Bind<IAccountMembershipService>().To<AccountMembershipService>().WithConstructorArgument("connectionString", ConfigurationManager.ConnectionStrings["AvocadoEntities"].ConnectionString);
             kernel.Bind<IFormsAuthenticationService>().To<FormsAuthenticationService>();
+            kernel.Bind<IBrowseService>().To<BrowseService>().WithConstructorArgument("connectionString", ConfigurationManager.ConnectionStrings["AvocadoEntities"].ConnectionString);
             
             //tell ASP.net MVC to use Ninject DI container
             DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));

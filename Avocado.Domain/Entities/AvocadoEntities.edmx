@@ -6,6 +6,7 @@
     <edmx:StorageModels>
     <Schema Namespace="AvocadoModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="AvocadoModelStoreContainer">
+          <EntitySet Name="Accounts" EntityType="AvocadoModel.Store.Accounts" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="aspnet_Membership" EntityType="AvocadoModel.Store.aspnet_Membership" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="aspnet_Users" EntityType="AvocadoModel.Store.aspnet_Users" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Categories" EntityType="AvocadoModel.Store.Categories" store:Type="Tables" Schema="dbo" />
@@ -20,6 +21,10 @@
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
             <End Role="aspnet_Membership" EntitySet="aspnet_Membership" />
           </AssociationSet>
+          <AssociationSet Name="FK_Accounts_aspnet_Users" Association="AvocadoModel.Store.FK_Accounts_aspnet_Users">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="Accounts" EntitySet="Accounts" />
+          </AssociationSet>
           <AssociationSet Name="FK_Comments_Posts" Association="AvocadoModel.Store.FK_Comments_Posts">
             <End Role="Posts" EntitySet="Posts" />
             <End Role="Comments" EntitySet="Comments" />
@@ -27,6 +32,10 @@
           <AssociationSet Name="FK_Likes_Posts" Association="AvocadoModel.Store.FK_Likes_Posts">
             <End Role="Posts" EntitySet="Posts" />
             <End Role="Likes" EntitySet="Likes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Posts_Accounts" Association="AvocadoModel.Store.FK_Posts_Accounts">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Posts" EntitySet="Posts" />
           </AssociationSet>
           <AssociationSet Name="FK_Posts_Categories" Association="AvocadoModel.Store.FK_Posts_Categories">
             <End Role="Categories" EntitySet="Categories" />
@@ -44,11 +53,26 @@
             <End Role="Tags" EntitySet="Tags" />
             <End Role="TagToPost" EntitySet="TagToPost" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserSettings_aspnet_Users" Association="AvocadoModel.Store.FK_UserSettings_aspnet_Users">
-            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+          <AssociationSet Name="FK_UserSettings_Accounts" Association="AvocadoModel.Store.FK_UserSettings_Accounts">
+            <End Role="Accounts" EntitySet="Accounts" />
             <End Role="UserSettings" EntitySet="UserSettings" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Accounts">
+          <Key>
+            <PropertyRef Name="AccountId" />
+          </Key>
+          <Property Name="AccountId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="100" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="50" />
+          <Property Name="TwitterAccessToken" Type="nvarchar" MaxLength="50" />
+          <Property Name="TwitterAccessSecret" Type="nvarchar" MaxLength="100" />
+          <Property Name="TwitterUserId" Type="nvarchar" MaxLength="100" />
+          <Property Name="FacebookUserId" Type="nvarchar" MaxLength="100" />
+        </EntityType>
         <EntityType Name="aspnet_Membership">
           <Key>
             <PropertyRef Name="UserId" />
@@ -91,7 +115,7 @@
           <Key>
             <PropertyRef Name="CategoryId" />
           </Key>
-          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
         </EntityType>
         <EntityType Name="Comments">
@@ -100,7 +124,7 @@
           </Key>
           <Property Name="CommentId" Type="int" Nullable="false" />
           <Property Name="PostId" Type="int" Nullable="false" />
-          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AccountId" Type="int" Nullable="false" />
           <Property Name="Comment" Type="nvarchar" Nullable="false" MaxLength="250" />
           <Property Name="InsertDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -108,17 +132,17 @@
           <Key>
             <PropertyRef Name="LikeId" />
           </Key>
-          <Property Name="LikeId" Type="int" Nullable="false" />
+          <Property Name="LikeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="PostId" Type="int" Nullable="false" />
-          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AccountId" Type="int" Nullable="false" />
           <Property Name="InsertDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Posts">
           <Key>
             <PropertyRef Name="PostId" />
           </Key>
-          <Property Name="PostId" Type="int" Nullable="false" />
-          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PostId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AccountId" Type="int" Nullable="false" />
           <Property Name="Title" Type="nvarchar" Nullable="false" MaxLength="75" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="MainImage" Type="nvarchar" MaxLength="100" />
@@ -131,7 +155,7 @@
           </Key>
           <Property Name="SaveId" Type="int" Nullable="false" />
           <Property Name="PostId" Type="int" Nullable="false" />
-          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AccountId" Type="int" Nullable="false" />
           <Property Name="SaveDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Tags">
@@ -154,15 +178,8 @@
             <PropertyRef Name="UserSettingsId" />
           </Key>
           <Property Name="UserSettingsId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
-          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
-          <Property Name="FullName" Type="nvarchar" MaxLength="100" />
+          <Property Name="AccountId" Type="int" />
           <Property Name="DisplayName" Type="nvarchar" MaxLength="50" />
-          <Property Name="TwitterAccessToken" Type="nvarchar" MaxLength="50" />
-          <Property Name="TwitterAccessSecret" Type="nvarchar" MaxLength="100" />
-          <Property Name="TwitterUserId" Type="nvarchar" MaxLength="100" />
-          <Property Name="FacebookUserId" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <Association Name="FK__aspnet_Me__UserI__22AA2996">
           <End Role="aspnet_Users" Type="AvocadoModel.Store.aspnet_Users" Multiplicity="1" />
@@ -172,6 +189,18 @@
               <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="aspnet_Membership">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Accounts_aspnet_Users">
+          <End Role="aspnet_Users" Type="AvocadoModel.Store.aspnet_Users" Multiplicity="1" />
+          <End Role="Accounts" Type="AvocadoModel.Store.Accounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Accounts">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -197,6 +226,18 @@
             </Principal>
             <Dependent Role="Likes">
               <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Posts_Accounts">
+          <End Role="Accounts" Type="AvocadoModel.Store.Accounts" Multiplicity="1" />
+          <End Role="Posts" Type="AvocadoModel.Store.Posts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="Posts">
+              <PropertyRef Name="AccountId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -248,15 +289,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserSettings_aspnet_Users">
-          <End Role="aspnet_Users" Type="AvocadoModel.Store.aspnet_Users" Multiplicity="1" />
+        <Association Name="FK_UserSettings_Accounts">
+          <End Role="Accounts" Type="AvocadoModel.Store.Accounts" Multiplicity="0..1" />
           <End Role="UserSettings" Type="AvocadoModel.Store.UserSettings" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="aspnet_Users">
-              <PropertyRef Name="UserId" />
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountId" />
             </Principal>
             <Dependent Role="UserSettings">
-              <PropertyRef Name="UserId" />
+              <PropertyRef Name="AccountId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -302,9 +343,18 @@
             <End Role="Tag" EntitySet="Tags" />
             <End Role="TagToPost" EntitySet="TagToPosts" />
           </AssociationSet>
-          <EntitySet Name="UserSettings" EntityType="AvocadoModel.UserSetting" />
-          <AssociationSet Name="FK_UserSettings_aspnet_Users" Association="AvocadoModel.FK_UserSettings_aspnet_Users">
+          <EntitySet Name="Accounts" EntityType="AvocadoModel.Account" />
+          <AssociationSet Name="FK_Posts_Accounts" Association="AvocadoModel.FK_Posts_Accounts">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Post" EntitySet="Posts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Accounts_aspnet_Users" Association="AvocadoModel.FK_Accounts_aspnet_Users">
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="Account" EntitySet="Accounts" />
+          </AssociationSet>
+          <EntitySet Name="UserSettings" EntityType="AvocadoModel.UserSetting" />
+          <AssociationSet Name="FK_UserSettings_Accounts" Association="AvocadoModel.FK_UserSettings_Accounts">
+            <End Role="Account" EntitySet="Accounts" />
             <End Role="UserSetting" EntitySet="UserSettings" />
           </AssociationSet>
         </EntityContainer>
@@ -347,7 +397,7 @@
           <Property Name="IsAnonymous" Type="Boolean" Nullable="false" />
           <Property Name="LastActivityDate" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="aspnet_Membership" Relationship="AvocadoModel.FK__aspnet_Me__UserI__22AA2996" FromRole="aspnet_Users" ToRole="aspnet_Membership" />
-          <NavigationProperty Name="UserSettings" Relationship="AvocadoModel.FK_UserSettings_aspnet_Users" FromRole="aspnet_Users" ToRole="UserSetting" />
+          <NavigationProperty Name="Accounts" Relationship="AvocadoModel.FK_Accounts_aspnet_Users" FromRole="aspnet_Users" ToRole="Account" />
         </EntityType>
         <Association Name="FK__aspnet_Me__UserI__22AA2996">
           <End Role="aspnet_Users" Type="AvocadoModel.aspnet_Users" Multiplicity="1" />
@@ -375,10 +425,10 @@
           </Key>
           <Property Type="Int32" Name="CommentId" Nullable="false" />
           <Property Type="Int32" Name="PostId" Nullable="false" />
-          <Property Type="Guid" Name="UserId" Nullable="false" />
           <Property Type="String" Name="Comment1" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="InsertDate" Nullable="false" />
           <NavigationProperty Name="Post" Relationship="AvocadoModel.FK_Comments_Posts" FromRole="Comment" ToRole="Post" />
+          <Property Type="Int32" Name="AccountId" Nullable="false" />
         </EntityType>
         <EntityType Name="Like">
           <Key>
@@ -386,16 +436,15 @@
           </Key>
           <Property Type="Int32" Name="LikeId" Nullable="false" />
           <Property Type="Int32" Name="PostId" Nullable="false" />
-          <Property Type="Guid" Name="UserId" Nullable="false" />
           <Property Type="DateTime" Name="InsertDate" Nullable="false" />
           <NavigationProperty Name="Post" Relationship="AvocadoModel.FK_Likes_Posts" FromRole="Like" ToRole="Post" />
+          <Property Type="Int32" Name="AccountId" Nullable="false" />
         </EntityType>
         <EntityType Name="Post">
           <Key>
             <PropertyRef Name="PostId" />
           </Key>
           <Property Type="Int32" Name="PostId" Nullable="false" />
-          <Property Type="Guid" Name="UserId" Nullable="false" />
           <Property Type="String" Name="Title" Nullable="false" MaxLength="75" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="MainImage" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -406,6 +455,8 @@
           <NavigationProperty Name="Likes" Relationship="AvocadoModel.FK_Likes_Posts" FromRole="Post" ToRole="Like" />
           <NavigationProperty Name="Saves" Relationship="AvocadoModel.FK_Saves_Posts" FromRole="Post" ToRole="Save" />
           <NavigationProperty Name="TagToPosts" Relationship="AvocadoModel.FK_TagToPost_Posts" FromRole="Post" ToRole="TagToPost" />
+          <Property Type="Int32" Name="AccountId" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="AvocadoModel.FK_Posts_Accounts" FromRole="Post" ToRole="Account" />
         </EntityType>
         <EntityType Name="Save">
           <Key>
@@ -413,9 +464,9 @@
           </Key>
           <Property Type="Int32" Name="SaveId" Nullable="false" />
           <Property Type="Int32" Name="PostId" Nullable="false" />
-          <Property Type="Guid" Name="UserId" Nullable="false" />
           <Property Type="DateTime" Name="SaveDate" Nullable="false" />
           <NavigationProperty Name="Post" Relationship="AvocadoModel.FK_Saves_Posts" FromRole="Save" ToRole="Post" />
+          <Property Type="Int32" Name="AccountId" Nullable="false" />
         </EntityType>
         <EntityType Name="Tag">
           <Key>
@@ -507,11 +558,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="UserSetting">
+        <EntityType Name="Account">
           <Key>
-            <PropertyRef Name="UserSettingsId" />
+            <PropertyRef Name="AccountId" />
           </Key>
-          <Property Type="Int32" Name="UserSettingsId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="AccountId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Guid" Name="UserId" Nullable="false" />
           <Property Type="String" Name="FirstName" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="LastName" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -521,17 +572,52 @@
           <Property Type="String" Name="TwitterAccessSecret" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="TwitterUserId" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="FacebookUserId" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="aspnet_Users" Relationship="AvocadoModel.FK_UserSettings_aspnet_Users" FromRole="UserSetting" ToRole="aspnet_Users" />
+          <NavigationProperty Name="Posts" Relationship="AvocadoModel.FK_Posts_Accounts" FromRole="Account" ToRole="Post" />
+          <NavigationProperty Name="aspnet_Users" Relationship="AvocadoModel.FK_Accounts_aspnet_Users" FromRole="Account" ToRole="aspnet_Users" />
+          <NavigationProperty Name="UserSettings" Relationship="AvocadoModel.FK_UserSettings_Accounts" FromRole="Account" ToRole="UserSetting" />
         </EntityType>
-        <Association Name="FK_UserSettings_aspnet_Users">
+        <Association Name="FK_Posts_Accounts">
+          <End Type="AvocadoModel.Account" Role="Account" Multiplicity="1" />
+          <End Type="AvocadoModel.Post" Role="Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Accounts_aspnet_Users">
           <End Type="AvocadoModel.aspnet_Users" Role="aspnet_Users" Multiplicity="1" />
-          <End Type="AvocadoModel.UserSetting" Role="UserSetting" Multiplicity="*" />
+          <End Type="AvocadoModel.Account" Role="Account" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="aspnet_Users">
               <PropertyRef Name="UserId" />
             </Principal>
-            <Dependent Role="UserSetting">
+            <Dependent Role="Account">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="UserSetting">
+          <Key>
+            <PropertyRef Name="UserSettingsId" />
+          </Key>
+          <Property Type="Int32" Name="UserSettingsId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="AccountId" />
+          <Property Type="String" Name="DisplayName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Account" Relationship="AvocadoModel.FK_UserSettings_Accounts" FromRole="UserSetting" ToRole="Account" />
+        </EntityType>
+        <Association Name="FK_UserSettings_Accounts">
+          <End Type="AvocadoModel.Account" Role="Account" Multiplicity="0..1" />
+          <End Type="AvocadoModel.UserSetting" Role="UserSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="UserSetting">
+              <PropertyRef Name="AccountId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -584,9 +670,9 @@
           <EntitySetMapping Name="Comments">
             <EntityTypeMapping TypeName="AvocadoModel.Comment">
               <MappingFragment StoreEntitySet="Comments">
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
                 <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
                 <ScalarProperty Name="Comment1" ColumnName="Comment" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="PostId" ColumnName="PostId" />
                 <ScalarProperty Name="CommentId" ColumnName="CommentId" />
               </MappingFragment>
@@ -595,8 +681,8 @@
           <EntitySetMapping Name="Likes">
             <EntityTypeMapping TypeName="AvocadoModel.Like">
               <MappingFragment StoreEntitySet="Likes">
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
                 <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="PostId" ColumnName="PostId" />
                 <ScalarProperty Name="LikeId" ColumnName="LikeId" />
               </MappingFragment>
@@ -605,12 +691,12 @@
           <EntitySetMapping Name="Posts">
             <EntityTypeMapping TypeName="AvocadoModel.Post">
               <MappingFragment StoreEntitySet="Posts">
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
                 <ScalarProperty Name="MainImage" ColumnName="MainImage" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="PostId" ColumnName="PostId" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -618,8 +704,8 @@
           <EntitySetMapping Name="Saves">
             <EntityTypeMapping TypeName="AvocadoModel.Save">
               <MappingFragment StoreEntitySet="Saves">
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
                 <ScalarProperty Name="SaveDate" ColumnName="SaveDate" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="PostId" ColumnName="PostId" />
                 <ScalarProperty Name="SaveId" ColumnName="SaveId" />
               </MappingFragment>
@@ -642,9 +728,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserSettings">
-            <EntityTypeMapping TypeName="AvocadoModel.UserSetting">
-              <MappingFragment StoreEntitySet="UserSettings">
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="AvocadoModel.Account">
+              <MappingFragment StoreEntitySet="Accounts">
                 <ScalarProperty Name="FacebookUserId" ColumnName="FacebookUserId" />
                 <ScalarProperty Name="TwitterUserId" ColumnName="TwitterUserId" />
                 <ScalarProperty Name="TwitterAccessSecret" ColumnName="TwitterAccessSecret" />
@@ -654,6 +740,15 @@
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserSettings">
+            <EntityTypeMapping TypeName="AvocadoModel.UserSetting">
+              <MappingFragment StoreEntitySet="UserSettings">
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
                 <ScalarProperty Name="UserSettingsId" ColumnName="UserSettingsId" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -687,8 +782,8 @@
         </AssociationConnector>
         <EntityTypeShape EntityType="AvocadoModel.Category" Width="1.5" PointX="6.375" PointY="6.75" Height="1.5956835937499987" />
         <EntityTypeShape EntityType="AvocadoModel.Comment" Width="1.5" PointX="10.875" PointY="3.75" Height="2.1725878906249996" />
-        <EntityTypeShape EntityType="AvocadoModel.Like" Width="1.5" PointX="10.875" PointY="6.625" Height="1.9802864583333308" />
-        <EntityTypeShape EntityType="AvocadoModel.Post" Width="1.5" PointX="8.625" PointY="5.875" Height="3.3263964843749987" />
+        <EntityTypeShape EntityType="AvocadoModel.Like" Width="1.5" PointX="10.875" PointY="6.625" Height="1.9802864583333317" />
+        <EntityTypeShape EntityType="AvocadoModel.Post" Width="1.5" PointX="8.625" PointY="5.875" Height="3.5186979166666656" />
         <EntityTypeShape EntityType="AvocadoModel.Save" Width="1.5" PointX="10.875" PointY="9.375" Height="1.9802864583333317" />
         <EntityTypeShape EntityType="AvocadoModel.Tag" Width="1.5" PointX="11.625" PointY="0.75" Height="1.5956835937499996" />
         <EntityTypeShape EntityType="AvocadoModel.TagToPost" Width="1.5" PointX="14" PointY="4.125" Height="1.9802864583333353" />
@@ -706,25 +801,33 @@
           <ConnectorPoint PointX="10.875" PointY="7.6151432291666659" />
         </AssociationConnector>
         <AssociationConnector Association="AvocadoModel.FK_Saves_Posts" >
-          <ConnectorPoint PointX="9.375" PointY="9.201396484375" />
-          <ConnectorPoint PointX="9.375" PointY="10.365143229166666" />
-          <ConnectorPoint PointX="10.875" PointY="10.365143229166666" />
+          <ConnectorPoint PointX="9.375" PointY="9.3936979166666656" />
+          <ConnectorPoint PointX="9.375" PointY="10.374492687499998" />
+          <ConnectorPoint PointX="10.875" PointY="10.374492687499998" />
         </AssociationConnector>
         <AssociationConnector Association="AvocadoModel.FK_TagToPost_Posts" >
-          <ConnectorPoint PointX="10.125" PointY="8.9345914713541656" />
-          <ConnectorPoint PointX="14.75" PointY="8.9345914713541656" />
+          <ConnectorPoint PointX="10.125" PointY="8.9901432291666659" />
+          <ConnectorPoint PointX="14.75" PointY="8.9901432291666659" />
           <ConnectorPoint PointX="14.75" PointY="6.1052864583333353" />
         </AssociationConnector>
         <AssociationConnector Association="AvocadoModel.FK_TagToPost_Tags" >
-          <ConnectorPoint PointX="12.78125" PointY="2.3456835937499996" />
-          <ConnectorPoint PointX="12.78125" PointY="6.0451871744791674" />
-          <ConnectorPoint PointX="14" PointY="6.0451871744791674" />
+          <ConnectorPoint PointX="13.125" PointY="1.5478417968749998" />
+          <ConnectorPoint PointX="14.75" PointY="1.5478417968749998" />
+          <ConnectorPoint PointX="14.75" PointY="4.125" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="AvocadoModel.UserSetting" Width="1.5" PointX="3" PointY="7.75" Height="3.1340950520833317" />
-        <AssociationConnector Association="AvocadoModel.FK_UserSettings_aspnet_Users" >
+        <EntityTypeShape EntityType="AvocadoModel.Account" Width="1.5" PointX="0.75" PointY="7.875" Height="3.3263964843750031" />
+        <AssociationConnector Association="AvocadoModel.FK_Posts_Accounts" >
+          <ConnectorPoint PointX="2.25" PointY="8.547841796875" />
+          <ConnectorPoint PointX="8.625" PointY="8.547841796875" />
+        </AssociationConnector>
+        <AssociationConnector Association="AvocadoModel.FK_Accounts_aspnet_Users" >
           <ConnectorPoint PointX="1.5" PointY="6.7494921875" />
-          <ConnectorPoint PointX="1.5" PointY="9.3170475260416659" />
-          <ConnectorPoint PointX="3" PointY="9.3170475260416659" />
+          <ConnectorPoint PointX="1.5" PointY="7.875" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="AvocadoModel.UserSetting" Width="1.5" PointX="3" PointY="8.75" Height="1.7879850260416745" />
+        <AssociationConnector Association="AvocadoModel.FK_UserSettings_Accounts" >
+          <ConnectorPoint PointX="2.25" PointY="9.6439925130208373" />
+          <ConnectorPoint PointX="3" PointY="9.6439925130208373" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

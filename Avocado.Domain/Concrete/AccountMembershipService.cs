@@ -104,7 +104,7 @@ namespace Avocado.Domain.Concrete
 
         public bool IsLinkedWithSocial(string id)
         {
-            if (_data.UserSettings.Any(x => x.TwitterUserId == id || x.FacebookUserId == id))
+            if (_data.Accounts.Any(x => x.TwitterUserId == id || x.FacebookUserId == id))
                 return true;
             else
                 return false;
@@ -112,14 +112,15 @@ namespace Avocado.Domain.Concrete
 
         public string GetEmailFromSocialId(string socialId)
         {
-            return _data.UserSettings.Where(x => x.TwitterUserId == socialId).Select(x => x.aspnet_Users.UserId).ToString();
+            return _data.Accounts.Where(x => x.TwitterUserId == socialId).Select(x => x.aspnet_Users.UserId).ToString();
         }
 
         private bool SaveTwitterData(object userId, string consumerKey, string consumerSecret, string token, string secret, string fullName)
         {
             try
             {
-                _data.UserSettings.AddObject(new UserSetting() { UserId = (Guid)userId, TwitterAccessToken = token, TwitterAccessSecret = secret, FullName = fullName });
+
+                _data.Accounts.AddObject(new Account() { UserId = (Guid)userId, TwitterAccessToken = token, TwitterAccessSecret = secret, FullName = fullName });
                 _data.SaveChanges();
 
                 return true;
@@ -134,7 +135,7 @@ namespace Avocado.Domain.Concrete
         {
             try
             {
-                _data.UserSettings.AddObject(new UserSetting() { UserId = (Guid)userId, FullName = FullName });
+                _data.Accounts.AddObject(new Account() { UserId = (Guid)userId, FullName = FullName });
                 _data.SaveChanges();
                 return true;
             }
