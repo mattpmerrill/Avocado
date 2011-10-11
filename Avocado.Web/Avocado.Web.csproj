@@ -87,6 +87,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Browse\BrowseItem.cs" />
+    <Compile Include="Models\Browse\BrowseViewModel.cs" />
     <Compile Include="Models\CreateAccountViewModel.cs" />
     <Compile Include="Models\SignInViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -175,6 +176,12 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\modernizr-1.7.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
+    <Content Include="Uploads\1C72B9D9-2832-4E25-A5FF-CE3B2A7C28C5\image1.jpg" />
+    <Content Include="Uploads\1C72B9D9-2832-4E25-A5FF-CE3B2A7C28C5\image2.jpg" />
+    <Content Include="Uploads\1C72B9D9-2832-4E25-A5FF-CE3B2A7C28C5\image3.jpg" />
+    <Content Include="Uploads\6F37F250-48AE-441E-BB24-1930AA8A5D38\image1.jpg" />
+    <Content Include="Uploads\6F37F250-48AE-441E-BB24-1930AA8A5D38\image2.jpg" />
+    <Content Include="Uploads\6F37F250-48AE-441E-BB24-1930AA8A5D38\image3.jpg" />
     <Content Include="Uploads\D38D7F0B-7A5E-433B-9D93-828855BF0709\image1.jpg" />
     <Content Include="Uploads\D38D7F0B-7A5E-433B-9D93-828855BF0709\image2.jpg" />
     <Content Include="Uploads\D38D7F0B-7A5E-433B-9D93-828855BF0709\image3.jpg" />
