@@ -119,16 +119,22 @@
     font-weight:bold; 
 }
 
-.item-likes
+.item-saves, .item-likes, .item-comments
 {
-    background:transparent url('../images/favorites-small.png') no-repeat;
-    padding-left:20px;
+    margin-right:20px;
+}
+
+.item-saves img, .item-likes img, .item-comments img
+{
+    width:16px;
+    height:16px;
+    padding-right:5px;
 }
 
 .item-description
 {
     clear:both;
-    margin:0 0 5px 0;
+    margin:10px 0 5px 0;
     font-size:90%;
     text-align:justify;
 }
