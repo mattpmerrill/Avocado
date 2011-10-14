@@ -24,6 +24,11 @@
     color:#747171;
 }
 
+.center-stuff
+{
+    text-align:center;
+}
+
 .clear-all-floats
 {
     clear:both;
