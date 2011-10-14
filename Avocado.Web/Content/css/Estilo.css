@@ -134,7 +134,7 @@
 .item-description
 {
     clear:both;
-    margin:10px 0 5px 0;
+    margin:15px 0 5px 0;
     font-size:90%;
     text-align:justify;
 }
@@ -187,6 +187,11 @@
 .xxsmall
 {
     font-size:75%;
+}
+
+.row-item
+{
+    margin-bottom:15px;
 }
 
 

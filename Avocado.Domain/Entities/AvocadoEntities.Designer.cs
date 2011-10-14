@@ -1664,6 +1664,30 @@ namespace Avocado.Domain.Entities
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String RouteName
+        {
+            get
+            {
+                return _RouteName;
+            }
+            set
+            {
+                OnRouteNameChanging(value);
+                ReportPropertyChanging("RouteName");
+                _RouteName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("RouteName");
+                OnRouteNameChanged();
+            }
+        }
+        private global::System.String _RouteName;
+        partial void OnRouteNameChanging(global::System.String value);
+        partial void OnRouteNameChanged();
 
         #endregion
     
