@@ -33,6 +33,12 @@ namespace Avocado.Web
             );
 
             routes.MapRoute(
+                "People", // Route name
+                "People/ViewWork/{userName}",
+                new { controller = "People", action = "ViewWork", userName = (string)null }// Parameter defaults
+            );
+
+            routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
@@ -58,6 +64,7 @@ namespace Avocado.Web
             kernel.Bind<IAccountMembershipService>().To<AccountMembershipService>().WithConstructorArgument("connectionString", ConfigurationManager.ConnectionStrings["AvocadoEntities"].ConnectionString);
             kernel.Bind<IFormsAuthenticationService>().To<FormsAuthenticationService>();
             kernel.Bind<IBrowseService>().To<BrowseService>().WithConstructorArgument("connectionString", ConfigurationManager.ConnectionStrings["AvocadoEntities"].ConnectionString);
+            kernel.Bind<IPeopleService>().To<PeopleService>().WithConstructorArgument("connectionString", ConfigurationManager.ConnectionStrings["AvocadoEntities"].ConnectionString);
             
             //tell ASP.net MVC to use Ninject DI container
             DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));

@@ -64,7 +64,9 @@
     <Compile Include="Abstract\IBrowseService.cs" />
     <Compile Include="Abstract\IFormsAuthenticationService.cs" />
     <Compile Include="Abstract\IAccountMembershipService.cs" />
+    <Compile Include="Abstract\IPeopleService.cs" />
     <Compile Include="Concrete\BrowseService.cs" />
+    <Compile Include="Concrete\PeopleService.cs" />
     <Compile Include="Entities\AvocadoEntities.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -27,7 +27,10 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("AvocadoModel", "FK_TagToPost_Tags", "Tag", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Avocado.Domain.Entities.Tag), "TagToPost", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Avocado.Domain.Entities.TagToPost), true)]
 [assembly: EdmRelationshipAttribute("AvocadoModel", "FK_Posts_Accounts", "Account", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Avocado.Domain.Entities.Account), "Post", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Avocado.Domain.Entities.Post), true)]
 [assembly: EdmRelationshipAttribute("AvocadoModel", "FK_Accounts_aspnet_Users", "aspnet_Users", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Avocado.Domain.Entities.aspnet_Users), "Account", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Avocado.Domain.Entities.Account), true)]
-[assembly: EdmRelationshipAttribute("AvocadoModel", "FK_UserSettings_Accounts", "Account", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Avocado.Domain.Entities.Account), "UserSetting", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Avocado.Domain.Entities.UserSetting), true)]
+[assembly: EdmRelationshipAttribute("AvocadoModel", "FK_Follows_Accounts", "Account", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Avocado.Domain.Entities.Account), "Follow", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Avocado.Domain.Entities.Follow), true)]
+[assembly: EdmRelationshipAttribute("AvocadoModel", "FK_Follows_Accounts1", "Account", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Avocado.Domain.Entities.Account), "Follow", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Avocado.Domain.Entities.Follow), true)]
+[assembly: EdmRelationshipAttribute("AvocadoModel", "FK_Sparks_Posts", "Post", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Avocado.Domain.Entities.Post), "Spark", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Avocado.Domain.Entities.Spark), true)]
+[assembly: EdmRelationshipAttribute("AvocadoModel", "FK_Sparks_Posts1", "Post", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Avocado.Domain.Entities.Post), "Spark", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Avocado.Domain.Entities.Spark), true)]
 
 #endregion
 
@@ -242,18 +245,34 @@ namespace Avocado.Domain.Entities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<UserSetting> UserSettings
+        public ObjectSet<Follow> Follows
         {
             get
             {
-                if ((_UserSettings == null))
+                if ((_Follows == null))
                 {
-                    _UserSettings = base.CreateObjectSet<UserSetting>("UserSettings");
+                    _Follows = base.CreateObjectSet<Follow>("Follows");
                 }
-                return _UserSettings;
+                return _Follows;
             }
         }
-        private ObjectSet<UserSetting> _UserSettings;
+        private ObjectSet<Follow> _Follows;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Spark> Sparks
+        {
+            get
+            {
+                if ((_Sparks == null))
+                {
+                    _Sparks = base.CreateObjectSet<Spark>("Sparks");
+                }
+                return _Sparks;
+            }
+        }
+        private ObjectSet<Spark> _Sparks;
 
         #endregion
         #region AddTo Methods
@@ -339,11 +358,19 @@ namespace Avocado.Domain.Entities
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the UserSettings EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the Follows EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToUserSettings(UserSetting userSetting)
+        public void AddToFollows(Follow follow)
         {
-            base.AddObject("UserSettings", userSetting);
+            base.AddObject("Follows", follow);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Sparks EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToSparks(Spark spark)
+        {
+            base.AddObject("Sparks", spark);
         }
 
         #endregion
@@ -369,11 +396,13 @@ namespace Avocado.Domain.Entities
         /// </summary>
         /// <param name="accountId">Initial value of the AccountId property.</param>
         /// <param name="userId">Initial value of the UserId property.</param>
-        public static Account CreateAccount(global::System.Int32 accountId, global::System.Guid userId)
+        /// <param name="userName">Initial value of the UserName property.</param>
+        public static Account CreateAccount(global::System.Int32 accountId, global::System.Guid userId, global::System.String userName)
         {
             Account account = new Account();
             account.AccountId = accountId;
             account.UserId = userId;
+            account.UserName = userName;
             return account;
         }
 
@@ -508,30 +537,6 @@ namespace Avocado.Domain.Entities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String DisplayName
-        {
-            get
-            {
-                return _DisplayName;
-            }
-            set
-            {
-                OnDisplayNameChanging(value);
-                ReportPropertyChanging("DisplayName");
-                _DisplayName = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("DisplayName");
-                OnDisplayNameChanged();
-            }
-        }
-        private global::System.String _DisplayName;
-        partial void OnDisplayNameChanging(global::System.String value);
-        partial void OnDisplayNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
         public global::System.String TwitterAccessToken
         {
             get
@@ -622,6 +627,102 @@ namespace Avocado.Domain.Entities
         private global::System.String _FacebookUserId;
         partial void OnFacebookUserIdChanging(global::System.String value);
         partial void OnFacebookUserIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String UserName
+        {
+            get
+            {
+                return _UserName;
+            }
+            set
+            {
+                OnUserNameChanging(value);
+                ReportPropertyChanging("UserName");
+                _UserName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("UserName");
+                OnUserNameChanged();
+            }
+        }
+        private global::System.String _UserName;
+        partial void OnUserNameChanging(global::System.String value);
+        partial void OnUserNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String City
+        {
+            get
+            {
+                return _City;
+            }
+            set
+            {
+                OnCityChanging(value);
+                ReportPropertyChanging("City");
+                _City = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("City");
+                OnCityChanged();
+            }
+        }
+        private global::System.String _City;
+        partial void OnCityChanging(global::System.String value);
+        partial void OnCityChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String State
+        {
+            get
+            {
+                return _State;
+            }
+            set
+            {
+                OnStateChanging(value);
+                ReportPropertyChanging("State");
+                _State = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("State");
+                OnStateChanged();
+            }
+        }
+        private global::System.String _State;
+        partial void OnStateChanging(global::System.String value);
+        partial void OnStateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Country
+        {
+            get
+            {
+                return _Country;
+            }
+            set
+            {
+                OnCountryChanging(value);
+                ReportPropertyChanging("Country");
+                _Country = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Country");
+                OnCountryChanged();
+            }
+        }
+        private global::System.String _Country;
+        partial void OnCountryChanging(global::System.String value);
+        partial void OnCountryChanged();
 
         #endregion
     
@@ -693,18 +794,40 @@ namespace Avocado.Domain.Entities
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("AvocadoModel", "FK_UserSettings_Accounts", "UserSetting")]
-        public EntityCollection<UserSetting> UserSettings
+        [EdmRelationshipNavigationPropertyAttribute("AvocadoModel", "FK_Follows_Accounts", "Follow")]
+        public EntityCollection<Follow> Following
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<UserSetting>("AvocadoModel.FK_UserSettings_Accounts", "UserSetting");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Follow>("AvocadoModel.FK_Follows_Accounts", "Follow");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserSetting>("AvocadoModel.FK_UserSettings_Accounts", "UserSetting", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Follow>("AvocadoModel.FK_Follows_Accounts", "Follow", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("AvocadoModel", "FK_Follows_Accounts1", "Follow")]
+        public EntityCollection<Follow> Followed
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Follow>("AvocadoModel.FK_Follows_Accounts1", "Follow");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Follow>("AvocadoModel.FK_Follows_Accounts1", "Follow", value);
                 }
             }
         }
@@ -1921,6 +2044,218 @@ namespace Avocado.Domain.Entities
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="AvocadoModel", Name="Follow")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Follow : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Follow object.
+        /// </summary>
+        /// <param name="followsId">Initial value of the FollowsId property.</param>
+        /// <param name="followerAccountId">Initial value of the FollowerAccountId property.</param>
+        /// <param name="followedAccountId">Initial value of the FollowedAccountId property.</param>
+        /// <param name="insertDate">Initial value of the InsertDate property.</param>
+        public static Follow CreateFollow(global::System.Int32 followsId, global::System.Int32 followerAccountId, global::System.Int32 followedAccountId, global::System.DateTime insertDate)
+        {
+            Follow follow = new Follow();
+            follow.FollowsId = followsId;
+            follow.FollowerAccountId = followerAccountId;
+            follow.FollowedAccountId = followedAccountId;
+            follow.InsertDate = insertDate;
+            return follow;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 FollowsId
+        {
+            get
+            {
+                return _FollowsId;
+            }
+            set
+            {
+                if (_FollowsId != value)
+                {
+                    OnFollowsIdChanging(value);
+                    ReportPropertyChanging("FollowsId");
+                    _FollowsId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("FollowsId");
+                    OnFollowsIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _FollowsId;
+        partial void OnFollowsIdChanging(global::System.Int32 value);
+        partial void OnFollowsIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 FollowerAccountId
+        {
+            get
+            {
+                return _FollowerAccountId;
+            }
+            set
+            {
+                OnFollowerAccountIdChanging(value);
+                ReportPropertyChanging("FollowerAccountId");
+                _FollowerAccountId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FollowerAccountId");
+                OnFollowerAccountIdChanged();
+            }
+        }
+        private global::System.Int32 _FollowerAccountId;
+        partial void OnFollowerAccountIdChanging(global::System.Int32 value);
+        partial void OnFollowerAccountIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 FollowedAccountId
+        {
+            get
+            {
+                return _FollowedAccountId;
+            }
+            set
+            {
+                OnFollowedAccountIdChanging(value);
+                ReportPropertyChanging("FollowedAccountId");
+                _FollowedAccountId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FollowedAccountId");
+                OnFollowedAccountIdChanged();
+            }
+        }
+        private global::System.Int32 _FollowedAccountId;
+        partial void OnFollowedAccountIdChanging(global::System.Int32 value);
+        partial void OnFollowedAccountIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime InsertDate
+        {
+            get
+            {
+                return _InsertDate;
+            }
+            set
+            {
+                OnInsertDateChanging(value);
+                ReportPropertyChanging("InsertDate");
+                _InsertDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("InsertDate");
+                OnInsertDateChanged();
+            }
+        }
+        private global::System.DateTime _InsertDate;
+        partial void OnInsertDateChanging(global::System.DateTime value);
+        partial void OnInsertDateChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("AvocadoModel", "FK_Follows_Accounts", "Account")]
+        public Account Account
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Account>("AvocadoModel.FK_Follows_Accounts", "Account").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Account>("AvocadoModel.FK_Follows_Accounts", "Account").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Account> AccountReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Account>("AvocadoModel.FK_Follows_Accounts", "Account");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Account>("AvocadoModel.FK_Follows_Accounts", "Account", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("AvocadoModel", "FK_Follows_Accounts1", "Account")]
+        public Account Account1
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Account>("AvocadoModel.FK_Follows_Accounts1", "Account").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Account>("AvocadoModel.FK_Follows_Accounts1", "Account").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Account> Account1Reference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Account>("AvocadoModel.FK_Follows_Accounts1", "Account");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Account>("AvocadoModel.FK_Follows_Accounts1", "Account", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="AvocadoModel", Name="Like")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -2462,6 +2797,50 @@ namespace Avocado.Domain.Entities
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("AvocadoModel", "FK_Sparks_Posts", "Spark")]
+        public EntityCollection<Spark> InspiredPost
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Spark>("AvocadoModel.FK_Sparks_Posts", "Spark");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Spark>("AvocadoModel.FK_Sparks_Posts", "Spark", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("AvocadoModel", "FK_Sparks_Posts1", "Spark")]
+        public EntityCollection<Spark> OriginPost
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Spark>("AvocadoModel.FK_Sparks_Posts1", "Spark");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Spark>("AvocadoModel.FK_Sparks_Posts1", "Spark", value);
+                }
+            }
+        }
 
         #endregion
     }
@@ -2633,6 +3012,218 @@ namespace Avocado.Domain.Entities
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Post>("AvocadoModel.FK_Saves_Posts", "Post", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="AvocadoModel", Name="Spark")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Spark : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Spark object.
+        /// </summary>
+        /// <param name="sparkId">Initial value of the SparkId property.</param>
+        /// <param name="newPostId">Initial value of the NewPostId property.</param>
+        /// <param name="originPostId">Initial value of the OriginPostId property.</param>
+        /// <param name="insertDate">Initial value of the InsertDate property.</param>
+        public static Spark CreateSpark(global::System.Int32 sparkId, global::System.Int32 newPostId, global::System.Int32 originPostId, global::System.DateTime insertDate)
+        {
+            Spark spark = new Spark();
+            spark.SparkId = sparkId;
+            spark.NewPostId = newPostId;
+            spark.OriginPostId = originPostId;
+            spark.InsertDate = insertDate;
+            return spark;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 SparkId
+        {
+            get
+            {
+                return _SparkId;
+            }
+            set
+            {
+                if (_SparkId != value)
+                {
+                    OnSparkIdChanging(value);
+                    ReportPropertyChanging("SparkId");
+                    _SparkId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("SparkId");
+                    OnSparkIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _SparkId;
+        partial void OnSparkIdChanging(global::System.Int32 value);
+        partial void OnSparkIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 NewPostId
+        {
+            get
+            {
+                return _NewPostId;
+            }
+            set
+            {
+                OnNewPostIdChanging(value);
+                ReportPropertyChanging("NewPostId");
+                _NewPostId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("NewPostId");
+                OnNewPostIdChanged();
+            }
+        }
+        private global::System.Int32 _NewPostId;
+        partial void OnNewPostIdChanging(global::System.Int32 value);
+        partial void OnNewPostIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 OriginPostId
+        {
+            get
+            {
+                return _OriginPostId;
+            }
+            set
+            {
+                OnOriginPostIdChanging(value);
+                ReportPropertyChanging("OriginPostId");
+                _OriginPostId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OriginPostId");
+                OnOriginPostIdChanged();
+            }
+        }
+        private global::System.Int32 _OriginPostId;
+        partial void OnOriginPostIdChanging(global::System.Int32 value);
+        partial void OnOriginPostIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime InsertDate
+        {
+            get
+            {
+                return _InsertDate;
+            }
+            set
+            {
+                OnInsertDateChanging(value);
+                ReportPropertyChanging("InsertDate");
+                _InsertDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("InsertDate");
+                OnInsertDateChanged();
+            }
+        }
+        private global::System.DateTime _InsertDate;
+        partial void OnInsertDateChanging(global::System.DateTime value);
+        partial void OnInsertDateChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("AvocadoModel", "FK_Sparks_Posts", "Post")]
+        public Post InspiredPost
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Post>("AvocadoModel.FK_Sparks_Posts", "Post").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Post>("AvocadoModel.FK_Sparks_Posts", "Post").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Post> InspiredPostReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Post>("AvocadoModel.FK_Sparks_Posts", "Post");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Post>("AvocadoModel.FK_Sparks_Posts", "Post", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("AvocadoModel", "FK_Sparks_Posts1", "Post")]
+        public Post OriginPost
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Post>("AvocadoModel.FK_Sparks_Posts1", "Post").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Post>("AvocadoModel.FK_Sparks_Posts1", "Post").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Post> OriginPostReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Post>("AvocadoModel.FK_Sparks_Posts1", "Post");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Post>("AvocadoModel.FK_Sparks_Posts1", "Post", value);
                 }
             }
         }
@@ -2925,150 +3516,6 @@ namespace Avocado.Domain.Entities
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Tag>("AvocadoModel.FK_TagToPost_Tags", "Tag", value);
-                }
-            }
-        }
-
-        #endregion
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="AvocadoModel", Name="UserSetting")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class UserSetting : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new UserSetting object.
-        /// </summary>
-        /// <param name="userSettingsId">Initial value of the UserSettingsId property.</param>
-        public static UserSetting CreateUserSetting(global::System.Int32 userSettingsId)
-        {
-            UserSetting userSetting = new UserSetting();
-            userSetting.UserSettingsId = userSettingsId;
-            return userSetting;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 UserSettingsId
-        {
-            get
-            {
-                return _UserSettingsId;
-            }
-            set
-            {
-                if (_UserSettingsId != value)
-                {
-                    OnUserSettingsIdChanging(value);
-                    ReportPropertyChanging("UserSettingsId");
-                    _UserSettingsId = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("UserSettingsId");
-                    OnUserSettingsIdChanged();
-                }
-            }
-        }
-        private global::System.Int32 _UserSettingsId;
-        partial void OnUserSettingsIdChanging(global::System.Int32 value);
-        partial void OnUserSettingsIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Int32> AccountId
-        {
-            get
-            {
-                return _AccountId;
-            }
-            set
-            {
-                OnAccountIdChanging(value);
-                ReportPropertyChanging("AccountId");
-                _AccountId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("AccountId");
-                OnAccountIdChanged();
-            }
-        }
-        private Nullable<global::System.Int32> _AccountId;
-        partial void OnAccountIdChanging(Nullable<global::System.Int32> value);
-        partial void OnAccountIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String DisplayName
-        {
-            get
-            {
-                return _DisplayName;
-            }
-            set
-            {
-                OnDisplayNameChanging(value);
-                ReportPropertyChanging("DisplayName");
-                _DisplayName = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("DisplayName");
-                OnDisplayNameChanged();
-            }
-        }
-        private global::System.String _DisplayName;
-        partial void OnDisplayNameChanging(global::System.String value);
-        partial void OnDisplayNameChanged();
-
-        #endregion
-    
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("AvocadoModel", "FK_UserSettings_Accounts", "Account")]
-        public Account Account
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Account>("AvocadoModel.FK_UserSettings_Accounts", "Account").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Account>("AvocadoModel.FK_UserSettings_Accounts", "Account").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Account> AccountReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Account>("AvocadoModel.FK_UserSettings_Accounts", "Account");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Account>("AvocadoModel.FK_UserSettings_Accounts", "Account", value);
                 }
             }
         }

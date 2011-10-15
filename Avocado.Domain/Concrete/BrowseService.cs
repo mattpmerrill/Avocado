@@ -44,5 +44,10 @@ namespace Avocado.Domain.Concrete
 
             return posts;
         }
+
+        public IQueryable<Post> getLatestPostsByAuthor(int accountId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

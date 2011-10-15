@@ -11,12 +11,13 @@
           <EntitySet Name="aspnet_Users" EntityType="AvocadoModel.Store.aspnet_Users" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Categories" EntityType="AvocadoModel.Store.Categories" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Comments" EntityType="AvocadoModel.Store.Comments" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Follows" EntityType="AvocadoModel.Store.Follows" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Likes" EntityType="AvocadoModel.Store.Likes" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Posts" EntityType="AvocadoModel.Store.Posts" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Saves" EntityType="AvocadoModel.Store.Saves" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Sparks" EntityType="AvocadoModel.Store.Sparks" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Tags" EntityType="AvocadoModel.Store.Tags" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="TagToPost" EntityType="AvocadoModel.Store.TagToPost" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="UserSettings" EntityType="AvocadoModel.Store.UserSettings" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK__aspnet_Me__UserI__22AA2996" Association="AvocadoModel.Store.FK__aspnet_Me__UserI__22AA2996">
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
             <End Role="aspnet_Membership" EntitySet="aspnet_Membership" />
@@ -28,6 +29,14 @@
           <AssociationSet Name="FK_Comments_Posts" Association="AvocadoModel.Store.FK_Comments_Posts">
             <End Role="Posts" EntitySet="Posts" />
             <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Follows_Accounts" Association="AvocadoModel.Store.FK_Follows_Accounts">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Follows" EntitySet="Follows" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Follows_Accounts1" Association="AvocadoModel.Store.FK_Follows_Accounts1">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Follows" EntitySet="Follows" />
           </AssociationSet>
           <AssociationSet Name="FK_Likes_Posts" Association="AvocadoModel.Store.FK_Likes_Posts">
             <End Role="Posts" EntitySet="Posts" />
@@ -45,6 +54,14 @@
             <End Role="Posts" EntitySet="Posts" />
             <End Role="Saves" EntitySet="Saves" />
           </AssociationSet>
+          <AssociationSet Name="FK_Sparks_Posts" Association="AvocadoModel.Store.FK_Sparks_Posts">
+            <End Role="Posts" EntitySet="Posts" />
+            <End Role="Sparks" EntitySet="Sparks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sparks_Posts1" Association="AvocadoModel.Store.FK_Sparks_Posts1">
+            <End Role="Posts" EntitySet="Posts" />
+            <End Role="Sparks" EntitySet="Sparks" />
+          </AssociationSet>
           <AssociationSet Name="FK_TagToPost_Posts" Association="AvocadoModel.Store.FK_TagToPost_Posts">
             <End Role="Posts" EntitySet="Posts" />
             <End Role="TagToPost" EntitySet="TagToPost" />
@@ -53,10 +70,6 @@
             <End Role="Tags" EntitySet="Tags" />
             <End Role="TagToPost" EntitySet="TagToPost" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserSettings_Accounts" Association="AvocadoModel.Store.FK_UserSettings_Accounts">
-            <End Role="Accounts" EntitySet="Accounts" />
-            <End Role="UserSettings" EntitySet="UserSettings" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Accounts">
           <Key>
@@ -64,14 +77,17 @@
           </Key>
           <Property Name="AccountId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" />
           <Property Name="FullName" Type="nvarchar" MaxLength="100" />
-          <Property Name="DisplayName" Type="nvarchar" MaxLength="50" />
           <Property Name="TwitterAccessToken" Type="nvarchar" MaxLength="50" />
           <Property Name="TwitterAccessSecret" Type="nvarchar" MaxLength="100" />
           <Property Name="TwitterUserId" Type="nvarchar" MaxLength="100" />
           <Property Name="FacebookUserId" Type="nvarchar" MaxLength="100" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="State" Type="nvarchar" MaxLength="50" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="aspnet_Membership">
           <Key>
@@ -129,6 +145,15 @@
           <Property Name="Comment" Type="nvarchar" Nullable="false" MaxLength="250" />
           <Property Name="InsertDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="Follows">
+          <Key>
+            <PropertyRef Name="FollowsId" />
+          </Key>
+          <Property Name="FollowsId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="FollowerAccountId" Type="int" Nullable="false" />
+          <Property Name="FollowedAccountId" Type="int" Nullable="false" />
+          <Property Name="InsertDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Likes">
           <Key>
             <PropertyRef Name="LikeId" />
@@ -159,6 +184,15 @@
           <Property Name="AccountId" Type="int" Nullable="false" />
           <Property Name="SaveDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="Sparks">
+          <Key>
+            <PropertyRef Name="SparkId" />
+          </Key>
+          <Property Name="SparkId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="NewPostId" Type="int" Nullable="false" />
+          <Property Name="OriginPostId" Type="int" Nullable="false" />
+          <Property Name="InsertDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Tags">
           <Key>
             <PropertyRef Name="TagId" />
@@ -173,14 +207,6 @@
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="PostId" Type="int" Nullable="false" />
           <Property Name="TagId" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="UserSettings">
-          <Key>
-            <PropertyRef Name="UserSettingsId" />
-          </Key>
-          <Property Name="UserSettingsId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="AccountId" Type="int" />
-          <Property Name="DisplayName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK__aspnet_Me__UserI__22AA2996">
           <End Role="aspnet_Users" Type="AvocadoModel.Store.aspnet_Users" Multiplicity="1" />
@@ -215,6 +241,30 @@
             </Principal>
             <Dependent Role="Comments">
               <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Follows_Accounts">
+          <End Role="Accounts" Type="AvocadoModel.Store.Accounts" Multiplicity="1" />
+          <End Role="Follows" Type="AvocadoModel.Store.Follows" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="Follows">
+              <PropertyRef Name="FollowerAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Follows_Accounts1">
+          <End Role="Accounts" Type="AvocadoModel.Store.Accounts" Multiplicity="1" />
+          <End Role="Follows" Type="AvocadoModel.Store.Follows" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="Follows">
+              <PropertyRef Name="FollowedAccountId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -266,6 +316,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Sparks_Posts">
+          <End Role="Posts" Type="AvocadoModel.Store.Posts" Multiplicity="1" />
+          <End Role="Sparks" Type="AvocadoModel.Store.Sparks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Posts">
+              <PropertyRef Name="PostId" />
+            </Principal>
+            <Dependent Role="Sparks">
+              <PropertyRef Name="NewPostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sparks_Posts1">
+          <End Role="Posts" Type="AvocadoModel.Store.Posts" Multiplicity="1" />
+          <End Role="Sparks" Type="AvocadoModel.Store.Sparks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Posts">
+              <PropertyRef Name="PostId" />
+            </Principal>
+            <Dependent Role="Sparks">
+              <PropertyRef Name="OriginPostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TagToPost_Posts">
           <End Role="Posts" Type="AvocadoModel.Store.Posts" Multiplicity="1" />
           <End Role="TagToPost" Type="AvocadoModel.Store.TagToPost" Multiplicity="*" />
@@ -287,18 +361,6 @@
             </Principal>
             <Dependent Role="TagToPost">
               <PropertyRef Name="TagId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserSettings_Accounts">
-          <End Role="Accounts" Type="AvocadoModel.Store.Accounts" Multiplicity="0..1" />
-          <End Role="UserSettings" Type="AvocadoModel.Store.UserSettings" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Accounts">
-              <PropertyRef Name="AccountId" />
-            </Principal>
-            <Dependent Role="UserSettings">
-              <PropertyRef Name="AccountId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -353,10 +415,23 @@
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
             <End Role="Account" EntitySet="Accounts" />
           </AssociationSet>
-          <EntitySet Name="UserSettings" EntityType="AvocadoModel.UserSetting" />
-          <AssociationSet Name="FK_UserSettings_Accounts" Association="AvocadoModel.FK_UserSettings_Accounts">
+          <EntitySet Name="Follows" EntityType="AvocadoModel.Follow" />
+          <AssociationSet Name="FK_Follows_Accounts" Association="AvocadoModel.FK_Follows_Accounts">
             <End Role="Account" EntitySet="Accounts" />
-            <End Role="UserSetting" EntitySet="UserSettings" />
+            <End Role="Follow" EntitySet="Follows" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Follows_Accounts1" Association="AvocadoModel.FK_Follows_Accounts1">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Follow" EntitySet="Follows" />
+          </AssociationSet>
+          <EntitySet Name="Sparks" EntityType="AvocadoModel.Spark" />
+          <AssociationSet Name="FK_Sparks_Posts" Association="AvocadoModel.FK_Sparks_Posts">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="Spark" EntitySet="Sparks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sparks_Posts1" Association="AvocadoModel.FK_Sparks_Posts1">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="Spark" EntitySet="Sparks" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="aspnet_Membership">
@@ -459,6 +534,8 @@
           <NavigationProperty Name="TagToPosts" Relationship="AvocadoModel.FK_TagToPost_Posts" FromRole="Post" ToRole="TagToPost" />
           <Property Type="Int32" Name="AccountId" Nullable="false" />
           <NavigationProperty Name="Account" Relationship="AvocadoModel.FK_Posts_Accounts" FromRole="Post" ToRole="Account" />
+          <NavigationProperty Name="InspiredPost" Relationship="AvocadoModel.FK_Sparks_Posts" FromRole="Post" ToRole="Spark" />
+          <NavigationProperty Name="OriginPost" Relationship="AvocadoModel.FK_Sparks_Posts1" FromRole="Post" ToRole="Spark" />
         </EntityType>
         <EntityType Name="Save">
           <Key>
@@ -569,14 +646,18 @@
           <Property Type="String" Name="FirstName" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="LastName" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="FullName" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="DisplayName" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="TwitterAccessToken" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="TwitterAccessSecret" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="TwitterUserId" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="FacebookUserId" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Posts" Relationship="AvocadoModel.FK_Posts_Accounts" FromRole="Account" ToRole="Post" />
           <NavigationProperty Name="aspnet_Users" Relationship="AvocadoModel.FK_Accounts_aspnet_Users" FromRole="Account" ToRole="aspnet_Users" />
-          <NavigationProperty Name="UserSettings" Relationship="AvocadoModel.FK_UserSettings_Accounts" FromRole="Account" ToRole="UserSetting" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="City" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="State" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Country" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Following" Relationship="AvocadoModel.FK_Follows_Accounts" FromRole="Account" ToRole="Follow" />
+          <NavigationProperty Name="Followed" Relationship="AvocadoModel.FK_Follows_Accounts1" FromRole="Account" ToRole="Follow" />
         </EntityType>
         <Association Name="FK_Posts_Accounts">
           <End Type="AvocadoModel.Account" Role="Account" Multiplicity="1" />
@@ -602,24 +683,73 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="UserSetting">
+        <EntityType Name="Follow">
           <Key>
-            <PropertyRef Name="UserSettingsId" />
+            <PropertyRef Name="FollowsId" />
           </Key>
-          <Property Type="Int32" Name="UserSettingsId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="AccountId" />
-          <Property Type="String" Name="DisplayName" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Account" Relationship="AvocadoModel.FK_UserSettings_Accounts" FromRole="UserSetting" ToRole="Account" />
+          <Property Type="Int32" Name="FollowsId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="FollowerAccountId" Nullable="false" />
+          <Property Type="Int32" Name="FollowedAccountId" Nullable="false" />
+          <Property Type="DateTime" Name="InsertDate" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="AvocadoModel.FK_Follows_Accounts" FromRole="Follow" ToRole="Account" />
+          <NavigationProperty Name="Account1" Relationship="AvocadoModel.FK_Follows_Accounts1" FromRole="Follow" ToRole="Account" />
         </EntityType>
-        <Association Name="FK_UserSettings_Accounts">
-          <End Type="AvocadoModel.Account" Role="Account" Multiplicity="0..1" />
-          <End Type="AvocadoModel.UserSetting" Role="UserSetting" Multiplicity="*" />
+        <Association Name="FK_Follows_Accounts">
+          <End Type="AvocadoModel.Account" Role="Account" Multiplicity="1" />
+          <End Type="AvocadoModel.Follow" Role="Follow" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Account">
               <PropertyRef Name="AccountId" />
             </Principal>
-            <Dependent Role="UserSetting">
+            <Dependent Role="Follow">
+              <PropertyRef Name="FollowerAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Follows_Accounts1">
+          <End Type="AvocadoModel.Account" Role="Account" Multiplicity="1" />
+          <End Type="AvocadoModel.Follow" Role="Follow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
               <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="Follow">
+              <PropertyRef Name="FollowedAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Spark">
+          <Key>
+            <PropertyRef Name="SparkId" />
+          </Key>
+          <Property Type="Int32" Name="SparkId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="NewPostId" Nullable="false" />
+          <Property Type="Int32" Name="OriginPostId" Nullable="false" />
+          <Property Type="DateTime" Name="InsertDate" Nullable="false" />
+          <NavigationProperty Name="InspiredPost" Relationship="AvocadoModel.FK_Sparks_Posts" FromRole="Spark" ToRole="Post" />
+          <NavigationProperty Name="OriginPost" Relationship="AvocadoModel.FK_Sparks_Posts1" FromRole="Spark" ToRole="Post" />
+        </EntityType>
+        <Association Name="FK_Sparks_Posts">
+          <End Type="AvocadoModel.Post" Role="Post" Multiplicity="1" />
+          <End Type="AvocadoModel.Spark" Role="Spark" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostId" />
+            </Principal>
+            <Dependent Role="Spark">
+              <PropertyRef Name="NewPostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sparks_Posts1">
+          <End Type="AvocadoModel.Post" Role="Post" Multiplicity="1" />
+          <End Type="AvocadoModel.Spark" Role="Spark" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostId" />
+            </Principal>
+            <Dependent Role="Spark">
+              <PropertyRef Name="OriginPostId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -734,11 +864,14 @@
           <EntitySetMapping Name="Accounts">
             <EntityTypeMapping TypeName="AvocadoModel.Account">
               <MappingFragment StoreEntitySet="Accounts">
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="FacebookUserId" ColumnName="FacebookUserId" />
                 <ScalarProperty Name="TwitterUserId" ColumnName="TwitterUserId" />
                 <ScalarProperty Name="TwitterAccessSecret" ColumnName="TwitterAccessSecret" />
                 <ScalarProperty Name="TwitterAccessToken" ColumnName="TwitterAccessToken" />
-                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -747,12 +880,23 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserSettings">
-            <EntityTypeMapping TypeName="AvocadoModel.UserSetting">
-              <MappingFragment StoreEntitySet="UserSettings">
-                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
-                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
-                <ScalarProperty Name="UserSettingsId" ColumnName="UserSettingsId" />
+          <EntitySetMapping Name="Follows">
+            <EntityTypeMapping TypeName="AvocadoModel.Follow">
+              <MappingFragment StoreEntitySet="Follows">
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="FollowedAccountId" ColumnName="FollowedAccountId" />
+                <ScalarProperty Name="FollowerAccountId" ColumnName="FollowerAccountId" />
+                <ScalarProperty Name="FollowsId" ColumnName="FollowsId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sparks">
+            <EntityTypeMapping TypeName="AvocadoModel.Spark">
+              <MappingFragment StoreEntitySet="Sparks">
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="OriginPostId" ColumnName="OriginPostId" />
+                <ScalarProperty Name="NewPostId" ColumnName="NewPostId" />
+                <ScalarProperty Name="SparkId" ColumnName="SparkId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -786,13 +930,13 @@
         <EntityTypeShape EntityType="AvocadoModel.Category" Width="1.5" PointX="6.375" PointY="6.75" Height="1.5956835937499987" />
         <EntityTypeShape EntityType="AvocadoModel.Comment" Width="1.5" PointX="10.875" PointY="3.75" Height="2.1725878906249996" />
         <EntityTypeShape EntityType="AvocadoModel.Like" Width="1.5" PointX="10.875" PointY="6.625" Height="1.9802864583333317" />
-        <EntityTypeShape EntityType="AvocadoModel.Post" Width="1.5" PointX="8.625" PointY="5.875" Height="3.5186979166666656" />
+        <EntityTypeShape EntityType="AvocadoModel.Post" Width="1.5" PointX="8.625" PointY="5.875" Height="3.7109993489583317" />
         <EntityTypeShape EntityType="AvocadoModel.Save" Width="1.5" PointX="10.875" PointY="9.375" Height="1.9802864583333317" />
         <EntityTypeShape EntityType="AvocadoModel.Tag" Width="1.5" PointX="11.625" PointY="0.75" Height="1.5956835937499996" />
         <EntityTypeShape EntityType="AvocadoModel.TagToPost" Width="1.5" PointX="14" PointY="4.125" Height="1.9802864583333353" />
         <AssociationConnector Association="AvocadoModel.FK_Posts_Categories" >
-          <ConnectorPoint PointX="7.875" PointY="7.547841796875" />
-          <ConnectorPoint PointX="8.625" PointY="7.547841796875" />
+          <ConnectorPoint PointX="7.875" PointY="7.6439925130208328" />
+          <ConnectorPoint PointX="8.625" PointY="7.6439925130208328" />
         </AssociationConnector>
         <AssociationConnector Association="AvocadoModel.FK_Comments_Posts" >
           <ConnectorPoint PointX="9.375" PointY="5.875" />
@@ -804,9 +948,8 @@
           <ConnectorPoint PointX="10.875" PointY="7.6151432291666659" />
         </AssociationConnector>
         <AssociationConnector Association="AvocadoModel.FK_Saves_Posts" >
-          <ConnectorPoint PointX="9.375" PointY="9.3936979166666656" />
-          <ConnectorPoint PointX="9.375" PointY="10.374492687499998" />
-          <ConnectorPoint PointX="10.875" PointY="10.374492687499998" />
+          <ConnectorPoint PointX="10.125" PointY="9.576650390625" />
+          <ConnectorPoint PointX="10.875" PointY="9.576650390625" />
         </AssociationConnector>
         <AssociationConnector Association="AvocadoModel.FK_TagToPost_Posts" >
           <ConnectorPoint PointX="10.125" PointY="8.9901432291666659" />
@@ -818,19 +961,32 @@
           <ConnectorPoint PointX="14.75" PointY="1.5478417968749998" />
           <ConnectorPoint PointX="14.75" PointY="4.125" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="AvocadoModel.Account" Width="1.5" PointX="0.75" PointY="7.875" Height="3.3263964843750031" />
+        <EntityTypeShape EntityType="AvocadoModel.Account" Width="1.5" PointX="0.75" PointY="7.875" Height="3.5186979166666656" />
         <AssociationConnector Association="AvocadoModel.FK_Posts_Accounts" >
-          <ConnectorPoint PointX="2.25" PointY="8.547841796875" />
-          <ConnectorPoint PointX="8.625" PointY="8.547841796875" />
+          <ConnectorPoint PointX="2.25" PointY="8.7064925130208337" />
+          <ConnectorPoint PointX="8.625" PointY="8.7064925130208337" />
         </AssociationConnector>
         <AssociationConnector Association="AvocadoModel.FK_Accounts_aspnet_Users" >
           <ConnectorPoint PointX="1.5" PointY="6.7494921875" />
           <ConnectorPoint PointX="1.5" PointY="7.875" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="AvocadoModel.UserSetting" Width="1.5" PointX="3" PointY="8.75" Height="1.7879850260416745" />
-        <AssociationConnector Association="AvocadoModel.FK_UserSettings_Accounts" >
-          <ConnectorPoint PointX="2.25" PointY="9.6439925130208373" />
-          <ConnectorPoint PointX="3" PointY="9.6439925130208373" />
+        <EntityTypeShape EntityType="AvocadoModel.Follow" Width="1.5" PointX="3" PointY="8.875" Height="2.1725878906250031" />
+        <AssociationConnector Association="AvocadoModel.FK_Follows_Accounts" >
+          <ConnectorPoint PointX="2.25" PointY="9.9612939453125016" />
+          <ConnectorPoint PointX="3" PointY="9.9612939453125016" />
+        </AssociationConnector>
+        <AssociationConnector Association="AvocadoModel.FK_Follows_Accounts1" >
+          <ConnectorPoint PointX="2.25" PointY="9.35564697265625" />
+          <ConnectorPoint PointX="3" PointY="9.35564697265625" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="AvocadoModel.Spark" Width="1.5" PointX="6.375" PointY="4.25" Height="2.172587890624996" />
+        <AssociationConnector Association="AvocadoModel.FK_Sparks_Posts" >
+          <ConnectorPoint PointX="8.625" PointY="6.148793945312498" />
+          <ConnectorPoint PointX="7.875" PointY="6.148793945312498" />
+        </AssociationConnector>
+        <AssociationConnector Association="AvocadoModel.FK_Sparks_Posts1" >
+          <ConnectorPoint PointX="8.625" PointY="5.949396972656249" />
+          <ConnectorPoint PointX="7.875" PointY="5.949396972656249" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

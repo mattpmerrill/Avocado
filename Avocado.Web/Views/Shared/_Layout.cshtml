@@ -30,7 +30,7 @@
                 <a class="brand" href="#" id="sitename">Creativime</a>
                 <ul class="nav">
                     <li><a href="/Browse">Browse</a></li>
-                    <li><a href="#contact">The Creatives</a></li>
+                    <li><a href="/People">The Creatives</a></li>
                 </ul>
                 <div class="pull-right">
                     @Html.Partial("_LoginIndicator", new Avocado.Web.Models.SignInViewModel())
@@ -42,6 +42,11 @@
     <!--each page will define it's own grid system within it's main container-->
     @RenderBody()
 
+    <div class="container">
+        <footer>
+            <p>&copy; Creativime 2011</p>
+        </footer>
+    </div>
 </body>
 
 <!--all scripts at the bottom of the page-->

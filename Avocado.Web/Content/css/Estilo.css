@@ -1,6 +1,29 @@
-﻿body
+﻿html
+{
+    background-color:#fff;
+}
+
+body
 {
     margin-top:60px; /*this will clear the topbar*/
+    background-color:#fff;
+}
+
+footer
+{
+    margin-top:150px;
+}
+
+ul
+{
+    list-style-type:none;
+    margin:0;
+    padding:0;
+}
+
+ul li
+{
+    margin-bottom:3px;
 }
 
 .aside
@@ -104,6 +127,7 @@
     border:1px solid #b3aeae;
     height:330px;
     position:relative;
+    background-color:#fff;
 }
 
 .item-info
@@ -189,6 +213,12 @@
     height: 24px;
 }
 
+.avatar-large
+{
+    width:100px;
+    height:100px;
+}
+
 .xxsmall
 {
     font-size:75%;
@@ -197,6 +227,29 @@
 .row-item
 {
     margin-bottom:15px;
+    background-color:#fff;
+}
+
+.post-list li
+{
+    float:left;
+    margin-right:5px;
+}
+
+.post-list li img
+{
+    width:75px;
+    height:75px;
+}
+
+.stats-list a
+{
+    color:#747171;
+}
+
+.stats-list a:hover
+{
+    color:#a3a0a0;
 }
 
 
