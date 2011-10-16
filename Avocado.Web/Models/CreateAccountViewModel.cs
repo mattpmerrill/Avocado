@@ -11,15 +11,19 @@ namespace Avocado.Web.Models
     public class CreateAccountViewModel
     {
         [Required]
-        [DisplayName("Email Address")]
+        [DisplayName("username")]
+        public string UserName { get; set; }
+
+        [Required]
+        [DisplayName("email")]
         public string Email { get; set; }
 
-        [Required]
-        [DisplayName("Full Name")]
-        public string FullName { get; set; }
+        //[Required]
+        //[DisplayName("Full Name")]
+        //public string FullName { get; set; }
 
         [Required]
-        [DisplayName("Password")]
+        [DisplayName("password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

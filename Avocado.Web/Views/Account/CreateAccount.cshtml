@@ -21,7 +21,7 @@
 
         FB.api('/me', function (response) {
             $('#EmailAddress').val(response.email);
-            $('#FullName').val(response.name);
+            //$('#FullName').val(response.name);
             $('#Password').val('');
         });
     };
@@ -34,7 +34,27 @@
 //            '//connect.facebook.net/en_US/all.js';
 //        e.async = true;
 //        document.getElementById('fb-root').appendChild(e);
-//    } ());
+    //    } ());
+
+    $(function () {
+        $('#UserName').blur(function () {
+            if ($("#UserName").val()) {
+                $.post("/Account/CheckUserNameAvailability", { userName: $("#UserName").val() },
+                    function (data) {
+                        var myObject = eval('(' + data + ')');
+                        var newid = myObject;
+                        if (newid == 0) {
+                            $("#availabilityMessage").html("<span style='color:green;'>username available :-D</span>")
+                        }
+                        else {
+                            $("#UserName").addClass('input-validation-error');
+                            $("#availabilityMessage").html("<span style='color:red;'>username taken :-(</span>");
+                        }
+                    });
+            }
+
+        });
+    });
     
 </script>
 
@@ -43,19 +63,20 @@
         Join Creativime
     </h1>
         
-    <h4>It's free! Join now ans start sharing your creativity.</h4>
+    <h4>It's free! Join now and start sharing your creativity.</h4>
 
     @using (Html.BeginForm("CreateAccount", "Account", new { social = @Request.QueryString["social"], @at = @Request.QueryString["at"], @as = @Request.QueryString["as"] }, FormMethod.Post, new { autocomplete = "off" }))
     { 
-        @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "ui-state-error" })
+        @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "" })
 
-        @Html.TextBoxFor(x => x.Email, new { @class = "form-input", id = "EmailAddress", placeholder="your email address" })
+        @Html.TextBoxFor(x => x.UserName, new { @class = "form-input", placeholder = "username" })
+        <span id="availabilityMessage"></span>
+        <br /><br />
+        
+        @Html.TextBoxFor(x => x.Email, new { @class = "form-input", id = "EmailAddress", placeholder = "email" })
         
         <br /><br />
         
-        @Html.TextBoxFor(x => x.FullName, new { @class = "form-input", placeholder = "full name" })
-        
-        <br /><br />
         
         @Html.PasswordFor(x => x.Password, new { @class = "form-input", placeholder = "password" })
         

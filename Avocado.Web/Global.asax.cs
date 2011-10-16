@@ -27,9 +27,15 @@ namespace Avocado.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                "Browse", // Route name
+                "BrowseByCategory", // Route name
                 "Browse/Category/{category}",
                 new { controller = "Browse", action = "Category", category = (string)null }// Parameter defaults
+            );
+
+            routes.MapRoute(
+                "BrowseByTag", // Route name
+                "Browse/Category/{category}/{tag}",
+                new { controller = "Browse", action = "CategoryAndTag", category = (string)null, tag = (string)null }// Parameter defaults
             );
 
             routes.MapRoute(

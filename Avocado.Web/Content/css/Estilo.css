@@ -230,6 +230,11 @@ ul li
     background-color:#fff;
 }
 
+.thick-border
+{
+    border:3px solid #ccc;
+}
+
 .post-list li
 {
     float:left;

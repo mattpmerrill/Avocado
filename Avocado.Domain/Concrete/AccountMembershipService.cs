@@ -39,13 +39,13 @@ namespace Avocado.Domain.Concrete
             return _provider.ValidateUser(userName, password);
         }
 
-        public MembershipCreateStatus CreateUser(string email, string password, string fullName, string social, string token, string secret)
+        public MembershipCreateStatus CreateUser(string email, string password, string userName, string social, string token, string secret)
         {
             if (String.IsNullOrEmpty(email)) throw new ArgumentException("Value cannot be null or empty.", "email");
             if (String.IsNullOrEmpty(password)) throw new ArgumentException("Value cannot be null or empty.", "password");
 
             MembershipCreateStatus status;
-            MembershipUser newUser = _provider.CreateUser(username: email, password: password, email: email, passwordQuestion: null, passwordAnswer: null, isApproved: true, providerUserKey: null, status: out status);
+            MembershipUser newUser = _provider.CreateUser(username: userName, password: password, email: email, passwordQuestion: null, passwordAnswer: null, isApproved: true, providerUserKey: null, status: out status);
 
             if (status == MembershipCreateStatus.Success) 
             {
@@ -54,14 +54,14 @@ namespace Avocado.Domain.Concrete
                     string consumerKey = ConfigurationManager.AppSettings["consumerKey"];
                     string consumerSecret = ConfigurationManager.AppSettings["consumerSecret"];
 
-                    if (SaveTwitterData(newUser.ProviderUserKey, consumerKey, consumerSecret, token, secret, fullName))
+                    if (SaveTwitterData(newUser.ProviderUserKey, consumerKey, consumerSecret, token, secret, userName))
                         status = MembershipCreateStatus.Success;
                     else
                         status = MembershipCreateStatus.ProviderError;
                 }
                 else
                 {
-                    if (SaveUserSettings(newUser.ProviderUserKey, fullName))
+                    if (SaveUserSettings(newUser.ProviderUserKey, userName))
                         status = MembershipCreateStatus.Success;
                     else
                         status = MembershipCreateStatus.ProviderError;
@@ -69,6 +69,16 @@ namespace Avocado.Domain.Concrete
             }
 
             return status;
+        }
+
+        public bool IsUserNameAvailable(string userName)
+        {
+            MembershipUser user = _provider.GetUser(userName, false);
+
+            if (user != null)
+                return false;
+            else
+                return true;
         }
 
         public bool ChangePassword(string userName, string oldPassword, string newPassword)
@@ -115,12 +125,12 @@ namespace Avocado.Domain.Concrete
             return _data.Accounts.Where(x => x.TwitterUserId == socialId).Select(x => x.aspnet_Users.UserId).ToString();
         }
 
-        private bool SaveTwitterData(object userId, string consumerKey, string consumerSecret, string token, string secret, string fullName)
+        private bool SaveTwitterData(object userId, string consumerKey, string consumerSecret, string token, string secret, string userName)
         {
             try
             {
 
-                _data.Accounts.AddObject(new Account() { UserId = (Guid)userId, TwitterAccessToken = token, TwitterAccessSecret = secret, FullName = fullName });
+                _data.Accounts.AddObject(new Account() { UserId = (Guid)userId, TwitterAccessToken = token, TwitterAccessSecret = secret, UserName = userName });
                 _data.SaveChanges();
 
                 return true;
@@ -131,11 +141,11 @@ namespace Avocado.Domain.Concrete
             }
         }
 
-        private bool SaveUserSettings(object userId, string FullName)
+        private bool SaveUserSettings(object userId, string userName)
         {
             try
             {
-                _data.Accounts.AddObject(new Account() { UserId = (Guid)userId, FullName = FullName });
+                _data.Accounts.AddObject(new Account() { UserId = (Guid)userId, UserName = userName });
                 _data.SaveChanges();
                 return true;
             }

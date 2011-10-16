@@ -11,7 +11,8 @@ namespace Avocado.Domain.Abstract
         int MinPasswordLength { get; }
 
         bool ValidateUser(string userName, string password);
-        MembershipCreateStatus CreateUser(string email, string password, string fullName, string social, string token, string verifier);
+        bool IsUserNameAvailable(string userName);
+        MembershipCreateStatus CreateUser(string email, string password, string userName, string social, string token, string verifier);
         bool ChangePassword(string userName, string oldPassword, string newPassword);
         bool IsLinkedWithFacebook(string email);
         bool IsLinkedWithSocial(string id);

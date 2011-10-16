@@ -139,7 +139,7 @@ namespace Avocado.Web.Controllers
                 string token = Request.QueryString["at"];
                 string secret = Request.QueryString["as"];
 
-                MembershipCreateStatus createStatus = _membershipService.CreateUser(model.Email, model.Password, model.FullName, social, token, secret);
+                MembershipCreateStatus createStatus = _membershipService.CreateUser(model.Email, model.Password, model.UserName, social, token, secret);
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
@@ -153,6 +153,18 @@ namespace Avocado.Web.Controllers
             }
 
             return View(model);
+        }
+
+        public JsonResult CheckUserNameAvailability(string userName)
+        {
+            int Taken = 0;
+            
+            if (!_membershipService.IsUserNameAvailable(userName))
+            {
+                Taken = 1;
+            }
+
+            return Json(Taken);
         }
     }
 }

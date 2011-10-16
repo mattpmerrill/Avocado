@@ -22,6 +22,17 @@ namespace Avocado.Domain.Concrete
             return _data.Posts.Where(x => x.Category.Name == category).OrderByDescending(x => x.PostId).Take(15);
         }
 
+        public IQueryable<Post> getLatestItemsByCategoryAndTag(string category, string tag)
+        {
+            var postsByCategory = _data.Posts.Where(x => x.Category.Name == category).OrderByDescending(x => x.PostId).Take(15);
+            var postsByTag = from post in postsByCategory
+                             join t in _data.TagToPosts on post.PostId equals t.PostId
+                             where t.Tag.Name == tag
+                             select post;
+
+            return postsByTag;
+        }
+
         public IQueryable<Post> getLatestItemsFromAllCategories()
         {
             IQueryable<Post> posts = _data.Posts.Where(x => x.Category.CategoryId == 1).OrderByDescending(x => x.PostId).Take(3)
