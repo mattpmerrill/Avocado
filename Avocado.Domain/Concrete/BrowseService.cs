@@ -60,5 +60,10 @@ namespace Avocado.Domain.Concrete
         {
             throw new NotImplementedException();
         }
+
+        public Post getPost(int postId)
+        {
+            return _data.Posts.FirstOrDefault(p => p.PostId == postId);
+        }
     }
 }

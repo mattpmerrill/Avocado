@@ -89,6 +89,7 @@
     </Compile>
     <Compile Include="Models\Browse\BrowseItem.cs" />
     <Compile Include="Models\Browse\BrowseViewModel.cs" />
+    <Compile Include="Models\Browse\PostDetailsViewModel.cs" />
     <Compile Include="Models\CreateAccountViewModel.cs" />
     <Compile Include="Models\People\CreativesViewModel.cs" />
     <Compile Include="Models\People\ViewWorkViewModel.cs" />
@@ -250,6 +251,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_AdditionalUserWork.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Browse\Details.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

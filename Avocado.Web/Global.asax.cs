@@ -39,6 +39,12 @@ namespace Avocado.Web
             );
 
             routes.MapRoute(
+                "BrowseByPost", // Route name
+                "Browse/test/{postId}",
+                new { controller = "Browse", action = "GetPostDetails", postId = (int)0 }// Parameter defaults
+            );
+
+            routes.MapRoute(
                 "People", // Route name
                 "People/ViewWork/{userName}",
                 new { controller = "People", action = "ViewWork", userName = (string)null }// Parameter defaults
