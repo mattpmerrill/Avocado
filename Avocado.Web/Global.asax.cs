@@ -33,15 +33,15 @@ namespace Avocado.Web
             );
 
             routes.MapRoute(
-                "BrowseByTag", // Route name
-                "Browse/Category/{category}/{tag}",
-                new { controller = "Browse", action = "CategoryAndTag", category = (string)null, tag = (string)null }// Parameter defaults
+                "BrowseByPost", // Route name
+                "Browse/Category/{category}/{postId}",
+                new { controller = "Browse", action = "GetPostDetails", category = (string)null, postId = (int)0 }// Parameter defaults
             );
 
             routes.MapRoute(
-                "BrowseByPost", // Route name
-                "Browse/test/{postId}",
-                new { controller = "Browse", action = "GetPostDetails", postId = (int)0 }// Parameter defaults
+                "BrowseByTag", // Route name
+                "Browse/Category/{category}/Tag/{tag}",
+                new { controller = "Browse", action = "CategoryAndTag", category = (string)null, tag = (string)null }// Parameter defaults
             );
 
             routes.MapRoute(

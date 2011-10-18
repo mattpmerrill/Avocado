@@ -14,7 +14,7 @@
 else
 {
     <div style="margin:5px 0 0 0;">
-        <button id="modal-button" class="btn primary">Sign In</button>
+        <button id="modal-button" class="btn primary modal-button">Sign In</button>
         <button id="register-button" class="btn success">New? Join for free!</button>
     </div>
     
@@ -82,7 +82,7 @@ else
                 window.location = '/Account/LogIn';
             });
 
-            $('#modal-button').click(function (e) {
+            $('.modal-button').click(function (e) {
                 e.preventDefault();
                 $('#my-modal').reveal({
                     animation: 'fadeAndPop',                   //fade, fadeAndPop, none

@@ -31,20 +31,33 @@ ul li
     padding-left:15px;
 }
 
+.author-title a
+{
+    font-size:14px;
+    /*color:#b3aeae;*/
+    text-decoration:none;
+}
+
+.author-title a:hover
+{
+    text-decoration:underline;
+}
+
+
 .browse-section
 {
     margin-bottom:15px;
 }
 
-.category-link a
+.title-link a
 {
     color:#404040;
 }
 
-.category-link a:hover
+.title-link a:hover
 {
-    text-decoration:none;
-    color:#747171;
+    text-decoration:underline;
+    color:#404040;
 }
 
 .center-stuff
