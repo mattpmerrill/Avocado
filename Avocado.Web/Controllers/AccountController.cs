@@ -31,14 +31,18 @@ namespace Avocado.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult LogIn(SignInViewModel model)
+        public ActionResult LogIn(SignInViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
                 if (_authenticationService.AuthenticateUser(model.Email, model.Password))
                 {
                     _authenticationService.LogIn(model.Email, createPersistentCookie: false);
-                    return RedirectToAction("Index", "Home");
+
+                    if (!String.IsNullOrEmpty(returnUrl))
+                        return Redirect(returnUrl);
+                    else
+                        return RedirectToAction("Index", "Home");
                 }
                 else
                 {

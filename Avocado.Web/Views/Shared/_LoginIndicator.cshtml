@@ -26,7 +26,7 @@ else
                     <h1>Creativime </h1>
                     <h4>Sign in now and start sharing your creativity!</h4>
                     <p>
-                        @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { autocomplete = "off", id = "modal-form" }))
+                        @using (Html.BeginForm("Login", "Account", new { returnUrl = Request.Url }, FormMethod.Post, new { autocomplete = "off", id = "modal-form" }))
                         {
                             @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "ui-state-error", style = "width:325px; margin-bottom:20px;" })
 
