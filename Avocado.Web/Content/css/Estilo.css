@@ -270,6 +270,30 @@ ul li
     color:#a3a0a0;
 }
 
+.stats-badge
+{
+    text-align:center;
+    width:110px;
+    padding:20px 15px;
+    margin:3px;
+    color:#fff;
+    font-size:36px;
+    font-weight:bold;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
+.stats-badge span
+{
+    font-size:14px;
+    font-weight:normal;
+}
+
+.posts{background-color:Green;}
+.sparks{ background-color:#b60404;}
+.followed{ background-color:orange;}
+.following{ background-color:#2691f1;}
 
 /* Styles for validation helpers
 -----------------------------------------------------------*/

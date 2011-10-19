@@ -42,6 +42,14 @@ namespace Avocado.Web.Controllers
             ViewWorkViewModel model = new ViewWorkViewModel();
             model.Posts = _peopleServcie.getLatestWorkByUserName(userName).ToList();
             model.UserAccount = _peopleServcie.getUserAccount(userName);
+            int sparks = 0;
+
+            foreach (var post in model.UserAccount.Posts)
+            {
+                sparks += post.OriginPost.Count();
+            }
+
+            model.Sparks = sparks;
 
             return View(model);
         }

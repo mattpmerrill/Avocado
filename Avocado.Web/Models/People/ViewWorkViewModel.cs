@@ -10,5 +10,6 @@ namespace Avocado.Web.Models.People
     {
         public List<Post> Posts;
         public Account UserAccount { get; set; }
+        public int Sparks { get; set; }
     }
 }
