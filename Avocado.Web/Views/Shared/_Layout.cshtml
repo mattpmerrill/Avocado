@@ -18,6 +18,7 @@
     <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/jquery.reveal.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/bootstrap-dropdown.js")" type="text/javascript"></script>
+    <script src="../../Scripts/bootstrap-alerts.js" type="text/javascript"></script>
     @RenderSection("Head", required: false)
 </head>
 
@@ -29,9 +30,18 @@
             <div class="container">
                 <a class="brand" href="#" id="sitename">Creativime</a>
                 <ul class="nav">
-                    <li><a href="/Browse">Explore</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" href="/Browse">Explore</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/Browse/Category/Crafts">Crafts</a></li>
+                            <li><a href="/Browse/Category/Food">Food</a></li>
+                            <li><a href="/Browse/Category/Events">Events</a></li>
+                            <li><a href="/Browse/Category/Re-Purpose Projects">Re-Purpose Projects</a></li>
+                        </ul>
+                    </li>
                     <li><a href="/People">People</a></li>
                 </ul>
+
                 <div class="pull-right">
                     @Html.Partial("_LoginIndicator", new Avocado.Web.Models.SignInViewModel())
                 </div>

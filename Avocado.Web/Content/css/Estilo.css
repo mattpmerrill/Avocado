@@ -49,6 +49,17 @@ ul li
     margin-bottom:15px;
 }
 
+.title-header
+{
+    padding:5px 15px 5px 15px;
+    margin: 10px 0 10px 0;
+    background-color:#ece9e9;
+    color:#747171;
+    font-weight:bold;
+    font-size:14px;
+    border-bottom: 1px solid #b3aeae;
+}
+
 .title-link a
 {
     color:#404040;
@@ -65,7 +76,7 @@ ul li
     text-align:center;
 }
 
-.clear-all-floats
+.clear, .clear-all-floats
 {
     clear:both;
 }
@@ -232,6 +243,12 @@ ul li
     height:100px;
 }
 
+.avatar-xlarge
+{
+    width:175px;
+    height:175px;
+}
+
 .xxsmall
 {
     font-size:75%;
@@ -273,15 +290,20 @@ ul li
 .stats-badge
 {
     text-align:center;
-    width:110px;
-    padding:20px 15px;
+    width:75px;
+    padding:10px 5px;
     margin:3px;
     color:#fff;
-    font-size:36px;
+    font-size:26px;
     font-weight:bold;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
+}
+
+.stats-badge-link, .stats-badge-link:hover
+{
+    text-decoration:none;
 }
 
 .stats-badge span
@@ -290,10 +312,10 @@ ul li
     font-weight:normal;
 }
 
-.posts{background-color:Green;}
-.sparks{ background-color:#b60404;}
-.followed{ background-color:orange;}
-.following{ background-color:#2691f1;}
+.posts{background-color:#469846;}
+.sparks{ background-color:#af4646;}
+.followed{ background-color:#c8c826;}
+.following{ background-color:#60aaec;}
 
 /* Styles for validation helpers
 -----------------------------------------------------------*/
@@ -313,11 +335,11 @@ ul li
     background-color: #ffeeee;
 }
 
-.validation-summary-errors
+/*.validation-summary-errors
 {
     font-weight: bold;
     color: #ff0000;
-}
+}*/
 
 .validation-summary-valid
 {

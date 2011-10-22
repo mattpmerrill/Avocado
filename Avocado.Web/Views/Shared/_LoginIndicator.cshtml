@@ -28,7 +28,7 @@ else
                     <p>
                         @using (Html.BeginForm("Login", "Account", new { returnUrl = Request.Url }, FormMethod.Post, new { autocomplete = "off", id = "modal-form" }))
                         {
-                            @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "ui-state-error", style = "width:325px; margin-bottom:20px;" })
+                            @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "ui-state-errors", style = "width:325px; margin-bottom:20px;" })
 
                             @Html.TextBoxFor(x => x.Email, new { @class = "form-input", placeholder = "email address" })<br /><br />
         
