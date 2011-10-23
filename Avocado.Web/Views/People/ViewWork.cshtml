@@ -63,7 +63,7 @@
                 <a href="#" class="stats-badge-link">
                     <div class="stats-badge followed pull-left">
                         @Model.UserAccount.Followed.Count()<br />
-                        <span>Followed</span>
+                        <span>Followers</span>
                     </div>
                 </a>
                 <a href="#" class="stats-badge-link">
@@ -98,37 +98,51 @@
             @foreach (var post in Model.Posts)
             { 
                 <div class="clear row-item latest-post" id="@post.PostId">
-                    <div class="title-header">@post.Title</div>
+                    <div class="title-header">@post.Title <span class="pull-right"><a href="/Browse/Category/@post.Category.Name/@post.PostId">view details</a></span></div>
                     <div class="container">
                         <div class="row">
                             <div class="span4">
                                 <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img src="../../Uploads/@Model.UserAccount.UserId.ToString()/@post.MainImage" alt="" /></a>
-                                <div>
-                                    Likes : @post.Likes.Count()
-                                    Saves : @post.Saves.Count()
-                                    Sparks : @post.OriginPost.Count()<br />
-                                    Comments : @post.Comments.Count()
+                                <div class="well item-stats">
+                                    <span class="item-likes pull-left">
+                                        <img src="@Url.Content("~/Content/images/heart-small.png")" alt="likes" />@post.Likes.Count()<br />
+                                        Likes<br />
+                                    </span>
+                                    <span class="item-saves pull-left"><img src="@Url.Content("~/Content/images/bookmark-small.png")" alt="saves" />@post.Saves.Count()<br />Saves<br /></span>
+                                    <span class="item-sparks pull-left"><img src="@Url.Content("~/Content/images/spark-small.png")" alt="sparks" />@post.OriginPost.Count()<br />Sparks<br /></span>
+                                    <div class="clear"></div>
                                 </div>
                             </div>
                             <div class="span8">
                                 <div class="alert-message block-message">
                                     @post.Description
                                 </div>
-                                <div class="alert-message block-message info">
-                                    <div class="comment-block">
-                                        <img src="@Url.Content("~/Content/images/man-small.png")" style="margin-right:10px;" class="pull-left" alt="profile pic" />
-                                        Comment about something!!
+
+                                @if (post.Comments.Count > 0)
+                                { 
+                                    <div class="alert-message block-message info">
+                                        @foreach (var comment in post.Comments.Take(3))
+                                        { 
+                                            <div class="comment-block">
+                                                <img src="@Url.Content("~/Content/images/man-small.png")" style="margin-right:10px;" class="pull-left" alt="profile pic" />
+                                                @comment.Comment1
+                                            </div>
+                                        }
+                                        
+                                        @if (post.Comments.Count > 3)
+                                        { 
+                                            <div style="text-align:center"><a href="#">View All @post.Comments.Count() Comments...</a></div>
+                                        }
                                     </div>
-                                    <div class="comment-block">
-                                        <img src="@Url.Content("~/Content/images/man-small.png")" style="margin-right:10px;" class="pull-left" alt="profile pic" />
-                                        Comment about something!!
+                                }
+                                else
+                                {
+                                    <div class="alert-message block-message info center-stuff">
+                                        No comments yet. <br />
+                                        <a href="#">Be the first to comment on this creation!</a>
                                     </div>
-                                    <div class="comment-block">
-                                        <img src="@Url.Content("~/Content/images/man-small.png")" style="margin-right:10px;" class="pull-left" alt="profile pic" />
-                                        Comment about something!!
-                                    </div>
-                                    <div style="text-align:center"><a href="#">View All Comments...</a></div>
-                                </div>
+                                }
+                                
                             </div>
                         </div>
                     </div>

@@ -27,44 +27,79 @@
                     <div class="row">
                         <div class="span2">
                             <a href="People/ViewWork/@account.UserName"><img src="../../Content/images/man-large.png" alt="profile pic" class="avatar-large" /></a><br />
+                            
+                            
                             @if (Request.IsAuthenticated)
                             { 
-                                <button id="@account.UserId" class="info btn" style="width:95px;">Follow</button>
+                                <button id="@account.UserId" class="info btn" style="width:95px; margin-bottom:5px;">Follow</button>
                             }
                             else 
                             {
-                                <button id="loginToFollowButton" class="info btn modal-button" style="width:95px;">Sign In to Follow</button> 
+                                <button id="loginToFollowButton" class="info btn modal-button" style="width:95px; margin-bottom:5px;">Sign In to Follow</button>
                             }
-                        </div>
-                        <div class="span3">
-                            <h4><a href="People/ViewWork/@account.UserName">@account.UserName</a></h4>
+                            
                             @if (account.FullName != null) { 
-                                <div>@account.FirstName @account.LastName</div>
+                                <div class="xxsmall">@account.FirstName @account.LastName</div>
                             }
                             
                             @if(account.City != null){
-                                <div>South Weber, UT, USA</div><br />
+                                <div class="xxsmall">South Weber, UT, USA</div><br />
                             }
+                            
                         </div>
-                        <div class="span2">
-                            <h4>Stats</h4>
-                            <ul class="stats-list">
+                        <div class="span3">
+                            <h4><a href="People/ViewWork/@account.UserName">@account.UserName</a></h4>
+                            
+                            @*<ul class="stats-list">
                                 <li><a href="People/ViewWork/@account.UserName">@account.Posts.Count() Posts</a></li>
                                 <li><a href="#">@account.Followed.Count() Followers</a></li>
                                 <li><a href="#">@account.Following.Count() Following</a></li>
                                 <li><a href="#">@Model.Sparks sparks</a></li>
-                            </ul>
+                            </ul>*@
+
+                            <div class="clear pull-left" style="padding:0px 0 10px 0px;">
+                                <a href="People/ViewWork/@account.UserName" class="stats-badge-link">
+                                    <div class="stats-badge stats-badge-small posts pull-left">
+                                        @account.Posts.Count()<br />
+                                        <span>Posts</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="stats-badge-link">
+                                    <div class="stats-badge stats-badge-small sparks pull-left">
+                                        @Model.Sparks<br />
+                                        <span>Sparks</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="stats-badge-link">
+                                    <div class="stats-badge stats-badge-small followed pull-left">
+                                        @account.Followed.Count()<br />
+                                        <span>Followers</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="stats-badge-link">
+                                    <div class="stats-badge stats-badge-small following pull-left">
+                                        @account.Following.Count()<br />
+                                        <span>Following</span>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
-                        <div class="span5">
-                            <h4>Most Popular Creations</h4>
+                        
+                        <div class="span7">
+                            <div class="title-header">Most Popular Creations</div>
                             <ul class="post-list">
-                                @foreach (var post in account.Posts.OrderByDescending(p => p.Likes.Count).Where(p => p.Likes.Count > 0).Take(3))
+                                @foreach (var post in account.Posts.OrderByDescending(p => p.Likes.Count).Where(p => p.Likes.Count > 0).Take(4))
                                 { 
                                     <li title="@post.Title">
                                         <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img src="../../Uploads/@post.Account.aspnet_Users.UserId.ToString()/@post.MainImage" alt="" /></a>
                                     </li>
                                 }
                             </ul>
+                            <div class="clear alert-message block-message">
+                                <h5>Specialties & Interests</h5>
+                                Ut sit amet tellus in lorem posuere adipiscing in non dolor. Phasellus aliquet, mi quis vulputate ornare, augue justo fermentum odio, at adipiscing nisi purus sit amet est. 
+                                Curabitur semper metus vel justo facilisis non faucibus ligula tempus. Donec vitae risus eros, non ultrices urna
+                            </div>
                         </div>
                     </div>
                 </section>

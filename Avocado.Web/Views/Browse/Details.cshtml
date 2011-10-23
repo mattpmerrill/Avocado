@@ -8,22 +8,43 @@
 <div class="container">
     <div class="row">
         <div class="span12">
-            <h1>@Model.Post.Title <span class="author-title"><a href="/People/ViewWork/@Model.Post.Account.UserName">by @Model.Post.Account.UserName</a></span></h1>
+            <h1><span class="pull-left">@Model.Post.Title </span><span class="author-title pull-right"><a href="/People/ViewWork/@Model.Post.Account.UserName"><img src="@Url.Content("~/Content/images/man-small.png")" alt="" /> by @Model.Post.Account.UserName</a></span></h1>
+            <div class="clear"></div>
             <hr />
             <ul class="breadcrumb">
                 <li><a href="/Browse">Explore</a><span class="divider">/</span></li>
                 <li><a href="/Browse/Category/@Model.Post.Category.Name">@Model.Post.Category.Name</a> <span class="divider">/</span></li>
                 <li class="active">@Model.Post.Title</li>
             </ul>
-            <hr />
 
-            @Model.Post.Title<br />
-            @Model.Post.Description<br />
-            <img src="@imagePath/@Model.Post.Account.UserId.ToString()/@Model.Post.MainImage" alt="" /><br />
-            @Model.Post.Account.UserName<br />
-            likes : @Model.Post.Likes.Count();
-            sparks : @Model.Post.OriginPost.Count();
-            commments : @Model.Post.Comments.Count();
+            <div class="clear container">
+                <div class="row">
+                    <div class="span5">
+                        <img src="@imagePath/@Model.Post.Account.UserId.ToString()/@Model.Post.MainImage" alt="" />
+                    </div>
+
+                    <div class="span7">
+                        <div class="row-item">
+                            <a href="#"><img src="@Url.Content("~/content/images/heart48.png")" /></a>
+                        </div>
+                        <div class="alert-message block-message">
+                            <h5>Description</h5>
+                            <div class="clear"></div>
+                            @Model.Post.Description
+                        </div>
+
+                        @Model.Post.Account.UserName<br />
+                        likes : @Model.Post.Likes.Count();
+                        sparks : @Model.Post.OriginPost.Count();
+                        commments : @Model.Post.Comments.Count();
+                    </div>
+                </div>
+            </div>
+            
+
+
+           
+            
         </div>
         <div class="span4">
         </div>

@@ -178,12 +178,12 @@ ul li
     font-weight:bold; 
 }
 
-.item-saves, .item-likes, .item-comments
+.item-saves, .item-likes, .item-comments, .item-sparks
 {
     margin-right:20px;
 }
 
-.item-saves img, .item-likes img, .item-comments img
+.item-saves img, .item-likes img, .item-comments img, .item-sparks img
 {
     width:16px;
     height:16px;
@@ -286,11 +286,13 @@ ul li
 .stats-list a
 {
     color:#747171;
+    text-decoration:none;
 }
 
 .stats-list a:hover
 {
-    color:#a3a0a0;
+    color:#747171;
+    text-decoration:underline;
 }
 
 .stats-badge
@@ -316,6 +318,17 @@ ul li
 {
     font-size:14px;
     font-weight:normal;
+}
+
+.stats-badge-small
+{
+    width: 60px;
+    font-size:16px;
+}
+
+.stats-badge-small span
+{
+    font-size:10px;
 }
 
 .posts{background-color:#469846;}

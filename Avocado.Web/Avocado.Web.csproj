@@ -112,9 +112,12 @@
     <Content Include="Content\images\favorites-small.png" />
     <Content Include="Content\images\Girl-profile.png" />
     <Content Include="Content\images\gnome_stock_person.png" />
+    <Content Include="Content\images\man-small.png" />
     <Content Include="Content\images\modal-gloss.png" />
     <Content Include="Content\images\sign-in-with-twitter-d.png" />
     <Content Include="Content\images\sign-in-with-twitter-l.png" />
+    <Content Include="Content\images\spark-medium.png" />
+    <Content Include="Content\images\spark-small.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />

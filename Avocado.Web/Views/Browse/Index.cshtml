@@ -9,7 +9,7 @@
 
 @section Scripts{
     <script type="text/javascript">
-        $('#stats span').twipsy();
+        $('#stats span, item-profile-link').twipsy();
     </script>
 }
 <div class="container">
@@ -38,13 +38,14 @@
                             <div class="span4">
                                 <div class="item-container">
                                     @{ var imagePath = @Url.Content("~/Uploads"); }
-                                    <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img src="@imagePath/@post.Account.UserId.ToString()/@post.MainImage" class="item-image" alt="" /></a><br />
+                                    <a href="/Browse/Category/@post.Category.Name/@post.PostId" class="item-profile-link" title="View more work by @post.Account.UserName"><img src="@imagePath/@post.Account.UserId.ToString()/@post.MainImage" class="item-image" alt="" /></a><br />
                                     <div class="item-info">
                                         <h5 class="title-link"><a href="/Browse/Category/@post.Category.Name/@post.PostId">@((post.Title.Length > 25) ? post.Title.ToString().Substring(0, 25) + "...": post.Title)</a></h5> <!--can be 28 characters long-->
                                         <div id="stats" class="item-stats">
                                             <span class="item-likes pull-left" title="likes"><img src="@Url.Content("~/Content/images/heart-small.png")" alt="likes" />@post.Likes.Count()</span>
                                             <span class="item-saves pull-left" title="saves"><img src="@Url.Content("~/Content/images/bookmark-small.png")" alt="saves" />@post.Saves.Count()</span>
                                             <span class="item-comments pull-left" title="comments"><img src="@Url.Content("~/Content/images/comment-small.png")" alt="comments" />@post.Comments.Count()</span>
+                                            <span class="item-sparks pull-left" title="sparks are awarded you inspire another creation on Creativime!"><img src="@Url.Content("~/Content/images/spark-small.png")" alt="sparks" />@post.OriginPost.Count()</span>
                                             &nbsp;
                                         </div>
                                         <div class="item-description">
