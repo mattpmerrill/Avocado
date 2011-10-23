@@ -1,0 +1,31 @@
+﻿@model Avocado.Web.Models.Browse.PostDetailsViewModel
+           
+@{
+    ViewBag.Title = "Creativime";
+    var imagePath = @Url.Content("~/Uploads");
+}
+
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <h1>@Model.Post.Title <span class="author-title"><a href="/People/ViewWork/@Model.Post.Account.UserName">by @Model.Post.Account.UserName</a></span></h1>
+            <hr />
+            <ul class="breadcrumb">
+                <li><a href="/Browse">Explore</a><span class="divider">/</span></li>
+                <li><a href="/Browse/Category/@Model.Post.Category.Name">@Model.Post.Category.Name</a> <span class="divider">/</span></li>
+                <li class="active">@Model.Post.Title</li>
+            </ul>
+            <hr />
+
+            @Model.Post.Title<br />
+            @Model.Post.Description<br />
+            <img src="@imagePath/@Model.Post.Account.UserId.ToString()/@Model.Post.MainImage" alt="" /><br />
+            @Model.Post.Account.UserName<br />
+            likes : @Model.Post.Likes.Count();
+            sparks : @Model.Post.OriginPost.Count();
+            commments : @Model.Post.Comments.Count();
+        </div>
+        <div class="span4">
+        </div>
+    </div>
+</div>

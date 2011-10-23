@@ -1,0 +1,110 @@
+﻿@model Avocado.Web.Models.Browse.BrowseViewModel
+@{
+    ViewBag.Title = "Category";
+    var category = Model.Category;
+}
+
+@section Head{
+    <script src="@Url.Content("~/Scripts/bootstrap-twipsy.js")" type="text/javascript"></script>
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        $('#stats span').twipsy();
+
+        $('#morePostsButton').click(function () {
+            lastPostFunc();
+        });
+
+        function lastPostFunc() {
+            //$('div#lastPostsLoader').html('<img src="bigLoader.gif">');
+            $.post("/Browse/GetMorePosts?category=@category&lastId=" + $(".latest-post:last").attr("id"),
+                function (data) {
+                    if (data != "") {
+                        $(".latest-post:last").after(data);
+                    }
+                    else {
+                        alert('no more posts');
+                    }
+                    //$('div#lastPostsLoader').empty();
+                });
+        }; 
+    </script>
+}
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <!--main content will goes here-->
+            <h1>Explore Creativime</h1>
+            <hr />
+            <ul class="breadcrumb">
+                @if (@Model.Tag != null)
+                { 
+                    <li><a href="/Browse">Explore</a> <span class="divider">/</span></li>
+                    <li><a href="/Browse/Category/@Model.Category">@Model.Category</a> <span class="divider">/</span></li>
+                    <li class="active">@Model.Tag</li>
+                }
+                else 
+                { 
+                    <li><a href="/Browse">Explore</a> <span class="divider">/</span></li>
+                    <li class="active">@Model.Category</li>
+                }
+            </ul>
+            <section id="@Model.Category" class="browse-section">
+                <div>
+                    <div class="pull-left"><h3 class="title-link"><a href="#">@Model.Category</a></h3></div>
+                </div>
+                    
+                <div class="row clear-all-floats">
+                    @foreach (var post in Model.Posts)
+                    { 
+                        <div class="span4 row-item latest-post" id="@post.PostId">
+                            <div class="item-container">
+                                @{ var imagePath = @Url.Content("~/Uploads"); }
+                                <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img src="@imagePath/@post.Account.UserId.ToString()/@post.MainImage" class="item-image" alt="" /></a><br />
+                                <div class="item-info">
+                                    <h5 class="title-link"><a href="/Browse/Category/@post.Category.Name/@post.PostId">@((post.Title.Length > 25) ? post.Title.ToString().Substring(0, 25) + "..." : post.Title)</a></h5> <!--can be 28 characters long-->
+                                    <div id="stats" class="item-stats">
+                                        <span class="item-likes pull-left" title="likes"><img src="@Url.Content("~/Content/images/heart-small.png")" alt="likes" />@post.Likes.Count()</span>
+                                        <span class="item-saves pull-left" title="saves"><img src="@Url.Content("~/Content/images/bookmark-small.png")" alt="saves" />@post.Saves.Count()</span>
+                                        <span class="item-comments pull-left" title="comments"><img src="@Url.Content("~/Content/images/comment-small.png")" alt="comments" />@post.Comments.Count()</span>
+                                        &nbsp;
+                                    </div>
+                                    <div class="item-description">
+                                        <img class="avatar-small" src="@Url.Content("~/Content/images/man-small.png")" alt="avatar" />
+                                        @((post.Description.Length > 90) ? post.Description.ToString().Substring(0, 90) + "..." : post.Description)
+                                    </div>
+                                    <div class="item-tags">
+                                        <ul>
+                                            @foreach (var t in post.TagToPosts)
+                                            { 
+                                                <li><a href="/Browse/Category/@post.Category.Name/Tag/@t.Tag.Name">@t.Tag.Name</a></li>
+                                            }
+                                        </ul>
+                                    </div>
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </section>
+            <div class="center-stuff"><button id="morePostsButton" class="primary large btn" style="width:250px; height:40px;">More...</button></div>
+        </div>
+        <div class="span4">
+            <!--side content will go here-->
+            <div class="aside">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse tristique purus eget libero fermentum elementum. Fusce nec tortor quam. Mauris elit tortor, commodo vel tincidunt sed, sagittis vel nulla. Donec orci urna, hendrerit sit amet bibendum a, pellentesque pharetra sem. Suspendisse auctor, dolor a rhoncus eleifend, lacus enim sollicitudin ligula, eget aliquam erat nibh quis massa. Nulla facilisi. Nullam ac risus erat, vitae sollicitudin ipsum. In commodo mauris quis purus consectetur interdum. Vivamus ornare consectetur augue id mollis. Phasellus hendrerit erat quis ante viverra consectetur viverra mauris tempor.
+
+            In hac habitasse platea dictumst. Pellentesque pretium interdum ultrices. Sed a ante nisi, id rutrum urna. Curabitur elit arcu, tempor non tincidunt eu, ullamcorper eget massa. Nulla placerat porta velit at malesuada. Pellentesque sed massa ut ante consectetur eleifend. Cras vestibulum nibh at tellus mattis eu bibendum justo venenatis. Nullam urna erat, sodales vitae vulputate ac, dapibus non leo. Sed eleifend mattis tortor vel condimentum. Nullam tempus tristique urna, pulvinar malesuada enim auctor id. Aenean faucibus, ligula ac consectetur vehicula, dui leo dapibus nibh, ut semper arcu magna id eros. Aenean nisl orci, dapibus eu vestibulum vitae, lacinia eu lacus. Suspendisse potenti. Vivamus quam metus, congue sit amet facilisis vitae, aliquam ac orci.
+
+            Ut ipsum nisl, interdum vel congue sed, consequat id risus. Etiam non viverra odio. Praesent quis lorem sed lacus tincidunt dapibus sed in arcu. Donec dapibus, massa sed vestibulum posuere, elit massa posuere quam, non feugiat nibh dolor eget turpis. Praesent euismod vehicula elit et vulputate. Sed sed tortor a felis varius porta. Proin eget tortor a tortor consequat volutpat. Etiam cursus, sem ac faucibus adipiscing, justo massa euismod urna, a vehicula quam velit sed justo. Fusce elit dolor, vestibulum sed euismod sit amet, ullamcorper interdum nisi. Donec vulputate eleifend risus, blandit interdum odio congue at.
+
+            Proin nisl lacus, imperdiet nec adipiscing at, vulputate pharetra dui. Suspendisse vitae molestie dui. Nulla tincidunt, nunc in auctor tempor, mauris urna tempus odio, at imperdiet dolor erat at erat. Vivamus nec vestibulum lorem. Praesent viverra placerat vestibulum. Morbi in arcu felis, et vulputate eros. Nulla purus quam, hendrerit id placerat eu, volutpat a magna.
+
+            Morbi sed arcu urna, eu convallis risus. Quisque pulvinar interdum iaculis. Nam quis urna diam. Duis neque justo, commodo eu lobortis in, mattis eget nibh. Etiam consectetur aliquam ante, ut malesuada eros elementum id. Integer ligula est, fermentum sed hendrerit eu, facilisis sed ante. Curabitur rutrum justo quis diam pretium at condimentum massa aliquam.
+            </div>
+        </div>
+    </div>
+</div>
+

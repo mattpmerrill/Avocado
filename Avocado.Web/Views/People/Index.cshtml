@@ -1,0 +1,80 @@
+﻿@model Avocado.Web.Models.People.CreativesViewModel
+           
+@{
+    ViewBag.Title = "Creativime";
+}
+
+@section Head{
+    <script src="@Url.Content("~/Scripts/bootstrap-twipsy.js")" type="text/javascript"></script>
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        $('.post-list li').twipsy();
+    </script>
+}
+
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <!--main content goes here-->
+            <h1>Get to know the creative community!</h1>
+            <hr />
+
+            @foreach (var account in Model.Accounts) 
+            { 
+                <section id="@account.UserName" class="row-item">
+                    <div class="row">
+                        <div class="span2">
+                            <a href="People/ViewWork/@account.UserName"><img src="../../Content/images/man-large.png" alt="profile pic" class="avatar-large" /></a><br />
+                            @if (Request.IsAuthenticated)
+                            { 
+                                <button id="@account.UserId" class="info btn" style="width:95px;">Follow</button>
+                            }
+                            else 
+                            {
+                                <button id="loginToFollowButton" class="info btn modal-button" style="width:95px;">Sign In to Follow</button> 
+                            }
+                        </div>
+                        <div class="span3">
+                            <h4><a href="People/ViewWork/@account.UserName">@account.UserName</a></h4>
+                            @if (account.FullName != null) { 
+                                <div>@account.FirstName @account.LastName</div>
+                            }
+                            
+                            @if(account.City != null){
+                                <div>South Weber, UT, USA</div><br />
+                            }
+                        </div>
+                        <div class="span2">
+                            <h4>Stats</h4>
+                            <ul class="stats-list">
+                                <li><a href="People/ViewWork/@account.UserName">@account.Posts.Count() Posts</a></li>
+                                <li><a href="#">@account.Followed.Count() Followers</a></li>
+                                <li><a href="#">@account.Following.Count() Following</a></li>
+                                <li><a href="#">@Model.Sparks sparks</a></li>
+                            </ul>
+                        </div>
+                        <div class="span5">
+                            <h4>Most Popular Creations</h4>
+                            <ul class="post-list">
+                                @foreach (var post in account.Posts.OrderByDescending(p => p.Likes.Count).Where(p => p.Likes.Count > 0).Take(3))
+                                { 
+                                    <li title="@post.Title">
+                                        <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img src="../../Uploads/@post.Account.aspnet_Users.UserId.ToString()/@post.MainImage" alt="" /></a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                <hr />
+            }
+
+        </div>
+        <div class="span4">
+            <!--sidebar content goes here-->
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean metus nisl, lacinia at sollicitudin eu, pulvinar sit amet urna. In bibendum facilisis felis sed gravida. Sed eu velit orci, vel ornare diam. Nunc interdum facilisis arcu. Fusce congue tincidunt lectus in sodales. Nulla facilisi. Pellentesque tempus eros vel magna ullamcorper in interdum dui scelerisque. Duis elementum egestas eleifend. Donec vitae elit sed turpis blandit consectetur eget a tortor. Nunc mollis consectetur dignissim. Morbi ut congue leo. Ut ut tellus enim. Curabitur nec eleifend quam. Aliquam convallis ante nec nunc ornare sed vulputate augue pulvinar. Maecenas tortor enim, commodo vel bibendum eu, interdum non ipsum. Nunc gravida, sem eget faucibus malesuada, tellus eros viverra nisl, ac elementum ligula lorem in lacus.
+        </div>
+    </div>
+</div>
