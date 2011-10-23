@@ -106,6 +106,7 @@
     <Content Include="Content\css\reveal.css" />
     <Content Include="Content\images\avatar.jpg" />
     <Content Include="Content\images\avatar2.jpg" />
+    <Content Include="Content\images\comment-medium.png" />
     <Content Include="Content\images\comment-small.png" />
     <Content Include="Content\images\comment.png" />
     <Content Include="Content\images\favorites-small.png" />

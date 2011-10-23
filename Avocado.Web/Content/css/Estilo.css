@@ -135,6 +135,12 @@ ul li
     cursor:pointer;
 }
 
+.comment-block
+{
+    border-bottom:1px solid #c3d4e1;
+    padding: 10px 0 10px 0;
+}
+
 .editor-label 
 {
     margin: 1em 0 0 0;
