@@ -237,6 +237,31 @@ ul li
     text-decoration:underline;
 }
 
+.action-bar-like, .action-bar-save
+{
+    display:block;
+    text-align:center;
+    width:65px;
+    text-decoration:none;
+    color:#404040;
+    font-weight:bold;
+    padding:10px 5px;
+    margin-right:5px;
+}
+
+.action-bar-like:hover, .action-bar-save:hover
+{
+    
+    color:#fff;
+    text-decoration:none;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
+.action-bar-like:hover{ background-color:#af4646; }
+.action-bar-save:hover{ background-color:#469846; }
+
 .avatar-small
 {
     width: 24px;

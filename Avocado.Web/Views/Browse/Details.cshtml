@@ -20,23 +20,76 @@
             <div class="clear container">
                 <div class="row">
                     <div class="span5">
-                        <img src="@imagePath/@Model.Post.Account.UserId.ToString()/@Model.Post.MainImage" alt="" />
+                        <img src="@imagePath/@Model.Post.Account.UserId.ToString()/@Model.Post.MainImage" alt="" /><br />
+                        likes : @Model.Post.Likes.Count()
+                        sparks : @Model.Post.OriginPost.Count()
+                        commments : @Model.Post.Comments.Count()
                     </div>
 
                     <div class="span7">
                         <div class="row-item">
-                            <a href="#"><img src="@Url.Content("~/content/images/heart48.png")" /></a>
+                            @if (Request.IsAuthenticated)
+                            { 
+                                <a class="action-bar-like pull-left" href="#">
+                                    <img src="@Url.Content("~/content/images/heart48.png")" alt="" /><br />
+                                    <span>Like</span>
+                                </a>
+                                <a class="action-bar-save pull-left" href="#">
+                                    <img src="@Url.Content("~/content/images/bookmark-medium.png")" alt="" /><br />
+                                    <span>Save</span>
+                                </a>
+                            }
+                            else
+                            { 
+                                <a class="action-bar-like pull-left modal-button" href="#">
+                                    <img src="@Url.Content("~/content/images/heart48.png")" alt="" /><br />
+                                    <span>Sign in to Like</span>
+                                </a>
+                                <a class="action-bar-save pull-left modal-button" href="#">
+                                    <img src="@Url.Content("~/content/images/bookmark-medium.png")" alt="" /><br />
+                                    <span>Sign in to Save</span>
+                                </a>
+                            }
                         </div>
-                        <div class="alert-message block-message">
+                        <div class="clear">&nbsp;</div>
+                        <div class="clear alert-message block-message">
                             <h5>Description</h5>
                             <div class="clear"></div>
                             @Model.Post.Description
                         </div>
-
-                        @Model.Post.Account.UserName<br />
-                        likes : @Model.Post.Likes.Count();
-                        sparks : @Model.Post.OriginPost.Count();
-                        commments : @Model.Post.Comments.Count();
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span12">
+                        @if (Model.Post.Comments.Count > 0)
+                        {
+                            if (Request.IsAuthenticated)
+                            {
+                                <div class="alert-message block-message info">
+                                <h5>Comments</h5>
+                                @foreach (var comment in Model.Post.Comments)
+                                { 
+                                    <div class="comment-block">
+                                        <img src="@Url.Content("~/Content/images/man-small.png")" style="margin-right:10px;" class="pull-left" alt="profile pic" />
+                                        @comment.Comment1
+                                    </div>
+                                }
+                                </div>
+                            }
+                            else { 
+                                <div class="alert-message block-message info center-stuff">
+                                    <a href="#" class="modal-button">Sign in to leave & read comments</a>
+                                </div>
+                            }
+                            
+                        }
+                        else
+                        {
+                            <div class="alert-message block-message info center-stuff">
+                                No comments yet. <br />
+                                <a href="#">Be the first to comment on this creation!</a>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
