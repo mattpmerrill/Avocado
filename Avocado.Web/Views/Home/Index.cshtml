@@ -1,8 +1,108 @@
-﻿@{
-    ViewBag.Title = "Index";
+﻿@model Avocado.Web.Models.Browse.BrowseViewModel
+           
+@{
+    ViewBag.Title = "Creativime";
 }
 
-<div class="container">
-    <h1>Home page</h1>
+@section Head{
+    <link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:700|Love+Ya+Like+A+Sister' rel='stylesheet' type='text/css'>
+
+    <style type="text/css">
+        .logo
+        {
+            font-family: 'Love Ya Like A Sister','Cabin Sketch', cursive;
+        }
+        
+        .xxlarge
+        {
+            font-size:100px;
+        }
+        
+        .large
+        {
+            font-size:45px;
+        }
+        
+        .medium
+        {
+            font-size:25px;
+            line-height:1.3em;
+        }
+    </style>
+    
+}
+
+<div class="container" style="padding-top:75px;">
+    <div class="row">
+        <div class="span12">
+            <h1 class="logo xxlarge">Creativime</h1>
+            <div class="clear row-below large" style="margin-top:75px; line-height:1.3em;">
+                The social network for <div class="logo" style="color:#af4646;">creative people!</div>
+            </div>
+            <div class="row-below medium">
+                Share your creations and find inspiration from others. It's free and easy to start sharing. Join today!
+            </div>
+            <div class="row-below">
+                [ PUT FACEBOOK LOGIN HERE ]
+            </div>
+        </div>
+
+        <div class="span4">
+            
+            <div class="alert-message block-message" style="width:100%;">
+                <h2>Join For Free!</h2>
+                <div class="clear">
+                    <input type="text" placeholder="user name" /><br /><br />
+                    <input type="text" placeholder="email address" /><br /><br />
+                    <input type="text" placeholder="password" /><br /><br />
+                    <input type="button" class="btn success" value="Sign Up" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top:100px;">&nbsp;</div>
+    <div class="clear row">
+        <div class="span16">
+            <div class="medium">Start exploring our <span class="logo"><a href="/browse">creative community</a></span></div>
+            <div class="row">
+                @foreach (var post in Model.Posts) 
+                {
+                    var userName = post.Account.UserName;
+                            
+                    <div class="span4">
+                        <div class="item-container">
+                            @{ var imagePath = @Url.Content("~/Uploads"); }
+                            <a href="/Browse/Category/@post.Category.Name/@post.PostId" class="item-profile-link" title="View more work by @post.Account.UserName"><img src="@imagePath/@post.Account.UserId.ToString()/@post.MainImage" class="item-image" alt="" /></a><br />
+                            <div class="item-info">
+                                <h5 class="title-link"><a href="/Browse/Category/@post.Category.Name/@post.PostId">@((post.Title.Length > 25) ? post.Title.ToString().Substring(0, 25) + "...": post.Title)</a></h5> <!--can be 28 characters long-->
+                                <div id="stats" class="item-stats">
+                                    <span class="item-likes pull-left" title="likes"><img src="@Url.Content("~/Content/images/heart-small.png")" alt="likes" />@post.Likes.Count()</span>
+                                    <span class="item-saves pull-left" title="saves"><img src="@Url.Content("~/Content/images/bookmark-small.png")" alt="saves" />@post.Saves.Count()</span>
+                                    <span class="item-comments pull-left" title="comments"><img src="@Url.Content("~/Content/images/comment-small.png")" alt="comments" />@post.Comments.Count()</span>
+                                    <span class="item-sparks pull-left" title="sparks are awarded you inspire another creation on Creativime!"><img src="@Url.Content("~/Content/images/spark-small.png")" alt="sparks" />@post.OriginPost.Count()</span>
+                                    &nbsp;
+                                </div>
+                                <div class="item-description">
+                                    <a href="/People/ViewWork/@userName"><img class="avatar-small" src="@Url.Content("~/Content/images/man-small.png")" alt="avatar" /></a>
+                                    @((post.Description.Length > 90) ? post.Description.ToString().Substring(0, 90) + "..." : post.Description)
+                                </div>
+                                <div class="item-tags">
+                                    <ul>
+                                        @foreach (var t in post.TagToPosts)
+                                        { 
+                                            <li><a href="/Browse/Category/@post.Category.Name/Tag/@t.Tag.Name">@t.Tag.Name</a></li>
+                                        }
+                                    </ul>
+                                </div>
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    
 </div>
 
