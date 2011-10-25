@@ -5,12 +5,19 @@
 }
 
 @section Head{
-    <link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:700|Love+Ya+Like+A+Sister' rel='stylesheet' type='text/css'>
-
+    <link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:700' rel='stylesheet' type='text/css'>
+    @*<link href='http://fonts.googleapis.com/css?family=Philosopher|Rancho|Satisfy|Mountains+of+Christmas|Dancing+Script|Miltonian+Tattoo' rel='stylesheet' type='text/css'>*@
     <style type="text/css">
         .logo
         {
-            font-family: 'Love Ya Like A Sister','Cabin Sketch', cursive;
+            font-family: 'Cabin Sketch', cursive;
+            @*font-family: 'Love Ya Like A Sister','Cabin Sketch', cursive;*@
+            @*font-family: 'Satisfy', cursive;*@
+            @*font-family: 'Rancho', cursive;*@
+            @*font-family: 'Mountains of Christmas', cursive;*@
+            @*font-family: 'Dancing Script', cursive;*@
+            @*font-family: 'Philosopher', sans-serif;*@
+            @*font-family: 'Miltonian Tattoo', cursive;*@
         }
         
         .xxlarge
@@ -35,7 +42,7 @@
 <div class="container" style="padding-top:75px;">
     <div class="row">
         <div class="span12">
-            <h1 class="logo xxlarge">Creativime</h1>
+            <span class="logo xxlarge">Creativime</span>
             <div class="clear row-below large" style="margin-top:75px; line-height:1.3em;">
                 The social network for <div class="logo" style="color:#af4646;">creative people!</div>
             </div>
@@ -64,8 +71,8 @@
     <div style="margin-top:100px;">&nbsp;</div>
     <div class="clear row">
         <div class="span16">
-            <div class="medium">Start exploring our <span class="logo"><a href="/browse">creative community</a></span></div>
-            <div class="row">
+            <div class="medium">Start exploring our <span class="logo"><a href="/browse" style="font-size:30px;">creative community</a></span></div>
+            <div class="row" style="margin-top:10px;">
                 @foreach (var post in Model.Posts) 
                 {
                     var userName = post.Account.UserName;
