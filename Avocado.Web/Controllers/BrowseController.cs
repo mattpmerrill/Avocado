@@ -26,6 +26,14 @@ namespace Avocado.Web.Controllers
             return View(model);
         }
 
+        public ViewResult Latest()
+        {
+            BrowseViewModel model = new BrowseViewModel();
+            model.Posts = _browseServcie.getAllLatestItems().ToList();
+
+            return View(model);
+        }
+
         public ViewResult Category(string category)
         {
             BrowseViewModel model = new BrowseViewModel();
@@ -49,7 +57,16 @@ namespace Avocado.Web.Controllers
         {
             BrowseViewModel model = new BrowseViewModel();
             model.Category = category;
-            model.Posts = _browseServcie.getAdditionalPostsFromCategory(category, lastId).ToList();
+
+            if (category == "none")
+            {
+                model.Posts = _browseServcie.getAdditionalPostsFromAllLatest(lastId).ToList();
+            }
+            else
+            {
+                model.Posts = _browseServcie.getAdditionalPostsFromCategory(category, lastId).ToList();
+            }
+            
 
             if (model.Posts.Count > 0)
                 return PartialView("_AdditionalPosts", model);

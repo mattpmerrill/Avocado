@@ -30,7 +30,13 @@
             <div class="container">
                 <a class="brand" href="#" id="sitename">Creativime</a>
                 <ul class="nav">
+                    <li>
+                        @if (Request.IsAuthenticated) { 
+                        <a href="#">Feed</a>
+                        }
+                    </li>
                     <li class="dropdown">
+                        
                         <a class="dropdown-toggle" href="/Browse">Explore</a>
                         <ul class="dropdown-menu">
                             <li><a href="/Browse">All</a></li>
@@ -49,6 +55,7 @@
             </div>
         </div>
     </div>
+    <div class="row-bottom">&nbsp;</div>
 
     <!--each page will define it's own grid system within it's main container-->
     @RenderBody()

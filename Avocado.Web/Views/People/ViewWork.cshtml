@@ -34,6 +34,14 @@
 
 <div class="container">
     <div class="row">
+        <div class="span16">
+            <ul class="tabs">
+              <li><a href="/Browse">Explore</a></li>
+              <li class="active"><a href="/People">People</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
         <div class="span4">
             <img src="../../Content/images/man-large.png" alt="profile pic" class="avatar-xlarge pull-left" /><br />
             <div class="clear title-header">
@@ -89,9 +97,8 @@
         <div class="span12">
             <!--main content goes here-->
             <h1>@(Model.UserAccount.UserName)'s Work</h1>
-            <hr />
+
             <ul class="breadcrumb">
-                <li><a href="/Browse">Explore</a><span class="divider">/</span></li>
                 <li><a href="/People">People</a> <span class="divider">/</span></li>
                 <li class="active">@Model.UserAccount.UserName</li>
             </ul>

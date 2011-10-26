@@ -38,5 +38,27 @@ namespace Avocado.Domain.Concrete
         {
             return _data.Accounts.FirstOrDefault(x => x.UserName == userName);
         }
+
+        public int follow(string followerUserName, string followedUserId)
+        {
+            try
+            {
+                Guid follower = new Guid(followedUserId);
+                int followerAccountId = _data.Accounts.Where(x => x.aspnet_Users.UserName == followerUserName).Select(a => a.AccountId).SingleOrDefault();
+                int followedAccountId = _data.Accounts.Where(x => x.UserId == follower).Select(a => a.AccountId).SingleOrDefault();
+
+                Follow newFollow = new Follow();
+                newFollow.FollowedAccountId = followedAccountId;
+                newFollow.FollowerAccountId = followerAccountId;
+                newFollow.InsertDate = DateTime.UtcNow;
+
+                _data.Follows.AddObject(newFollow);
+                return _data.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
     }
 }

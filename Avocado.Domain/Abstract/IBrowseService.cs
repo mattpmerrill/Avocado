@@ -9,6 +9,8 @@ namespace Avocado.Domain.Abstract
 {
     public interface IBrowseService
     {
+        IQueryable<Post> getAllLatestItems();
+        IQueryable<Post> getAdditionalPostsFromAllLatest(int lastPostId);
         IQueryable<Post> getLatestItemsByCategory(string category);
         IQueryable<Post> getLatestItemsByDate();
         IQueryable<Post> getLatestItemsByCategoryAndTag(string category, string tag);

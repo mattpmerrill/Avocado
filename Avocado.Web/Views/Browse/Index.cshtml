@@ -12,12 +12,22 @@
         $('#stats span, item-profile-link').twipsy();
     </script>
 }
+
 <div class="container">
+    <div class="row">
+        <div class="span16">
+            <ul class="tabs">
+              @if (Request.IsAuthenticated) { <li><a href="#">Feed</a></li> }
+              <li class="active"><a href="/Browse">Explore</a></li>
+              <li><a href="/People">People</a></li>
+            </ul>
+        </div>
+    </div>
     <div class="row">
         <div class="span12">
             <!--main content will goes here-->
             <h1>Explore Creativime</h1>
-            <hr />
+            
             @{
                 var groupedPosts = Model.Posts.GroupBy(p => p.Category.Name); /*.OrderByDescending(a => a.Key)*/
             }
@@ -45,7 +55,7 @@
                                             <span class="item-likes pull-left" title="likes"><img src="@Url.Content("~/Content/images/heart-small.png")" alt="likes" />@post.Likes.Count()</span>
                                             <span class="item-saves pull-left" title="saves"><img src="@Url.Content("~/Content/images/bookmark-small.png")" alt="saves" />@post.Saves.Count()</span>
                                             <span class="item-comments pull-left" title="comments"><img src="@Url.Content("~/Content/images/comment-small.png")" alt="comments" />@post.Comments.Count()</span>
-                                            <span class="item-sparks pull-left" title="sparks are awarded you inspire another creation on Creativime!"><img src="@Url.Content("~/Content/images/spark-small.png")" alt="sparks" />@post.OriginPost.Count()</span>
+                                            <span class="item-sparks pull-left" title="sparks are awarded when you inspire another creation on Creativime!"><img src="@Url.Content("~/Content/images/spark-small.png")" alt="sparks" />@post.OriginPost.Count()</span>
                                             &nbsp;
                                         </div>
                                         <div class="item-description">

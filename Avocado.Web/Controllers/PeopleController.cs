@@ -66,5 +66,19 @@ namespace Avocado.Web.Controllers
                 return null;
         }
 
+        [HttpPost]
+        public string Follow(string follower, string followed)
+        {
+            if (_peopleServcie.follow(follower, followed) > 0)
+            {
+                return "success";
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
     }
 }

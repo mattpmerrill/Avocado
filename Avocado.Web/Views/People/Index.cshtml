@@ -2,6 +2,8 @@
            
 @{
     ViewBag.Title = "Creativime";
+    var authenticatedUser = (Request.IsAuthenticated) ? Membership.GetUser().UserName : null;
+    var authenticatedAccountId = Request.Cookies["accountCookie"]["accountId"];
 }
 
 @section Head{
@@ -11,15 +13,36 @@
 @section Scripts{
     <script type="text/javascript">
         $('.post-list li').twipsy();
+
+        $('.follow').click(function () {
+            $.post("/People/Follow?follower=@authenticatedUser&followed=" + this.id,
+                function (data) {
+                    if (data != "") {
+                        alert('now following');
+                    }
+                    else {
+                        alert('there was an error trying to follow');
+                    }
+                    //$('div#lastPostsLoader').empty();
+                });
+        });
     </script>
 }
 
 <div class="container">
     <div class="row">
+        <div class="span16">
+            <ul class="tabs">
+              @if (Request.IsAuthenticated) { <li><a href="#">Feed</a></li> }
+              <li><a href="/Browse">Explore</a></li>
+              <li class="active"><a href="/People">People</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
         <div class="span12">
             <!--main content goes here-->
             <h1>Get to know the creative community!</h1>
-            <hr />
 
             @foreach (var account in Model.Accounts) 
             { 
@@ -30,19 +53,29 @@
                             
                             
                             @if (Request.IsAuthenticated)
-                            { 
-                                <button id="@account.UserId" class="info btn" style="width:95px; margin-bottom:5px;">Follow</button>
+                            {
+                                if (account.Followed.Any(x => x.FollowerAccountId == Convert.ToInt32(authenticatedAccountId)))
+                                {
+                                    <button class="success btn disabled" style="width:95px; margin-bottom:5px;">Following</button>
+                                }
+                                else
+                                { 
+                                    <button id="@account.UserId" class="btn follow" style="width:95px; margin-bottom:5px;">Follow</button>
+                                }
+
                             }
-                            else 
+                            else
                             {
                                 <button id="loginToFollowButton" class="info btn modal-button" style="width:95px; margin-bottom:5px;">Sign In to Follow</button>
                             }
                             
-                            @if (account.FullName != null) { 
+                            @if (account.FullName != null)
+                            { 
                                 <div class="xxsmall">@account.FirstName @account.LastName</div>
                             }
                             
-                            @if(account.City != null){
+                            @if (account.City != null)
+                            {
                                 <div class="xxsmall">South Weber, UT, USA</div><br />
                             }
                             

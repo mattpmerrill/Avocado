@@ -17,6 +17,18 @@ namespace Avocado.Domain.Concrete
             _data = new AvocadoEntities(connectionString);
         }
 
+        public IQueryable<Post> getAllLatestItems()
+        {
+            return _data.Posts.OrderByDescending(x => x.PostId).Take(21);
+        }
+
+        public IQueryable<Post> getAdditionalPostsFromAllLatest(int lastPostId)
+        {
+            IQueryable<Post> posts = _data.Posts.OrderByDescending(x => x.PostId).Where(x => x.PostId < lastPostId).Take(15);
+
+            return posts;
+        }
+
         public IQueryable<Post> getLatestItemsByDate()
         {
             return _data.Posts.OrderByDescending(x => x.PostId).Take(4);

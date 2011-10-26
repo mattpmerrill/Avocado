@@ -37,7 +37,12 @@ namespace Avocado.Web.Controllers
             {
                 if (_authenticationService.AuthenticateUser(model.Email, model.Password))
                 {
+                    HttpCookie accountCookie = new HttpCookie("accountCookie");
+                    accountCookie.Values.Add("accountId", "1");
+                    Response.SetCookie(accountCookie);
+
                     _authenticationService.LogIn(model.Email, createPersistentCookie: false);
+
 
                     if (!String.IsNullOrEmpty(returnUrl))
                         return Redirect(returnUrl);

@@ -7,10 +7,18 @@
 
 <div class="container">
     <div class="row">
+        <div class="span16">
+            <ul class="tabs">
+              <li class="active"><a href="/Browse">Explore</a></li>
+              <li><a href="/People">People</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
         <div class="span12">
             <h1><span class="pull-left">@Model.Post.Title </span><span class="author-title pull-right"><a href="/People/ViewWork/@Model.Post.Account.UserName"><img src="@Url.Content("~/Content/images/man-small.png")" alt="" /> by @Model.Post.Account.UserName</a></span></h1>
             <div class="clear"></div>
-            <hr />
+            
             <ul class="breadcrumb">
                 <li><a href="/Browse">Explore</a><span class="divider">/</span></li>
                 <li><a href="/Browse/Category/@Model.Post.Category.Name">@Model.Post.Category.Name</a> <span class="divider">/</span></li>
