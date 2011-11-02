@@ -109,9 +109,11 @@
     <Content Include="Content\images\comment-medium.png" />
     <Content Include="Content\images\comment-small.png" />
     <Content Include="Content\images\comment.png" />
+    <Content Include="Content\images\facebook-btn.png" />
     <Content Include="Content\images\favorites-small.png" />
     <Content Include="Content\images\Girl-profile.png" />
     <Content Include="Content\images\gnome_stock_person.png" />
+    <Content Include="Content\images\line.jpg" />
     <Content Include="Content\images\man-small.png" />
     <Content Include="Content\images\modal-gloss.png" />
     <Content Include="Content\images\sign-in-with-twitter-d.png" />
@@ -281,7 +283,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>58828</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:58828</IISUrl>
+          <IISUrl>http://localhost:58828/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

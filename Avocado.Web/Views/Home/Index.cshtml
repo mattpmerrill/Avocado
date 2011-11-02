@@ -6,18 +6,10 @@
 
 @section Head{
     <link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:700' rel='stylesheet' type='text/css'>
-    @*<link href='http://fonts.googleapis.com/css?family=Philosopher|Rancho|Satisfy|Mountains+of+Christmas|Dancing+Script|Miltonian+Tattoo' rel='stylesheet' type='text/css'>*@
     <style type="text/css">
         .logo
         {
             font-family: 'Cabin Sketch', cursive;
-            @*font-family: 'Love Ya Like A Sister','Cabin Sketch', cursive;*@
-            @*font-family: 'Satisfy', cursive;*@
-            @*font-family: 'Rancho', cursive;*@
-            @*font-family: 'Mountains of Christmas', cursive;*@
-            @*font-family: 'Dancing Script', cursive;*@
-            @*font-family: 'Philosopher', sans-serif;*@
-            @*font-family: 'Miltonian Tattoo', cursive;*@
         }
         
         .xxlarge
@@ -35,12 +27,31 @@
             font-size:25px;
             line-height:1.3em;
         }
+       
     </style>
-    
 }
 
-
-
+@section Scripts{
+<script type="text/javascript">
+    $('.facebookButton').click(function () {
+        FB.login(function (response) {
+            if (response.authResponse) {
+                if (response.scope) {
+                    // user is logged in and granted some permissions.
+                    // perms is a comma separated list of granted permissions
+                    alert('im logged in with permissions');
+                }
+                else {
+                    // user is logged in, but did not grant any permissions
+                }
+            }
+            else {
+                // user is not logged in
+            }
+        }, { scope: 'publish_stream,email' });
+    });
+</script>
+}
 <div class="container" style="padding-top:75px;">
     <div class="row">
         <div class="span12">
@@ -52,7 +63,15 @@
                 Share your creations and find inspiration from others. It's free and easy to start sharing. Join today!
             </div>
             <div class="row-below">
-                [ PUT FACEBOOK LOGIN HERE ]
+                <div style="padding-top:25px;">
+                    <div class="pull-left" style="text-align:center; margin-right:50px;">
+                        <div class="medium"><a class="facebookButton logo" href="#" style="color:#536296">Join through Facebook</a></div>
+                        <a class="facebookButton" href="#"><img src="@Url.Content("~/content/images/hand_drawn_facebook96.png")" alt="facebook button" /></a><br />
+                    </div>
+                    <div class="pull-left medium logo" style="margin-right:50px;">or</div>
+                    <div class="pull-left medium">Sign up with your email</div>
+                </div>
+                
             </div>
         </div>
 
@@ -67,10 +86,11 @@
                     <input type="button" class="btn success" value="Sign Up" />
                 </div>
             </div>
+            <div class="fb-facepile" data-app_id="183406445033444" data-width="325" data-max-rows="2"></div>
         </div>
     </div>
 
-    <div style="margin-top:100px;">&nbsp;</div>
+    <div style="margin-top:75px;">&nbsp;</div>
     <div class="clear row">
         <div class="span16">
             <div class="medium">Start exploring our <span class="logo"><a href="/browse" style="font-size:30px;">creative community</a></span></div>

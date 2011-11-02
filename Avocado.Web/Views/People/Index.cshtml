@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Creativime";
     var authenticatedUser = (Request.IsAuthenticated) ? Membership.GetUser().UserName : null;
-    var authenticatedAccountId = Request.Cookies["accountCookie"]["accountId"];
+    var authenticatedAccountId = Request.Cookies["accountCookie"] != null ? Request.Cookies["accountCookie"]["accountId"] : null;
 }
 
 @section Head{
