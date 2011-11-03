@@ -4,7 +4,7 @@
 { 
     <ul class="nav">
         <li class="dropdown">
-            <a href="#" class="dropdown-toggle">Welcome @Context.User.Identity.Name</a>
+            <a href="#" class="dropdown-toggle">Welcome @User.Identity.Name.Split('|')[0]</a>
             <ul class="dropdown-menu">
                 <li><a href="/Account/Logout">Logout</a></li>
             </ul>
@@ -15,7 +15,7 @@ else
 {
     <div style="margin:5px 0 0 0;">
         <button id="modal-button" class="btn primary modal-button">Sign In</button>
-        <button id="register-button" class="btn success">New? Join for free!</button>
+        <button id="register-button" class="btn success">New? Join Now!</button>
     </div>
     
     <div id="my-modal" class="reveal-modal xlarge">
@@ -30,7 +30,7 @@ else
                         {
                             @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "ui-state-errors", style = "width:325px; margin-bottom:20px;" })
 
-                            @Html.TextBoxFor(x => x.Email, new { @class = "form-input", placeholder = "email address" })<br /><br />
+                            @Html.TextBoxFor(x => x.SignInUserName, new { @class = "form-input", placeholder = "user name" })<br /><br />
         
                             @Html.PasswordFor(x => x.Password, new { @class = "form-input", placeholder = "password" })<br /><br />
     

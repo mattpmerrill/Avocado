@@ -8,7 +8,7 @@ namespace Avocado.Domain.Abstract
     public interface IFormsAuthenticationService
     {
         bool AuthenticateUser(string userName, string password);
-        void LogIn(string userName, bool createPersistentCookie);
+        void LogIn(string ticket, bool createPersistentCookie);
         void LogOut();
     }
 }

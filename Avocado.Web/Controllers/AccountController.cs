@@ -35,13 +35,14 @@ namespace Avocado.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_authenticationService.AuthenticateUser(model.Email, model.Password))
+                if (_authenticationService.AuthenticateUser(model.SignInUserName, model.Password))
                 {
-                    HttpCookie accountCookie = new HttpCookie("accountCookie");
-                    accountCookie.Values.Add("accountId", "1");
-                    Response.SetCookie(accountCookie);
+                    //get accountId for this user
+                    int accountId = _membershipService.GetAccountId(model.SignInUserName);
+                    //create the authTicket that will hold user data
+                    string ticket = model.SignInUserName + "|" + accountId;
 
-                    _authenticationService.LogIn(model.Email, createPersistentCookie: false);
+                    _authenticationService.LogIn(ticket, createPersistentCookie: true);
 
 
                     if (!String.IsNullOrEmpty(returnUrl))
@@ -124,7 +125,7 @@ namespace Avocado.Web.Controllers
         [HttpPost]
         public ActionResult ModalLogIn(SignInViewModel model)
         {
-            var data = new { name = model.Email, password = model.Password };
+            var data = new { name = model.SignInUserName, password = model.Password };
             return Json(data);
         }
 
@@ -152,7 +153,7 @@ namespace Avocado.Web.Controllers
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
-                    _authenticationService.LogIn(userName: model.Email, createPersistentCookie: true);
+                    _authenticationService.LogIn(ticket: model.Email, createPersistentCookie: true);
                     return RedirectToAction("Index", "Home");
                 }
                 else

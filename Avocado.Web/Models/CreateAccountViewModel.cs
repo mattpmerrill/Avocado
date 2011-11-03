@@ -11,7 +11,7 @@ namespace Avocado.Web.Models
     public class CreateAccountViewModel
     {
         [Required]
-        [DisplayName("username")]
+        [DisplayName("user name")]
         public string UserName { get; set; }
 
         [Required]

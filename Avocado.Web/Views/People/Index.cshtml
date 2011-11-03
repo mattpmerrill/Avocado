@@ -2,8 +2,14 @@
            
 @{
     ViewBag.Title = "Creativime";
-    var authenticatedUser = (Request.IsAuthenticated) ? Membership.GetUser().UserName : null;
-    var authenticatedAccountId = Request.Cookies["accountCookie"] != null ? Request.Cookies["accountCookie"]["accountId"] : null;
+    string _userName = null;
+    string _accountId = null;
+    
+    if (Request.IsAuthenticated)
+    {
+        _userName = User.Identity.Name.Split('|')[0];
+        _accountId = User.Identity.Name.Split('|')[1];
+    }
 }
 
 @section Head{
@@ -15,7 +21,7 @@
         $('.post-list li').twipsy();
 
         $('.follow').click(function () {
-            $.post("/People/Follow?follower=@authenticatedUser&followed=" + this.id,
+            $.post("/People/Follow?follower=@_userName&followed=" + this.id,
                 function (data) {
                     if (data != "") {
                         alert('now following');
@@ -54,7 +60,7 @@
                             
                             @if (Request.IsAuthenticated)
                             {
-                                if (account.Followed.Any(x => x.FollowerAccountId == Convert.ToInt32(authenticatedAccountId)))
+                                if (account.Followed.Any(x => x.FollowerAccountId == Convert.ToInt32(_accountId)))
                                 {
                                     <button class="success btn disabled" style="width:95px; margin-bottom:5px;">Following</button>
                                 }

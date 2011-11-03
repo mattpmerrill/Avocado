@@ -154,5 +154,10 @@ namespace Avocado.Domain.Concrete
                 return false;
             }
         }
+
+        public int GetAccountId(string userName)
+        {
+            return _data.Accounts.Where(x => x.aspnet_Users.LoweredUserName == userName.ToLower()).Select(x => x.AccountId).FirstOrDefault();
+        }
     }
 }

@@ -4,59 +4,26 @@
     ViewBag.Title = "CreateAccount";
 }
 
-@*<div id="fb-root"></div>
-*@
 <script type="text/javascript">
-
-    window.fbAsyncInit = function () {
-        FB.init({ appId: '183406445033444', status: true, cookie: true, xfbml: true });
-
-        FB.getLoginStatus(function (response) {
-            if (response.session) {
-                // logged in and connected user, someone you know
-                //login();
-                //alert('You are logged into Facebook right now');
-            }
-        });
-
-        FB.api('/me', function (response) {
-            $('#EmailAddress').val(response.email);
-            //$('#FullName').val(response.name);
-            $('#Password').val('');
-        });
-    };
-
-
-//    (function () {
-//        var e = document.createElement('script');
-//        e.type = 'text/javascript';
-//        e.src = document.location.protocol +
-//            '//connect.facebook.net/en_US/all.js';
-//        e.async = true;
-//        document.getElementById('fb-root').appendChild(e);
-    //    } ());
-
-    $(function () {
-        $(".alert-message").alert('close');
-        $('#UserName').blur(function () {
-            if ($("#UserName").val()) {
-                $.post("/Account/CheckUserNameAvailability", { userName: $("#UserName").val() },
-                    function (data) {
-                        var myObject = eval('(' + data + ')');
-                        var newid = myObject;
-                        if (newid == 0) {
-                            $("#availabilityMessage").html("<span style='color:green;'>username available :-D</span>")
-                        }
-                        else {
-                            $("#UserName").addClass('input-validation-error');
-                            $("#availabilityMessage").html("<span style='color:red;'>username taken :-(</span>");
-                        }
-                    });
-            }
-
-        });
+$(function () {
+    //$(".alert-message").alert('close');
+    $('#UserName').blur(function () {
+        if ($("#UserName").val()) {
+            $.post("/Account/CheckUserNameAvailability", { userName: $("#UserName").val() },
+                function (data) {
+                    var myObject = eval('(' + data + ')');
+                    var newid = myObject;
+                    if (newid == 0) {
+                        $("#availabilityMessage").html("<span style='color:green;'>username available :-D</span>")
+                    }
+                    else {
+                        $("#UserName").addClass('input-validation-error');
+                        $("#availabilityMessage").html("<span style='color:red;'>username taken :-(</span>");
+                    }
+                });
+        }
     });
-    
+});
 </script>
 
 <div class="container">
@@ -70,7 +37,7 @@
     { 
         @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "alert-message error" })
 
-        @Html.TextBoxFor(x => x.UserName, new { @class = "form-input", placeholder = "username" })
+        @Html.TextBoxFor(x => x.UserName, new { @class = "form-input", placeholder = "choose a user name" })
         <span id="availabilityMessage"></span>
         <br /><br />
         

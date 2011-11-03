@@ -9,11 +9,11 @@ namespace Avocado.Domain.Concrete
 {
     public class FormsAuthenticationService : IFormsAuthenticationService
     {
-        public void LogIn(string userName, bool createPersistentCookie)
+        public void LogIn(string ticket, bool createPersistentCookie)
         {
-            if (String.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
+            if (String.IsNullOrEmpty(ticket)) throw new ArgumentException("Value cannot be null or empty.", "userName");
 
-            FormsAuthentication.SetAuthCookie(userName, createPersistentCookie);
+            FormsAuthentication.SetAuthCookie(ticket, createPersistentCookie);
         }
 
         public void LogOut()

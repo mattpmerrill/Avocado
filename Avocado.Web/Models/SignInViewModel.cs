@@ -9,8 +9,8 @@ namespace Avocado.Web.Models
     public class SignInViewModel
     {
         [Required]
-        [Display(Name="Email Address")]
-        public string Email { get; set; }
+        [Display(Name="User Name")]
+        public string SignInUserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

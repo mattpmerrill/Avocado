@@ -17,5 +17,6 @@ namespace Avocado.Domain.Abstract
         bool IsLinkedWithFacebook(string email);
         bool IsLinkedWithSocial(string id);
         string GetEmailFromSocialId(string socialId);
+        int GetAccountId(string userName);
     }
 }
