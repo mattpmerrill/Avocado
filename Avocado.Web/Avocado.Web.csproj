@@ -113,7 +113,9 @@
     <Content Include="Content\images\favorites-small.png" />
     <Content Include="Content\images\Girl-profile.png" />
     <Content Include="Content\images\gnome_stock_person.png" />
+    <Content Include="Content\images\hand_drawn_facebook96.png" />
     <Content Include="Content\images\line.jpg" />
+    <Content Include="Content\images\loginOR.png" />
     <Content Include="Content\images\man-small.png" />
     <Content Include="Content\images\modal-gloss.png" />
     <Content Include="Content\images\sign-in-with-twitter-d.png" />
