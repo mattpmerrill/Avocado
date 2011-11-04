@@ -1,0 +1,10 @@
+﻿@model Avocado.Web.Models.People.ViewWorkViewModel
+
+@foreach (var post in Model.Posts)
+{ 
+    <div class="row-item latest-post" id="@post.PostId">
+        @post.Title<br />
+        <img src="../../Uploads/@Model.UserAccount.UserId.ToString()/@post.MainImage" alt="" /><br />
+        @post.Description
+    </div>
+}

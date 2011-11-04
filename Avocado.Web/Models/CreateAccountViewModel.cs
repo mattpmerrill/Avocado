@@ -16,6 +16,7 @@ namespace Avocado.Web.Models
 
         [Required]
         [DisplayName("email")]
+        [RegularExpression(@"[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?", ErrorMessage = "Please enter a valid email address.")]
         public string Email { get; set; }
 
         //[Required]
@@ -25,6 +26,7 @@ namespace Avocado.Web.Models
         [Required]
         [DisplayName("password")]
         [DataType(DataType.Password)]
+        [RegularExpression(@".[\S]{5,20}", ErrorMessage = "Passwords must be at least 6 characters")]
         public string Password { get; set; }
 
         //[DataType(DataType.Password)]

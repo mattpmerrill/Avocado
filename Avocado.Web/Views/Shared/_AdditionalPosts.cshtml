@@ -1,0 +1,32 @@
+﻿@model Avocado.Web.Models.Browse.BrowseViewModel
+
+@foreach (var post in Model.Posts)
+{
+    <div class="span4 row-item latest-post" id="@post.PostId">
+        <div class="item-container">
+            <a href="#"><img src="../../Uploads/@post.Account.UserId.ToString()/@post.MainImage" class="item-image" alt="" /></a><br />
+            <div class="item-info">
+                <h5>@((post.Title.Length > 25) ? post.Title.ToString().Substring(0, 25) + "..." : post.Title)</h5> <!--can be 28 characters long-->
+                <div id="stats" class="item-stats">
+                    <span class="item-likes pull-left" title="likes"><img src="@Url.Content("~/Content/images/heart-small.png")" alt="likes" />@post.Likes.Count()</span>
+                    <span class="item-saves pull-left" title="saves"><img src="@Url.Content("~/Content/images/bookmark-small.png")" alt="saves" />@post.Saves.Count()</span>
+                    <span class="item-comments pull-left" title="comments"><img src="@Url.Content("~/Content/images/comment-small.png")" alt="comments" />@post.Comments.Count()</span>
+                    &nbsp;
+                </div>
+                <div class="item-description">
+                    <img class="avatar-small" src="@Url.Content("~/Content/images/man-small.png")" alt="avatar" />
+                    @((post.Description.Length > 90) ? post.Description.ToString().Substring(0, 90) + "..." : post.Description)
+                </div>
+                <div class="item-tags">
+                    <ul>
+                        @foreach (var t in post.TagToPosts)
+                        { 
+                            <li><a href="#">@t.Tag.Name</a></li>
+                        }
+                    </ul>
+                </div>
+                &nbsp;
+            </div>
+        </div>
+    </div>
+}

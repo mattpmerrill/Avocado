@@ -17,12 +17,19 @@ namespace Avocado.Web.Controllers
             _browseServcie = browseService;
         }
 
-        public ViewResult Index()
+        public ActionResult Index()
         {
-            BrowseViewModel model = new BrowseViewModel();
-            model.Posts = _browseServcie.getLatestItemsByDate().ToList();
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Browse");
+            }
+            else
+            {
+                BrowseViewModel model = new BrowseViewModel();
+                model.Posts = _browseServcie.getLatestItemsByDate().ToList();
 
-            return View(model);
+                return View(model);
+            }
         }
     }
 }

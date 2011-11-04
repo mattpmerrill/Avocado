@@ -1,0 +1,24 @@
+﻿@model Avocado.Web.Models.CreateAccountViewModel
+
+@using (Html.BeginForm("CreateAccount", "Account", new { social = @Request.QueryString["social"], @at = @Request.QueryString["at"], @as = @Request.QueryString["as"] }, FormMethod.Post, new { autocomplete = "off", id="registrationForm" }))
+{ 
+    @Html.ValidationSummary(excludePropertyErrors: false, message: "")
+    
+    <span id="availabilityMessage"></span>
+    <div>
+        @Html.TextBoxFor(x => x.UserName, new { placeholder = "choose a user name" })
+    </div>
+    
+    <br />
+    <div>
+        @Html.TextBoxFor(x => x.Email, new { id = "EmailAddress", placeholder = "email" })
+    </div>        
+    
+    <br />
+        
+    <div>
+        @Html.PasswordFor(x => x.Password, new { placeholder = "password" })
+    </div>
+    
+}
+

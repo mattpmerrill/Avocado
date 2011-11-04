@@ -33,25 +33,50 @@
 
 @section Scripts{  
 <script type="text/javascript">
-    $('.facebookButton').click(function () {
-        FB.login(function (response) {
-            if (response.authResponse) {
-                if (response.scope) {
-                    // user is logged in and granted some permissions.
-                    // perms is a comma separated list of granted permissions
-                    alert('im logged in with permissions');
+    $(function () {
+        $('#UserName').blur(function () {
+            if ($("#UserName").val()) {
+                $.post("/Account/CheckUserNameAvailability", { userName: $("#UserName").val() },
+                function (data) {
+                    var myObject = eval('(' + data + ')');
+                    var newid = myObject;
+                    if (newid == 0) {
+                        $("#availabilityMessage").html("<span style='color:green;'><img src='../content/images/bullet_accept.png'/> user name available</span>")
+                        $("#UserName").removeClass('input-validation-error');
+                    }
+                    else {
+                        $("#UserName").addClass('input-validation-error');
+                        $("#availabilityMessage").html("<span style='color:red;'><img src='../content/images/bullet_deny.png'/> user name taken</span>");
+                    }
+                });
+            }
+        });
+
+        $("#joinButton").click(function () {
+            $("#registrationForm").submit();
+        });
+
+        $('.facebookButton').click(function () {
+            FB.login(function (response) {
+                if (response.authResponse) {
+                    if (response.scope) {
+                        // user is logged in and granted some permissions.
+                        // perms is a comma separated list of granted permissions
+                        alert('im logged in with permissions');
+                    }
+                    else {
+                        // user is logged in, but did not grant any permissions
+                    }
                 }
                 else {
-                    // user is logged in, but did not grant any permissions
+                    // user is not logged in
                 }
-            }
-            else {
-                // user is not logged in
-            }
-        }, { scope: 'publish_stream,email' });
+            }, { scope: 'publish_stream,email' });
+        });
     });
 </script>
 }
+
 <div class="container" style="padding-top:75px;">
     <div class="row">
         <div class="span12">
@@ -82,17 +107,14 @@
 
         <div class="span4">
             <div style="padding:20px 5px 30px 5px; font-size:18px; line-height:1.5em;">
-                <!--<img src="@Url.Content("~/content/images/quote.png")" />-->
                 <span class="logo large">"If</span> you love to find it, make it, blog it and even pin it, then you'll love <span class="logo medium">Creativeme</span>. Everyone here is waiting to see what <span class="logo medium">YOU</span> have done!<span class="logo large">"</span>  
             </div>
-            <div class="alert-message block-message" style="width:100%; margin-top:0px;">
+            <div class="alert-message block-message" style="width:100%;">
                 <h2>Join For Free!</h2>
-                
-                <div class="clear">
-                    <input type="text" placeholder="pick a user name" /><br /><br />
-                    <input type="text" placeholder="email address" /><br /><br />
-                    <input type="text" placeholder="password" /><br /><br />
-                    <input type="button" class="btn success" value="Sign Up" />
+                &nbsp;
+                <div class="clear row-below">
+                    @Html.Partial("_RegistrationForm", new Avocado.Web.Models.CreateAccountViewModel())
+                    <input id="joinButton" type="submit" class="btn success" value="Sign Up" />
                 </div>
             </div>
             
