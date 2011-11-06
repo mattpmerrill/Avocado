@@ -8,7 +8,7 @@
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
+    <link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:700' rel='stylesheet' type='text/css'>
     <link href="@Url.Content("~/Content/css/bootstrap.min.css")" rel="Stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/css/Estilo.css")" rel="Stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/css/reveal.css")" rel="stylesheet" type="text/css" />
@@ -25,39 +25,31 @@
 <body>
     <div id="fb-root"></div>
     <script type="text/javascript">
+        //load JavaScript SDK Asynchronously
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+            fjs.parentNode.insertBefore(js, fjs);
+        } (document, 'script', 'facebook-jssdk'));
+
         window.fbAsyncInit = function () {
             FB.init({ appId: '183406445033444', status: true, cookie: true, xfbml: true, oauth: true });
 
-            /* All the events registered */
-            FB.Event.subscribe('auth.login', function (response) {
-                // if Logged into Facebook do something with response
-                alert('I just logged into Facebook, now what?');
-                //login();
-            });
+//            /* All the events registered */
+//            FB.Event.subscribe('auth.login', function (response) {
+//                // if Logged into Facebook do something with response
+//                //alert('I just logged into Facebook, now what?');
+//                //login();
+//            });
 
-            FB.Event.subscribe('auth.logout', function (response) {
-                // if logged out of Facebook do something with response
-            });
-
-
-//            FB.getLoginStatus(function (response) {
-//                if (response.authResponse) {
-//                    // logged into Facebook and connected user, someone you know
-//                    alert('I am logged into Facebook!!!');
-//                }
-//                else {
-//                    alert('im not logged into Facebook right now');
-//                }
+//            FB.Event.subscribe('auth.logout', function (response) {
+//                // if logged out of Facebook do something with response
 //            });
         };
 
-        // Load the SDK Asynchronously
-        (function (d) {
-            var js, id = 'facebook-jssdk'; if (d.getElementById(id)) { return; }
-            js = d.createElement('script'); js.id = id; js.async = true;
-            js.src = "//connect.facebook.net/en_US/all.js";
-            d.getElementsByTagName('head')[0].appendChild(js);
-        } (document));
+        
     </script>
     <div class="topbar" data-dropdown="dropdown">
         <div class="fill">
@@ -90,7 +82,7 @@
         </div>
     </div>
     <div class="row-bottom">&nbsp;</div>
-
+    
     <!--each page will define it's own grid system within it's main container-->
     @RenderBody()
 

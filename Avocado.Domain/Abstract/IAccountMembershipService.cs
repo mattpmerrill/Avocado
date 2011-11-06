@@ -12,11 +12,13 @@ namespace Avocado.Domain.Abstract
 
         bool ValidateUser(string userName, string password);
         bool IsUserNameAvailable(string userName);
-        MembershipCreateStatus CreateUser(string email, string password, string userName, string social, string token, string verifier);
+        MembershipCreateStatus CreateUser(string email, string password, string userName, string social, string token, string verifier, string firstName=null, string lastName=null, string FacebookId=null, string TwitterId=null);
         bool ChangePassword(string userName, string oldPassword, string newPassword);
         bool IsLinkedWithFacebook(string email);
         bool IsLinkedWithSocial(string id);
         string GetEmailFromSocialId(string socialId);
         int GetAccountId(string userName);
+        string GetAuthTicketFromSocialId(string socialId);
+        string GetAuthTicketFromEmail(string email);
     }
 }

@@ -16,7 +16,7 @@
     </div>
     <div class="row">
         <div class="span12">
-            <h1><span class="pull-left">@Model.Post.Title </span><span class="author-title pull-right"><a href="/People/ViewWork/@Model.Post.Account.UserName"><img src="@Url.Content("~/Content/images/man-small.png")" alt="" /> by @Model.Post.Account.UserName</a></span></h1>
+            <h1><span class="pull-left">@Model.Post.Title </span><span class="author-title pull-right"><a href="/People/ViewWork/@Model.Post.Account.UserName">back to @Model.Post.Account.UserName's work</span></h1>
             <div class="clear"></div>
             
             <ul class="breadcrumb">
@@ -108,6 +108,8 @@
             
         </div>
         <div class="span4">
+            <img src="@Url.Content("~/Content/images/user-large.png")" alt="profile pic" class="avatar-xlarge pull-left" />
+            <div><button type="button" class="btn info">Follow</button></div>
         </div>
     </div>
 </div>

@@ -5,13 +5,7 @@
 }
 
 @section Head{
-    <link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:700' rel='stylesheet' type='text/css'>
     <style type="text/css">
-        .logo
-        {
-            font-family: 'Cabin Sketch', cursive;
-        }
-        
         .xxlarge
         {
             font-size:100px;
@@ -36,11 +30,10 @@
     $(function () {
         $('#UserName').blur(function () {
             if ($("#UserName").val()) {
-                $.post("/Account/CheckUserNameAvailability", { userName: $("#UserName").val() },
+                $.getJSON("/Account/CheckUserNameAvailability", { userName: $("#UserName").val() },
                 function (data) {
-                    var myObject = eval('(' + data + ')');
-                    var newid = myObject;
-                    if (newid == 0) {
+                    var error = "";
+                    if (data.error == "") {
                         $("#availabilityMessage").html("<span style='color:green;'><img src='../content/images/bullet_accept.png'/> user name available</span>")
                         $("#UserName").removeClass('input-validation-error');
                     }
@@ -59,17 +52,15 @@
         $('.facebookButton').click(function () {
             FB.login(function (response) {
                 if (response.authResponse) {
-                    if (response.scope) {
-                        // user is logged in and granted some permissions.
-                        // perms is a comma separated list of granted permissions
-                        alert('im logged in with permissions');
-                    }
-                    else {
-                        // user is logged in, but did not grant any permissions
-                    }
+                    var accessToken = response.authResponse.accessToken;
+                    //user is connected/authorized, now see if they are already signed up with us
+                    FB.api('/me', function (response) {
+                        window.location = '/Account/LogInWithSocial/?socialId=' + response.id + '&socialNetwork=Facebook&accessToken=' + accessToken;
+                    });
                 }
                 else {
-                    // user is not logged in
+                    // user is not connected/authorized
+                    alert('not authorized');
                 }
             }, { scope: 'publish_stream,email' });
         });
@@ -89,10 +80,13 @@
             </div>
             <div class="row-below">
                 <div style="padding-top:25px;">
-                    <div class="pull-left" style="text-align:center; margin-right:50px;">
-                        <div class="medium"><a class="facebookButton logo" href="#" style="color:#536296">Join through Facebook</a></div>
-                        <a class="facebookButton" href="#"><img src="@Url.Content("~/content/images/hand_drawn_facebook96.png")" alt="facebook button" /></a><br />
-                        <div class="fb-facepile" data-app_id="183406445033444" data-width="225" data-max-rows="2"></div>
+                    <div class="pull-left" style="margin-right:50px; text-align:center;">
+                        <!--<div class="medium"><a class="facebookButton logo" href="#" style="color:#536296">Join through Facebook</a></div>-->
+                        <span class="logo medium">Sign up with</span><br />
+                        <a class="facebookButton" href="#" title="sign up with Facebook"><img src="@Url.Content("~/content/images/hand_drawn_facebook96.png")" alt="facebook button" /></a>
+                        <a class="twitterButton" href="#" title="sign up with Twitter"><img src="@Url.Content("~/content/images/hand_drawn_twitter_follow.png")" alt="twitter button" /></a>
+                        <br />
+                        <!--<div class="fb-facepile" data-app_id="183406445033444" data-width="225" data-max-rows="2"></div>-->
                     </div>
                     <div class="pull-left medium logo" style="margin-right:50px;">or</div>
                     <div class="pull-left medium" style="text-align:center;">

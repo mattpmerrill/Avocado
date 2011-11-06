@@ -50,6 +50,11 @@ ul li
     margin-bottom:15px;
 }
 
+.logo
+{
+    font-family: 'Cabin Sketch', cursive;
+}
+
 .title-header
 {
     padding:5px 15px 5px 15px;

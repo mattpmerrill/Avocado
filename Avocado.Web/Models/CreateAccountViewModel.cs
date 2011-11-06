@@ -19,10 +19,6 @@ namespace Avocado.Web.Models
         [RegularExpression(@"[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?", ErrorMessage = "Please enter a valid email address.")]
         public string Email { get; set; }
 
-        //[Required]
-        //[DisplayName("Full Name")]
-        //public string FullName { get; set; }
-
         [Required]
         [DisplayName("password")]
         [DataType(DataType.Password)]
@@ -33,5 +29,10 @@ namespace Avocado.Web.Models
         //[DisplayName("Confirm Password")]
         //[Compare("Password", ErrorMessage = "The Password and Confirmation Password must match.")]
         //public string ConfirmPassword { get; set; }
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string FacebookId { get; set; }
+        public string TwitterId { get; set; }
     }
 }

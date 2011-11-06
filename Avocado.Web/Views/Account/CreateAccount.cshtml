@@ -6,21 +6,20 @@
 
 <script type="text/javascript">
 $(function () {
-    //$(".alert-message").alert('close');
     $('#UserName').blur(function () {
         if ($("#UserName").val()) {
-            $.post("/Account/CheckUserNameAvailability", { userName: $("#UserName").val() },
-                function (data) {
-                    var myObject = eval('(' + data + ')');
-                    var newid = myObject;
-                    if (newid == 0) {
-                        $("#availabilityMessage").html("<span style='color:green;'>username available :-D</span>")
-                    }
-                    else {
-                        $("#UserName").addClass('input-validation-error');
-                        $("#availabilityMessage").html("<span style='color:red;'>username taken :-(</span>");
-                    }
-                });
+            $.getJSON("/Account/CheckUserNameAvailability", { userName: $("#UserName").val() },
+            function (data) {
+                var error = "";
+                if (data.error == "") {
+                    $("#availabilityMessage").html("<span style='color:green;'><img src='../../content/images/bullet_accept.png'/> user name available</span>")
+                    $("#UserName").removeClass('input-validation-error');
+                }
+                else {
+                    $("#UserName").addClass('input-validation-error');
+                    $("#availabilityMessage").html("<span style='color:red;'><img src='../../content/images/bullet_deny.png'/> user name taken</span>");
+                }
+            });
         }
     });
 });

@@ -39,7 +39,7 @@ namespace Avocado.Domain.Concrete
             return _provider.ValidateUser(userName, password);
         }
 
-        public MembershipCreateStatus CreateUser(string email, string password, string userName, string social, string token, string secret)
+        public MembershipCreateStatus CreateUser(string email, string password, string userName, string social, string token, string secret, string firstName = null, string lastName = null, string FacebookId = null, string TwitterId = null)
         {
             if (String.IsNullOrEmpty(email)) throw new ArgumentException("Value cannot be null or empty.", "email");
             if (String.IsNullOrEmpty(password)) throw new ArgumentException("Value cannot be null or empty.", "password");
@@ -61,7 +61,7 @@ namespace Avocado.Domain.Concrete
                 }
                 else
                 {
-                    if (SaveUserSettings(newUser.ProviderUserKey, userName))
+                    if (SaveUserSettings(newUser.ProviderUserKey, userName, firstName, lastName, FacebookId, TwitterId))
                         status = MembershipCreateStatus.Success;
                     else
                         status = MembershipCreateStatus.ProviderError;
@@ -120,6 +120,38 @@ namespace Avocado.Domain.Concrete
                 return false;
         }
 
+        public string GetAuthTicketFromSocialId(string socialId)
+        {
+            string ticket = string.Empty;
+            Account userAccount = _data.Accounts.Where(x => x.TwitterUserId == socialId || x.FacebookUserId == socialId).FirstOrDefault();
+
+            if (userAccount != null)
+            {
+                string userName = userAccount.UserName;
+                int accountId = userAccount.AccountId;
+
+                ticket = userName + "|" + accountId.ToString();
+            }
+            
+            return ticket;
+        }
+
+        public string GetAuthTicketFromEmail(string email)
+        {
+            string ticket = string.Empty;
+            Account userAccount = _data.aspnet_Membership.Where(x => x.Email == email).FirstOrDefault().aspnet_Users.Accounts.FirstOrDefault();
+
+            if (userAccount != null)
+            {
+                string userName = userAccount.UserName;
+                int accountId = userAccount.AccountId;
+
+                ticket = userName + "|" + accountId.ToString();
+            }
+
+            return ticket;
+        }
+
         public string GetEmailFromSocialId(string socialId)
         {
             return _data.Accounts.Where(x => x.TwitterUserId == socialId).Select(x => x.aspnet_Users.UserId).ToString();
@@ -141,11 +173,11 @@ namespace Avocado.Domain.Concrete
             }
         }
 
-        private bool SaveUserSettings(object userId, string userName)
+        private bool SaveUserSettings(object userId, string userName, string firstName = null, string lastName = null, string FacebookId = null, string TwitterId = null)
         {
             try
             {
-                _data.Accounts.AddObject(new Account() { UserId = (Guid)userId, UserName = userName });
+                _data.Accounts.AddObject(new Account() { UserId = (Guid)userId, UserName = userName, FirstName = firstName, LastName = lastName, FacebookUserId = FacebookId, TwitterUserId = TwitterId });
                 _data.SaveChanges();
                 return true;
             }

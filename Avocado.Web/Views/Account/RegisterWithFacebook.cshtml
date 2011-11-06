@@ -1,0 +1,67 @@
+﻿@model Avocado.Web.Models.CreateAccountViewModel
+@{
+    ViewBag.Title = "RegisterWithFacebook";
+    var domain = System.Configuration.ConfigurationManager.AppSettings["Domain"].ToString();
+}
+
+@section Scripts{
+<script type="text/javascript">
+    $('#UserName').blur(function () {
+        if ($("#UserName").val()) {
+            $.getJSON("/Account/CheckUserNameAvailability", { userName: $("#UserName").val() },
+            function (data) {
+                var error = "";
+                if (data.error == "") {
+                    $("#availabilityMessage").html("<span style='color:green;'><img src='../../content/images/bullet_accept.png'/> user name available</span>")
+                    $("#UserName").removeClass('input-validation-error');
+                }
+                else {
+                    $("#UserName").addClass('input-validation-error');
+                    $("#availabilityMessage").html("<span style='color:red;'><img src='../../content/images/bullet_deny.png'/> user name taken</span>");
+                }
+            });
+        }
+    });
+</script>
+}
+
+<div class="container">
+    <div class="row">
+        <div class="span16">
+            <h2>Almost done. Just pick a user name and a password</h2>
+            
+            <div class="row-below">
+                @using (Html.BeginForm("CreateAccount", "Account", new { social = @Request.QueryString["social"], @at = @Request.QueryString["at"], @as = @Request.QueryString["as"] }, FormMethod.Post, new { autocomplete = "off" }))
+                { 
+                    @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "alert-message error" })
+
+                    @Html.TextBoxFor(x => x.FirstName, new { @class = "form-input", id = "FirstName", placeholder = "first name" })
+        
+                    <br /><br />
+                    
+                    @Html.TextBoxFor(x => x.LastName, new { @class = "form-input", id = "LastName", placeholder = "last name" })
+        
+                    <br /><br />
+                    
+                    @Html.TextBoxFor(x => x.Email, new { @class = "form-input", id = "EmailAddress", placeholder = "email" })
+        
+                    <br /><br />
+                
+                    @Html.TextBoxFor(x => x.UserName, new { @class = "form-input", placeholder = "choose a user name" })
+                    <span id="availabilityMessage"></span>
+                    <br /><br />
+        
+                    @Html.PasswordFor(x => x.Password, new { @class = "form-input", placeholder = "password" })
+        
+                    <br /><br />
+        
+                    <div>
+                        <input type="submit" class="btn primary large" value="Join Creativime!" />
+                    </div>
+                    
+                    @Html.HiddenFor(x => x.FacebookId)
+                }
+            </div>
+        </div>
+    </div>
+</div>

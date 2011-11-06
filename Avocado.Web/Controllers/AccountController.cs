@@ -11,6 +11,10 @@ using Twitterizer;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Configuration;
+using Facebook;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace Avocado.Web.Controllers
 {
@@ -60,21 +64,81 @@ namespace Avocado.Web.Controllers
                 return View();
         }
 
-        public ActionResult LogInWithSocial(string socialId)
+        /// <summary>
+        /// Check if facebook or twitter id has been registered on our site yet
+        /// If not, send to registration page to create an account
+        /// otherwise, sign in
+        /// </summary>
+        /// <param name="socialId"></param>
+        /// <returns></returns>
+        public ActionResult LogInWithSocial(string socialId, string socialNetwork, string accessToken = null)
         {
-            //TODO:Check if facebook email has been registered on our site yet
-            //If not, send to registration page to create an account
-            //otherwise, log in with the facebook email address
             if (_membershipService.IsLinkedWithSocial(socialId))
             {
-                FormsAuthentication.SetAuthCookie(socialId, false);
+                //get a user auth ticket based on socialId
+                string ticket = _membershipService.GetAuthTicketFromSocialId(socialId);
+
+                _authenticationService.LogIn(ticket, createPersistentCookie: true);
             }
             else
             {
-                return RedirectToAction("CreateAccount", "Account");
+                if (socialNetwork == "Facebook")
+                {
+                    CreateAccountViewModel newAccountModel = new CreateAccountViewModel();
+                    var client = new FacebookClient(accessToken);
+                    dynamic me = client.Get("me");
+                    newAccountModel.FirstName = me.first_name;
+                    newAccountModel.LastName = me.last_name;
+                    newAccountModel.Email = me.email;
+                    newAccountModel.FacebookId = me.id;
+
+                    //redirect to facebook registration page
+                    return View("RegisterWithFacebook", newAccountModel);
+                }
+                else
+                {
+                    return RedirectToAction("CreateAccount", "Account");
+                }
             }
             
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Browse");
+        }
+
+        public ViewResult RegisterWithFacebook(CreateAccountViewModel model)
+        {
+            return View(model);
+        }
+
+        /// <summary>
+        /// Facebook registration redirects here.
+        /// Pull the registration data and create registration for MTA
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult VerifyFacebookRegistration()
+        {
+            var signedRequest = Request.Form["signed_request"];
+            var fap = FacebookApplication.Current; //the Facebook app seceret & id are in the web.config
+            var signedRequestObject = FacebookSignedRequest.Parse(fap, signedRequest);
+            JObject jData = new JObject();
+
+            if (signedRequestObject != null)
+            {
+                jData = JObject.Parse(signedRequestObject.Data.ToString());
+            }
+
+            CreateAccountViewModel model = new CreateAccountViewModel();
+            string json = jData["registration"].ToString();
+            Dictionary<string, string> RegistrationValues = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+
+            model.Email = RegistrationValues["email"];
+            model.Password = RegistrationValues["password"];
+            model.UserName = RegistrationValues["username"];
+            model.FirstName = RegistrationValues["first_name"];
+            model.LastName = RegistrationValues["last_name"];
+            model.FacebookId = (string)jData.SelectToken("user_id");
+
+            //register the new account in our system
+            return CreateAccount(model);
         }
 
         public ActionResult SignInWithTwitter()
@@ -149,12 +213,13 @@ namespace Avocado.Web.Controllers
                 string token = Request.QueryString["at"];
                 string secret = Request.QueryString["as"];
 
-                MembershipCreateStatus createStatus = _membershipService.CreateUser(model.Email, model.Password, model.UserName, social, token, secret);
+                MembershipCreateStatus createStatus = _membershipService.CreateUser(model.Email, model.Password, model.UserName, social, token, secret, model.FirstName, model.LastName, model.FacebookId, model.TwitterId);
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
-                    _authenticationService.LogIn(ticket: model.Email, createPersistentCookie: true);
-                    return RedirectToAction("Index", "Home");
+                    string ticket = _membershipService.GetAuthTicketFromEmail(model.Email);
+                    _authenticationService.LogIn(ticket: ticket, createPersistentCookie: true);
+                    return RedirectToAction("Index", "Browse");
                 }
                 else
                 {
@@ -162,19 +227,21 @@ namespace Avocado.Web.Controllers
                 }
             }
 
-            return View(model);
+            return View("CreateAccount", model);
         }
 
         public JsonResult CheckUserNameAvailability(string userName)
         {
-            int Taken = 0;
-            
             if (!_membershipService.IsUserNameAvailable(userName))
             {
-                Taken = 1;
+                var jsonData = new { error = "taken" };
+                return Json(jsonData, JsonRequestBehavior.AllowGet);
             }
-
-            return Json(Taken);
+            else
+            {
+                var jsonData = new { error = "" };
+                return Json(jsonData, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }
