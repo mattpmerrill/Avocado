@@ -4,29 +4,11 @@
     ViewBag.Title = "Creativime";
 }
 
-@section Head{
-    <style type="text/css">
-        .xxlarge
-        {
-            font-size:100px;
-        }
-        
-        .large
-        {
-            font-size:45px;
-        }
-        
-        .medium
-        {
-            font-size:25px;
-            line-height:1.3em;
-        }
-       
-    </style>
-}
-
 @section Scripts{  
+
 <script type="text/javascript">
+    
+
     $(function () {
         $('#UserName').blur(function () {
             if ($("#UserName").val()) {
@@ -49,21 +31,6 @@
             $("#registrationForm").submit();
         });
 
-        $('.facebookButton').click(function () {
-            FB.login(function (response) {
-                if (response.authResponse) {
-                    var accessToken = response.authResponse.accessToken;
-                    //user is connected/authorized, now see if they are already signed up with us
-                    FB.api('/me', function (response) {
-                        window.location = '/Account/LogInWithSocial/?socialId=' + response.id + '&socialNetwork=Facebook&accessToken=' + accessToken;
-                    });
-                }
-                else {
-                    // user is not connected/authorized
-                    alert('not authorized');
-                }
-            }, { scope: 'publish_stream,email' });
-        });
     });
 </script>
 }
@@ -80,17 +47,26 @@
             </div>
             <div class="row-below">
                 <div style="padding-top:25px;">
-                    <div class="pull-left" style="margin-right:50px; text-align:center;">
+                    <div class="pull-left" style="margin-right:50px; text-align:left;">
+                        <h3>Sign up with your account below</h3>
                         <!--<div class="medium"><a class="facebookButton logo" href="#" style="color:#536296">Join through Facebook</a></div>-->
-                        <span class="logo medium">Sign up with</span><br />
-                        <a class="facebookButton" href="#" title="sign up with Facebook"><img src="@Url.Content("~/content/images/hand_drawn_facebook96.png")" alt="facebook button" /></a>
-                        <a class="twitterButton" href="#" title="sign up with Twitter"><img src="@Url.Content("~/content/images/hand_drawn_twitter_follow.png")" alt="twitter button" /></a>
+                        <!--<span class="medium" style="font-weight:bold;">Sign up with</span><br />-->
+                        @*<a class="facebookButton" href="#" title="sign up with Facebook"><img src="@Url.Content("~/content/images/hand_drawn_facebook96.png")" alt="facebook button" /></a>
+                        <a class="twitterButton" href="#" title="sign up with Twitter"><img src="@Url.Content("~/content/images/hand_drawn_twitter_follow.png")" alt="twitter button" /></a>*@
+                        <div>
+                            <a id="facebookButton" href="#" class="facebookButton login-link"><img src="@Url.Content("~/content/images/hand_drawn_facebook64.png")" alt="sign in with Facebook" style="vertical-align:middle;" />sign in with Facebook</a>
+                        </div>
+                        <div class="row-below">
+                            <a id="twitterButton" class="twitterButton login-link" href="#"><img src="@Url.Content("~/content/images/hand_drawn_twitter_follow64.png")" alt="sign in with Twitter" style="vertical-align:middle;" />
+                            sign in with Twitter</a>
+                        </div>
                         <br />
                         <!--<div class="fb-facepile" data-app_id="183406445033444" data-width="225" data-max-rows="2"></div>-->
                     </div>
                     <div class="pull-left medium logo" style="margin-right:50px;">or</div>
                     <div class="pull-left medium" style="text-align:center;">
-                        <span class="logo">Sign up with your email</span><br />
+                        <!--<span style="font-weight:bold;">Sign up with your email</span><br />-->
+                        <h3>Sign up with your email</h3>
                         <img src="@Url.Content("~/content/images/right.png")" alt="arrow" />
                     </div>
                     
@@ -100,8 +76,8 @@
         </div>
 
         <div class="span4">
-            <div style="padding:20px 5px 30px 5px; font-size:18px; line-height:1.5em;">
-                <span class="logo large">"If</span> you love to find it, make it, blog it and even pin it, then you'll love <span class="logo medium">Creativeme</span>. Everyone here is waiting to see what <span class="logo medium">YOU</span> have done!<span class="logo large">"</span>  
+            <div style="padding:10px 5px 30px 5px; font-size:18px; line-height:1.5em;">
+                <span class="logo large">"If</span> you love to make it, bake it, sketch it, paint it, design it, or whatever, then you'll love <span class="logo medium">Creativime</span>. Everyone here is waiting to see what <span class="logo medium">YOU</span> have done!<span class="logo large">"</span>  
             </div>
             <div class="alert-message block-message" style="width:100%;">
                 <h2>Join For Free!</h2>

@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "RegisterWithFacebook";
     var domain = System.Configuration.ConfigurationManager.AppSettings["Domain"].ToString();
+    var accessToken = Model.FacebookId;
 }
 
 @section Scripts{
@@ -25,42 +26,81 @@
 </script>
 }
 
+@section Head{
+    <style>
+        .input-label
+        {
+            font-size:18px;
+        }
+        
+        img.light {
+	        outline: 1px solid #ddd;
+	        border-top: 1px solid #fff;
+	        padding: 5px;
+	        background: #f0f0f0;
+        }
+    </style>
+}
 <div class="container">
     <div class="row">
         <div class="span16">
             <h2>Almost done. Just pick a user name and a password</h2>
-            
+            <br /><br />
             <div class="row-below">
-                @using (Html.BeginForm("CreateAccount", "Account", new { social = @Request.QueryString["social"], @at = @Request.QueryString["at"], @as = @Request.QueryString["as"] }, FormMethod.Post, new { autocomplete = "off" }))
+                
+                @using (Html.BeginForm("CreateAccount", "Account", new { socialNetwork = @Request.QueryString["socialNetwork"], @at = @Request.QueryString["at"], @as = @Request.QueryString["as"] }, FormMethod.Post, new { autocomplete = "off" }))
                 { 
                     @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "alert-message error" })
 
-                    @Html.TextBoxFor(x => x.FirstName, new { @class = "form-input", id = "FirstName", placeholder = "first name" })
-        
-                    <br /><br />
-                    
-                    @Html.TextBoxFor(x => x.LastName, new { @class = "form-input", id = "LastName", placeholder = "last name" })
-        
-                    <br /><br />
-                    
-                    @Html.TextBoxFor(x => x.Email, new { @class = "form-input", id = "EmailAddress", placeholder = "email" })
-        
-                    <br /><br />
-                
-                    @Html.TextBoxFor(x => x.UserName, new { @class = "form-input", placeholder = "choose a user name" })
-                    <span id="availabilityMessage"></span>
-                    <br /><br />
-        
-                    @Html.PasswordFor(x => x.Password, new { @class = "form-input", placeholder = "password" })
-        
-                    <br /><br />
-        
-                    <div>
-                        <input type="submit" class="btn primary large" value="Join Creativime!" />
+                    <div class="row row-below">
+                        <div class="span3" style="text-align:right;"><img class="light" src="http://graph.facebook.com/@accessToken/picture" alt="profile pic"/></div>
+                        <div class="span13 input-label" style="line-height:1.5em; font-size:14px;">
+                            @Model.FirstName @Model.LastName<br />
+                            @Model.Email
+                        </div>
                     </div>
                     
+                    @*<div class="row row-below">
+                        <div class="span3 input-label" style="text-align:right;">First Name</div>
+                        <div class="span13">@Html.TextBoxFor(x => x.FirstName, new { @class = "form-input", id = "FirstName", placeholder = "first name" })</div>
+                    </div>
+                    
+                    <div class="row row-below">
+                        <div class="span3 input-label" style="text-align:right;">Last Name</div>
+                        <div class="span13">@Html.TextBoxFor(x => x.LastName, new { @class = "form-input", id = "LastName", placeholder = "last name" })</div>
+                    </div>*@
+                    
+                    @*<div class="row row-below">
+                        <div class="span3 input-label" style="text-align:right;">Email</div>
+                        <div class="span13">@Html.TextBoxFor(x => x.Email, new { @class = "form-input", id = "EmailAddress", placeholder = "email" })</div>
+                    </div>*@
+                    
+                    <div class="row row-below">
+                        <div class="span3 input-label" style="text-align:right;">User Name</div>
+                        <div class="span13">@Html.TextBoxFor(x => x.UserName, new { @class = "form-input", id = "UserName" })<span id="availabilityMessage"></span></div>
+                    </div>
+                    
+                    <div class="row row-below">
+                        <div class="span3 input-label" style="text-align:right;">Password</div>
+                        <div class="span13">@Html.PasswordFor(x => x.Password, new { @class = "form-input", id = "Password" })</div>
+                    </div>
+                
+                    <br /><br />
+                    <div class="row row-below">
+                        <div class="span3 input-label">&nbsp;</div>
+                        <div class="span13"><input type="submit" class="btn primary large" value="Join Creativime!" /></div>
+                    </div>
+                    
+                    @Html.HiddenFor(x => x.FirstName)
+                    @Html.HiddenFor(x => x.LastName)
+                    @Html.HiddenFor(x => x.Email)
                     @Html.HiddenFor(x => x.FacebookId)
+                    @Html.HiddenFor(x => x.Gender)
+                    @Html.HiddenFor(x => x.City)
+                    @Html.HiddenFor(x => x.State)
+                    @Html.HiddenFor(x => x.locale)
                 }
+                    
             </div>
         </div>
     </div>

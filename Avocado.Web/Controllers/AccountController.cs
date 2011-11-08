@@ -39,7 +39,7 @@ namespace Avocado.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_authenticationService.AuthenticateUser(model.SignInUserName, model.Password))
+                if (_authenticationService.AuthenticateUser(model.SignInUserName, model.SignInPassword))
                 {
                     //get accountId for this user
                     int accountId = _membershipService.GetAccountId(model.SignInUserName);
@@ -91,6 +91,13 @@ namespace Avocado.Web.Controllers
                     newAccountModel.LastName = me.last_name;
                     newAccountModel.Email = me.email;
                     newAccountModel.FacebookId = me.id;
+                    newAccountModel.Gender = me.gender;
+                    newAccountModel.locale = me.locale;
+                    if (me.location != null)
+                    {
+                        newAccountModel.City = ((String)me.location["name"]).Split(',')[0].Trim();
+                        newAccountModel.State = ((String)me.location["name"]).Split(',')[1].Trim();
+                    }
 
                     //redirect to facebook registration page
                     return View("RegisterWithFacebook", newAccountModel);
@@ -107,38 +114,6 @@ namespace Avocado.Web.Controllers
         public ViewResult RegisterWithFacebook(CreateAccountViewModel model)
         {
             return View(model);
-        }
-
-        /// <summary>
-        /// Facebook registration redirects here.
-        /// Pull the registration data and create registration for MTA
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult VerifyFacebookRegistration()
-        {
-            var signedRequest = Request.Form["signed_request"];
-            var fap = FacebookApplication.Current; //the Facebook app seceret & id are in the web.config
-            var signedRequestObject = FacebookSignedRequest.Parse(fap, signedRequest);
-            JObject jData = new JObject();
-
-            if (signedRequestObject != null)
-            {
-                jData = JObject.Parse(signedRequestObject.Data.ToString());
-            }
-
-            CreateAccountViewModel model = new CreateAccountViewModel();
-            string json = jData["registration"].ToString();
-            Dictionary<string, string> RegistrationValues = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-
-            model.Email = RegistrationValues["email"];
-            model.Password = RegistrationValues["password"];
-            model.UserName = RegistrationValues["username"];
-            model.FirstName = RegistrationValues["first_name"];
-            model.LastName = RegistrationValues["last_name"];
-            model.FacebookId = (string)jData.SelectToken("user_id");
-
-            //register the new account in our system
-            return CreateAccount(model);
         }
 
         public ActionResult SignInWithTwitter()
@@ -165,15 +140,17 @@ namespace Avocado.Web.Controllers
 
                 string accessToken = responseToken.Token;
                 string accessSecret = responseToken.TokenSecret;
+                string twitterUserId = Convert.ToString(responseToken.UserId);
 
                 if (_membershipService.IsLinkedWithSocial(Convert.ToString(responseToken.UserId)))
                 {
-                    string email = _membershipService.GetEmailFromSocialId(Convert.ToString(responseToken.UserId));
-                    FormsAuthentication.SetAuthCookie(email, false);
+                    string ticket = _membershipService.GetAuthTicketFromSocialId(Convert.ToString(responseToken.UserId));
+                    _authenticationService.LogIn(ticket, createPersistentCookie: true);
                 }
                 else
                 {
-                    string redirect = "/Account/CreateAccount?social=twitter&at=" + accessToken + "&as=" + accessSecret;
+                    //create a new account based on Twitter account
+                    string redirect = "/Account/CreateAccount?socialNetwork=twitter&at=" + accessToken + "&as=" + accessSecret + "&uid=" + twitterUserId;
                     return Redirect(redirect);
                 }
                 
@@ -182,20 +159,35 @@ namespace Avocado.Web.Controllers
             else
             {
                 //return user back to login screen
-                return View("LogIn");
+                return RedirectToAction("Index", "Home");
             }
         }
 
         [HttpPost]
         public ActionResult ModalLogIn(SignInViewModel model)
         {
-            var data = new { name = model.SignInUserName, password = model.Password };
+            var data = new { name = model.SignInUserName, password = model.SignInPassword };
             return Json(data);
         }
 
         public ViewResult CreateAccount()
         {
-            return View();
+            string socialNetwork = Request.QueryString["socialNetwork"];
+
+            if (socialNetwork == "twitter")
+            {
+                string token = Request.QueryString["at"];
+                string secret = Request.QueryString["as"];
+                string twitterUserId = Request.QueryString["uid"];
+
+                CreateAccountViewModel model = new CreateAccountViewModel();
+                model = GetTwitterUserData(model, token, secret, twitterUserId);
+                return View(model);
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public ActionResult LogOut()
@@ -207,13 +199,14 @@ namespace Avocado.Web.Controllers
         [HttpPost]
         public ActionResult CreateAccount(CreateAccountViewModel model)
         {
+            string socialNetwork = Request.QueryString["socialNetwork"];
+            string token = Request.QueryString["at"];
+            string secret = Request.QueryString["as"];
+            string twitterUserId = Request.QueryString["uid"];
+
             if (ModelState.IsValid)
             {
-                string social = Request.QueryString["social"];
-                string token = Request.QueryString["at"];
-                string secret = Request.QueryString["as"];
-
-                MembershipCreateStatus createStatus = _membershipService.CreateUser(model.Email, model.Password, model.UserName, social, token, secret, model.FirstName, model.LastName, model.FacebookId, model.TwitterId);
+                MembershipCreateStatus createStatus = _membershipService.CreateUser(model.Email, model.Password, model.UserName, socialNetwork, token, secret, model.FirstName, model.LastName, model.FacebookId, model.TwitterId, model.Gender, model.City, model.State, model.locale);
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
@@ -227,7 +220,31 @@ namespace Avocado.Web.Controllers
                 }
             }
 
-            return View("CreateAccount", model);
+            //If error occured during account creation return to the registration page with model errors displayed
+            if (socialNetwork == "Facebook")
+            {
+                return View("RegisterWithFacebook", model);
+            }
+            else
+            {
+                return View("CreateAccount", model);
+            }
+        }
+
+        private CreateAccountViewModel GetTwitterUserData(CreateAccountViewModel model, string token, string secret, string twitterUserId)
+        {
+            OAuthTokens tokens = new OAuthTokens();
+            tokens.AccessToken = token;
+            tokens.AccessTokenSecret = secret;
+            tokens.ConsumerKey = ConfigurationManager.AppSettings["consumerKey"];
+            tokens.ConsumerSecret = ConfigurationManager.AppSettings["consumerSecret"];
+
+            TwitterResponse<TwitterUser> user = TwitterUser.Show(tokens, Convert.ToDecimal(twitterUserId));
+
+            model.TwitterId = twitterUserId;
+            model.UserName = user.ResponseObject.ScreenName;
+            
+            return model;
         }
 
         public JsonResult CheckUserNameAvailability(string userName)

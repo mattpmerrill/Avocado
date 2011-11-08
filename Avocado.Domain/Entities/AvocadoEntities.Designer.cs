@@ -705,6 +705,54 @@ namespace Avocado.Domain.Entities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
+        public global::System.String Gender
+        {
+            get
+            {
+                return _Gender;
+            }
+            set
+            {
+                OnGenderChanging(value);
+                ReportPropertyChanging("Gender");
+                _Gender = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Gender");
+                OnGenderChanged();
+            }
+        }
+        private global::System.String _Gender;
+        partial void OnGenderChanging(global::System.String value);
+        partial void OnGenderChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Locale
+        {
+            get
+            {
+                return _Locale;
+            }
+            set
+            {
+                OnLocaleChanging(value);
+                ReportPropertyChanging("Locale");
+                _Locale = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Locale");
+                OnLocaleChanged();
+            }
+        }
+        private global::System.String _Locale;
+        partial void OnLocaleChanging(global::System.String value);
+        partial void OnLocaleChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
         public global::System.String Country
         {
             get

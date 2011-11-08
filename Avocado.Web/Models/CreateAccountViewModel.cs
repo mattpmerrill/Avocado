@@ -34,5 +34,9 @@ namespace Avocado.Web.Models
         public string LastName { get; set; }
         public string FacebookId { get; set; }
         public string TwitterId { get; set; }
+        public string Gender { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string locale { get; set; }
     }
 }

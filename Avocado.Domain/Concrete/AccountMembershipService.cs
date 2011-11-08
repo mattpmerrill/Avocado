@@ -39,7 +39,7 @@ namespace Avocado.Domain.Concrete
             return _provider.ValidateUser(userName, password);
         }
 
-        public MembershipCreateStatus CreateUser(string email, string password, string userName, string social, string token, string secret, string firstName = null, string lastName = null, string FacebookId = null, string TwitterId = null)
+        public MembershipCreateStatus CreateUser(string email, string password, string userName, string socialNetwork, string token, string secret, string firstName = null, string lastName = null, string FacebookId = null, string TwitterId = null, string gender = null, string city = null, string state = null, string locale = null)
         {
             if (String.IsNullOrEmpty(email)) throw new ArgumentException("Value cannot be null or empty.", "email");
             if (String.IsNullOrEmpty(password)) throw new ArgumentException("Value cannot be null or empty.", "password");
@@ -49,19 +49,19 @@ namespace Avocado.Domain.Concrete
 
             if (status == MembershipCreateStatus.Success) 
             {
-                if (social == "twitter")
+                if (socialNetwork == "twitter")
                 {
                     string consumerKey = ConfigurationManager.AppSettings["consumerKey"];
                     string consumerSecret = ConfigurationManager.AppSettings["consumerSecret"];
 
-                    if (SaveTwitterData(newUser.ProviderUserKey, consumerKey, consumerSecret, token, secret, userName))
+                    if (SaveTwitterData(newUser.ProviderUserKey, consumerKey, consumerSecret, token, secret, userName, TwitterId))
                         status = MembershipCreateStatus.Success;
                     else
                         status = MembershipCreateStatus.ProviderError;
                 }
                 else
                 {
-                    if (SaveUserSettings(newUser.ProviderUserKey, userName, firstName, lastName, FacebookId, TwitterId))
+                    if (SaveUserSettings(newUser.ProviderUserKey, userName, firstName, lastName, FacebookId, TwitterId, gender, city, state, locale))
                         status = MembershipCreateStatus.Success;
                     else
                         status = MembershipCreateStatus.ProviderError;
@@ -157,12 +157,11 @@ namespace Avocado.Domain.Concrete
             return _data.Accounts.Where(x => x.TwitterUserId == socialId).Select(x => x.aspnet_Users.UserId).ToString();
         }
 
-        private bool SaveTwitterData(object userId, string consumerKey, string consumerSecret, string token, string secret, string userName)
+        private bool SaveTwitterData(object userId, string consumerKey, string consumerSecret, string token, string secret, string userName, string twitterUserId)
         {
             try
             {
-
-                _data.Accounts.AddObject(new Account() { UserId = (Guid)userId, TwitterAccessToken = token, TwitterAccessSecret = secret, UserName = userName });
+                _data.Accounts.AddObject(new Account() { UserId = (Guid)userId, TwitterAccessToken = token, TwitterAccessSecret = secret, UserName = userName, TwitterUserId = twitterUserId });
                 _data.SaveChanges();
 
                 return true;
@@ -173,11 +172,12 @@ namespace Avocado.Domain.Concrete
             }
         }
 
-        private bool SaveUserSettings(object userId, string userName, string firstName = null, string lastName = null, string FacebookId = null, string TwitterId = null)
+        private bool SaveUserSettings(object userId, string userName, string firstName = null, string lastName = null, string FacebookId = null, string TwitterId = null, string gender = null, string city = null, string state = null, string locale = null)
         {
             try
             {
-                _data.Accounts.AddObject(new Account() { UserId = (Guid)userId, UserName = userName, FirstName = firstName, LastName = lastName, FacebookUserId = FacebookId, TwitterUserId = TwitterId });
+                string fullName = ((firstName + " " + lastName).Length > 100) ? (firstName + " " + lastName).Substring(0, 100) : (firstName + " " + lastName);
+                _data.Accounts.AddObject(new Account() { UserId = (Guid)userId, UserName = userName, FirstName = firstName, LastName = lastName, FullName = fullName, FacebookUserId = FacebookId, TwitterUserId = TwitterId, Gender = gender, City = city, State = state, Locale = locale });
                 _data.SaveChanges();
                 return true;
             }

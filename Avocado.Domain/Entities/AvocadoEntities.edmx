@@ -88,6 +88,8 @@
           <Property Name="City" Type="nvarchar" MaxLength="50" />
           <Property Name="State" Type="nvarchar" MaxLength="50" />
           <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="Locale" Type="nvarchar" MaxLength="50" />
+          <Property Name="Gender" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="aspnet_Membership">
           <Key>
@@ -139,7 +141,7 @@
           <Key>
             <PropertyRef Name="CommentId" />
           </Key>
-          <Property Name="CommentId" Type="int" Nullable="false" />
+          <Property Name="CommentId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="PostId" Type="int" Nullable="false" />
           <Property Name="AccountId" Type="int" Nullable="false" />
           <Property Name="Comment" Type="nvarchar" Nullable="false" MaxLength="250" />
@@ -655,9 +657,11 @@
           <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="City" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="State" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Country" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Following" Relationship="AvocadoModel.FK_Follows_Accounts" FromRole="Account" ToRole="Follow" />
           <NavigationProperty Name="Followed" Relationship="AvocadoModel.FK_Follows_Accounts1" FromRole="Account" ToRole="Follow" />
+          <Property Type="String" Name="Gender" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Locale" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Country" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Posts_Accounts">
           <End Type="AvocadoModel.Account" Role="Account" Multiplicity="1" />
@@ -865,6 +869,8 @@
             <EntityTypeMapping TypeName="AvocadoModel.Account">
               <MappingFragment StoreEntitySet="Accounts">
                 <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Locale" ColumnName="Locale" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="City" ColumnName="City" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
@@ -961,7 +967,7 @@
           <ConnectorPoint PointX="14.75" PointY="1.5478417968749998" />
           <ConnectorPoint PointX="14.75" PointY="4.125" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="AvocadoModel.Account" Width="1.5" PointX="0.75" PointY="7.875" Height="3.5186979166666656" />
+        <EntityTypeShape EntityType="AvocadoModel.Account" Width="1.5" PointX="0.75" PointY="7.875" Height="4.4802050781250014" />
         <AssociationConnector Association="AvocadoModel.FK_Posts_Accounts" >
           <ConnectorPoint PointX="2.25" PointY="8.7064925130208337" />
           <ConnectorPoint PointX="8.625" PointY="8.7064925130208337" />
@@ -972,12 +978,12 @@
         </AssociationConnector>
         <EntityTypeShape EntityType="AvocadoModel.Follow" Width="1.5" PointX="3" PointY="8.875" Height="2.1725878906250031" />
         <AssociationConnector Association="AvocadoModel.FK_Follows_Accounts" >
-          <ConnectorPoint PointX="2.25" PointY="9.9612939453125016" />
-          <ConnectorPoint PointX="3" PointY="9.9612939453125016" />
+          <ConnectorPoint PointX="2.25" PointY="10.339823303222659" />
+          <ConnectorPoint PointX="3" PointY="10.339823303222659" />
         </AssociationConnector>
         <AssociationConnector Association="AvocadoModel.FK_Follows_Accounts1" >
-          <ConnectorPoint PointX="2.25" PointY="9.35564697265625" />
-          <ConnectorPoint PointX="3" PointY="9.35564697265625" />
+          <ConnectorPoint PointX="2.25" PointY="9.54491165161133" />
+          <ConnectorPoint PointX="3" PointY="9.54491165161133" />
         </AssociationConnector>
         <EntityTypeShape EntityType="AvocadoModel.Spark" Width="1.5" PointX="6.375" PointY="4.25" Height="2.172587890624996" />
         <AssociationConnector Association="AvocadoModel.FK_Sparks_Posts" >

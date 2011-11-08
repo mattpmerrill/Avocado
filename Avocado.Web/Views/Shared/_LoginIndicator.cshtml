@@ -26,35 +26,42 @@ else
                 <div class="span8">
                     <h1>Creativime </h1>
                     <h4>Sign in now and start sharing your creativity!</h4>
-                    <p>
-                        @using (Html.BeginForm("Login", "Account", new { returnUrl = Request.Url }, FormMethod.Post, new { autocomplete = "off", id = "modal-form" }))
-                        {
-                            @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "ui-state-errors", style = "width:325px; margin-bottom:20px;" })
-
-                            @Html.TextBoxFor(x => x.SignInUserName, new { @class = "form-input", placeholder = "user name" })<br /><br />
-        
-                            @Html.PasswordFor(x => x.Password, new { @class = "form-input", placeholder = "password" })<br /><br />
-    
-                            <button id="modal-login-button" class="btn large primary">Sign In</button>
-                        }
+                    @using (Html.BeginForm("Login", "Account", new { returnUrl = Request.Url }, FormMethod.Post, new { autocomplete = "off", id = "modal-form" }))
+                    {
+                        @Html.ValidationSummary(excludePropertyErrors: false, message: "")
+                        <div class="clear">&nbsp;</div>
+                        <div>
+                            <p class="form-input">
+                                @Html.LabelFor(x => x.SignInUserName)
+                                @Html.TextBoxFor(x => x.SignInUserName)
+                            </p>
+                        </div>
                         
-                    </p>
+                        <br />
+                            
+                        <div>
+                            <p class="form-input">
+                                @Html.LabelFor(x => x.SignInPassword)
+                                @Html.PasswordFor(x => x.SignInPassword)
+                            </p>
+                        </div>
+                        
+                        <br /><br />
+    
+                        <button id="modal-login-button" class="btn large primary">Sign In</button>
+                    }
                 </div>
                 
                 <div class="span6">
                     <h1>Already Social?</h1>
                     <h4>Sign in with your account below</h4>
-                    <p>
-                        <fb:login-button 
-                            autologoutlink="true"
-                            size="large" 
-                            perms="email,publish_stream">
-                            Sign in with Facebook
-                        </fb:login-button>
-                    </p>
-                    <p>
-                        <img src="@Url.Content("~/content/images/sign-in-with-twitter-d.png")" alt="sign in with Twitter" id="customTwitterLogin" />
-                    </p>
+                    <div>
+                        <a id="facebookButton" href="#" class="facebookButton login-link"><img src="@Url.Content("~/content/images/hand_drawn_facebook48.png")" alt="sign in with Facebook" style="vertical-align:middle;" />sign in with Facebook</a>
+                    </div>
+                    <div class="row-below">
+                        <a id="twitterButton" class="twitterButton login-link" href="#"><img src="@Url.Content("~/content/images/hand_drawn_twitter_follow48.png")" alt="sign in with Twitter" style="vertical-align:middle;" />
+                        sign in with Twitter</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -65,14 +72,6 @@ else
         $(function () {
             $("#modal-login-button").click(function () {
                 $("#modal-form").submit();
-            });
-
-            $('#customFBLogin').click(function () {
-                CustomButtonLogin();
-            });
-
-            $('#customTwitterLogin').click(function () {
-                window.location = '/Account/SignInWithTwitter';
             });
 
             $('#register-button').click(function () {
@@ -89,7 +88,7 @@ else
                     animation: 'fadeAndPop',                   //fade, fadeAndPop, none
                     animationspeed: 400,                       //how fast animtions are
                     closeonbackgroundclick: true
-                }); //.effect("bounce", { times: 2, distance: 10 }, 400);
+                });
             });
         });
     </script>

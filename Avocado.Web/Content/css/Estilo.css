@@ -87,16 +87,7 @@ ul li
     clear:both;
 }
 
-.form-input
-{
-    border:1px solid #ccc;
-    border-radius:4px;
-    padding:5px;
-    width:300px;
-    height:25px;
-    font-size:150%;
-    background-color:#fff;
-}
+
 
 .topbar input
 {
@@ -139,6 +130,18 @@ ul li
 #customTwitterLogin
 {
     cursor:pointer;
+}
+
+.topbar .login-link
+{
+    color:#536296;
+    font-size:14px;
+}
+
+.topbar .login-link:hover
+{
+    color:#af4646;
+    text-decoration:none;
 }
 
 .comment-block
@@ -286,7 +289,21 @@ ul li
     height:175px;
 }
 
-
+.xxlarge
+{
+    font-size:100px;
+}
+        
+.large
+{
+    font-size:45px;
+}
+        
+.medium
+{
+    font-size:25px;
+    line-height:1.3em;
+}
 
 .xsmall
 {
@@ -386,6 +403,18 @@ ul li
 .followed{ background-color:#c8c826;}
 .following{ background-color:#60aaec;}
 
+.login-link
+{
+    color:#536296;
+    font-size:14px;
+}
+
+.login-link:hover
+{
+    color:#af4646;
+    text-decoration:none;
+}
+
 /* Styles for validation helpers
 -----------------------------------------------------------*/
 .field-validation-error
@@ -413,9 +442,19 @@ ul li
     border-radius: 4px;
 }
 
+.validation-summary-errors ul
+{
+    display:block !important;
+    float:none !important;
+    padding:5px 10px;
+}
+
 .validation-summary-errors ul li
 {
     color:#fff !important;
+    float:none !important;
+    display:block !important;
+    margin-bottom:5px;
 }
 
 .validation-summary-valid
@@ -423,4 +462,50 @@ ul li
     display: none;
 }
 /* End Styles for validation helpers
+-------------------------------------------------------*/
+
+/* Styles for infield lables 
+-------------------------------------------------------*/
+form p { position:relative }
+
+label   
+{
+    position:absolute; top:0; left:0;
+    background:transparent;
+	color: #999;
+	display: block;
+	font-size:14px;
+	font-style:italic;
+	padding: 0;
+	margin:5px 0 0 7px;
+	text-align:left;
+}
+
+.form-input
+{
+    position:relative;
+}
+
+.form-input input
+{
+    border:1px solid #ccc;
+    border-radius:4px;
+    width:300px;
+    height:25px;
+    font-size:150%; 
+}
+
+.form-input label
+{
+    position:absolute; top:0; left:0;
+    background:transparent;
+	color: #999;
+	display: block;
+	font-style:italic;
+	font-size:125%;
+	padding: 0;
+	margin:9px 0 0 7px;
+	text-align:left;
+}
+/* End Styles for infield lables 
 -------------------------------------------------------*/

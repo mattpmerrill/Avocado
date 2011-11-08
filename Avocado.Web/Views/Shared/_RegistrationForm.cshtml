@@ -6,19 +6,30 @@
     
     <span id="availabilityMessage"></span>
     <div>
-        @Html.TextBoxFor(x => x.UserName, new { placeholder = "choose a user name" })
+        <p>
+            <label for="UserName">choose a username</label>
+            @Html.TextBoxFor(x => x.UserName)
+        </p>
+        
     </div>
     
     <br />
+    
     <div>
-        @Html.TextBoxFor(x => x.Email, new { id = "EmailAddress", placeholder = "email" })
+        <p>
+            @Html.LabelFor(x => x.Email)
+            @Html.TextBoxFor(x => x.Email)
+        </p>
+        
     </div>        
     
     <br />
         
     <div>
-        @Html.PasswordFor(x => x.Password, new { placeholder = "password" })
+        <p>
+            <label for="Password">password</label>
+            @Html.PasswordFor(x => x.Password)
+        </p>
     </div>
     
 }
-
