@@ -10,16 +10,16 @@ namespace Avocado.Web.Models
 {
     public class CreateAccountViewModel
     {
-        [Required]
-        [DisplayName("user name")]
+        [Required(ErrorMessage="username required")]
+        [DisplayName("create a username")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage="email required")]
         [DisplayName("email")]
         [RegularExpression(@"[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?", ErrorMessage = "Please enter a valid email address.")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage="password required")]
         [DisplayName("password")]
         [DataType(DataType.Password)]
         [RegularExpression(@".[\S]{5,20}", ErrorMessage = "Passwords must be at least 6 characters")]

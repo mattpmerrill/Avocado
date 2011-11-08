@@ -407,6 +407,7 @@ ul li
 {
     color:#536296;
     font-size:14px;
+    font-weight:bold;
 }
 
 .login-link:hover
@@ -435,7 +436,7 @@ ul li
 
 .validation-summary-errors
 {
-    padding:5px 3px 5px 3px;
+    padding:5px 0px 5px 0px;
     background-color:#ff0000;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -446,7 +447,7 @@ ul li
 {
     display:block !important;
     float:none !important;
-    padding:5px 10px;
+    padding:5px 5px;
 }
 
 .validation-summary-errors ul li

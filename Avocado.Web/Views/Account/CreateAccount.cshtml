@@ -12,12 +12,12 @@ $(function () {
             function (data) {
                 var error = "";
                 if (data.error == "") {
-                    $("#availabilityMessage").html("<span style='color:green;'><img src='../../content/images/bullet_accept.png'/> user name available</span>")
+                    $("#availabilityMessage").html("<span style='color:green;'><img src='../../content/images/bullet_accept.png'/> username available</span>")
                     $("#UserName").removeClass('input-validation-error');
                 }
                 else {
                     $("#UserName").addClass('input-validation-error');
-                    $("#availabilityMessage").html("<span style='color:red;'><img src='../../content/images/bullet_deny.png'/> user name taken</span>");
+                    $("#availabilityMessage").html("<span style='color:red;'><img src='../../content/images/bullet_deny.png'/> username taken</span>");
                 }
             });
         }
@@ -26,34 +26,63 @@ $(function () {
 </script>
 
 <div class="container">
-    <h1>
-        Join Creativime
-    </h1>
-        
-    <h4>It's free! Join now and start sharing your creativity.</h4>
+    <h1>Join <span class="logo large">Creativime</span></h1>
+    <div class="row row-below">
+        <div class="span7">
+            <h4>All you need is an email address</h4>
 
-    @using (Html.BeginForm("CreateAccount", "Account", new { socialNetwork = @Request.QueryString["socialNetwork"], @at = @Request.QueryString["at"], @as = @Request.QueryString["as"], @uid = @Request.QueryString["uid"] }, FormMethod.Post, new { autocomplete = "off" }))
-    { 
-        @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "alert-message error" })
+            @using (Html.BeginForm("CreateAccount", "Account", new { socialNetwork = @Request.QueryString["socialNetwork"], @at = @Request.QueryString["at"], @as = @Request.QueryString["as"], @uid = @Request.QueryString["uid"] }, FormMethod.Post, new { autocomplete = "off" }))
+            { 
+                @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "alert-message error" })
 
-        @Html.TextBoxFor(x => x.UserName, new { @class = "form-input", placeholder = "choose a user name" })
-        <span id="availabilityMessage"></span>
-        <br /><br />
+                <div class="row-below">
+                    <p class="form-input">
+                        <span id="availabilityMessage"></span>
+                        <label for="UserName" style="width:200px">create a username</label>
+                        @Html.TextBoxFor(x => x.UserName)
+                       
+                    </p>
         
-        @Html.TextBoxFor(x => x.Email, new { @class = "form-input", id = "EmailAddress", placeholder = "email" })
+                
+                    <br />
         
-        <br /><br />
+                    <p class="form-input">
+                        @Html.LabelFor(x => x.Email)
+                        @Html.TextBoxFor(x => x.Email)
+                    </p>
         
+                    <br />
         
-        @Html.PasswordFor(x => x.Password, new { @class = "form-input", placeholder = "password" })
+                    <p class="form-input">
+                        @Html.LabelFor(x => x.Password)
+                        @Html.PasswordFor(x => x.Password)
+                    </p>
         
-        <br /><br />
+                    <br />
         
-        <div>
-            <input type="submit" class="btn primary large" value="Join Creativime!" />
+                    <div>
+                        <input type="submit" class="btn primary large" value="Join Creativime!" />
+                    </div>
+                </div>
+                
+        
+                @Html.HiddenFor(x => x.TwitterId)
+            }
         </div>
+        <div class="span2 large logo" style="padding-top:100px;">or</div>
+        <div class="span7">
+            <h4>Use your Facebook or Twitter account to sign up</h4>
+            <div class="row-below">
+                <a id="facebookButton" href="#" class="facebookButton login-link"><img src="@Url.Content("~/content/images/hand_drawn_facebook64.png")" alt="sign in with Facebook" style="vertical-align:middle;" /> sign in with Facebook</a>
+            </div>
+            <div class="row-below">
+                <a id="twitterButton" class="twitterButton login-link" href="#"><img src="@Url.Content("~/content/images/hand_drawn_twitter_follow64.png")" alt="sign in with Twitter" style="vertical-align:middle;" />
+                 sign in with Twitter</a>
+            </div> 
+        </div>
+    </div>
+    
         
-        @Html.HiddenFor(x => x.TwitterId)
-    }
+    
 </div>
 
