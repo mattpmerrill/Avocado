@@ -771,6 +771,30 @@ namespace Avocado.Domain.Entities
         private global::System.String _Country;
         partial void OnCountryChanging(global::System.String value);
         partial void OnCountryChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ProfileImage
+        {
+            get
+            {
+                return _ProfileImage;
+            }
+            set
+            {
+                OnProfileImageChanging(value);
+                ReportPropertyChanging("ProfileImage");
+                _ProfileImage = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ProfileImage");
+                OnProfileImageChanged();
+            }
+        }
+        private global::System.String _ProfileImage;
+        partial void OnProfileImageChanging(global::System.String value);
+        partial void OnProfileImageChanged();
 
         #endregion
     

@@ -90,6 +90,7 @@
           <Property Name="Country" Type="nvarchar" MaxLength="50" />
           <Property Name="Locale" Type="nvarchar" MaxLength="50" />
           <Property Name="Gender" Type="varchar" MaxLength="10" />
+          <Property Name="ProfileImage" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="aspnet_Membership">
           <Key>
@@ -662,6 +663,7 @@
           <Property Type="String" Name="Gender" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="Locale" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Country" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ProfileImage" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Posts_Accounts">
           <End Type="AvocadoModel.Account" Role="Account" Multiplicity="1" />
@@ -868,6 +870,7 @@
           <EntitySetMapping Name="Accounts">
             <EntityTypeMapping TypeName="AvocadoModel.Account">
               <MappingFragment StoreEntitySet="Accounts">
+                <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
                 <ScalarProperty Name="Country" ColumnName="Country" />
                 <ScalarProperty Name="Locale" ColumnName="Locale" />
                 <ScalarProperty Name="Gender" ColumnName="Gender" />

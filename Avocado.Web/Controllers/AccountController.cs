@@ -22,11 +22,13 @@ namespace Avocado.Web.Controllers
     {
         private IAccountMembershipService _membershipService;
         private IFormsAuthenticationService _authenticationService;
+        private IAuthorService _authorService;
 
-        public AccountController(IAccountMembershipService membershipService, IFormsAuthenticationService authenticationService)
+        public AccountController(IAccountMembershipService membershipService, IFormsAuthenticationService authenticationService, IAuthorService authorService)
         {
             _membershipService = membershipService;
             _authenticationService = authenticationService;
+            _authorService = authorService;
         }
 
         public ViewResult LogIn()
@@ -259,6 +261,24 @@ namespace Avocado.Web.Controllers
                 var jsonData = new { error = "" };
                 return Json(jsonData, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public ViewResult EditProfile()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UploadFiles(HttpPostedFileBase file)
+        {
+            string userName = User.Identity.Name.Split('|')[0];
+
+            if (file.ContentLength > 0)
+            {
+                _authorService.SaveImage(userName, file.InputStream, file.FileName, "profilePics");
+            }
+
+            return View("EditProfile");
         }
     }
 }
