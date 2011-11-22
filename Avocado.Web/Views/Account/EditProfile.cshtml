@@ -1,13 +1,72 @@
-﻿@{
-    ViewBag.Title = "EditProfile";
+﻿@model Avocado.Web.Models.ProfileViewModel
+           
+@{
+	ViewBag.Title = "EditProfile";
 }
 
-<h2>EditProfile</h2>
+@section Head{
+    <link href="../../Content/css/fileuploader.css" rel="stylesheet" type="text/css" />
+}
 
-<form action="/Account/UploadFiles" method="post" enctype="multipart/form-data">
-  
-  <label for="file">Filename:</label>
-  <input type="file" name="file" id="file" />
+<div class="container">
+    <div class="row">
+        <div class="span4">
+            <div>
+                <img id="profilePic" src="@Url.Content("~/content/images/user-large.png")" alt="profile pic" />            
+            </div>
+            <div id="file-uploader">                      <noscript><p>Please enable JavaScript to use file uploader.</p></noscript>                     </div>
+        </div>
+        <div class="span12">
+            <h2>Update Your Profile</h2>
+            <div class="row-below">
+                @using (Html.BeginForm("UpdateProfile", "Account", FormMethod.Post)) {
+                    <p class="form-input">
+                            <label for="FirstName" style="width:200px">first name</label>
+                            @Html.TextBoxFor(x => x.FirstName)
+                    </p>
+                    <br />
+                    <p class="form-input">
+                            <label for="LastName" style="width:200px">last name</label>
+                            @Html.TextBoxFor(x => x.LastName)
+                    </p>
+                    <br />
+                    <p class="form-input">
+                            <label for="Bio" style="width:300px">Tell us about yourself...</label>
+                            @Html.TextAreaFor(x => x.Bio, 10, 40, new { @class="profileTextArea" })
+                    </p>
+                    <br />
+                    <p class="form-input">
+                            <label for="PersonalUrl" style="width:300px">Your website or blog</label>
+                            @Html.TextBoxFor(x => x.PersonalUrl)
+                    </p>
+                    <br />
+                }
+            </div>
+            
+        </div>
+    </div>
+</div>
 
-  <input type="submit" />
-</form>
+
+@section Scripts{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/fileuploader.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            var uploader = new qq.FileUploader({
+                allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                sizeLimit: 7340032,
+                minSizeLimit: 1,
+                element: document.getElementById('file-uploader'),
+                action: '/Account/UploadFiles',
+                onProgress: function (id, fileName, loaded, total) { },
+                onComplete: function (id, fileName, responseJSON) {
+                    if (responseJSON.success) {
+                        $('#profilePic').attr('src', responseJSON.imgPath);
+                        $('.qq-upload-list').empty();
+                        //alert('upload completed! the new file path is ' + responseJSON.imgPath);
+                    }
+                }
+            });
+        });
+    </script>
+}

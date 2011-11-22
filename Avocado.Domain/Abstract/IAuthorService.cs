@@ -8,6 +8,6 @@ namespace Avocado.Domain.Abstract
 {
     public interface IAuthorService
     {
-        void SaveImage(string userName, Stream fileStream, string fileName, string fileLocation);
+        string SaveProfileImage(string userName, Stream fileStream, string fileName, string fileLocation);
     }
 }

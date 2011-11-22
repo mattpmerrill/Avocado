@@ -269,16 +269,48 @@ namespace Avocado.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult UploadFiles(HttpPostedFileBase file)
+        public ActionResult UploadFiles(string qqfile)
         {
             string userName = User.Identity.Name.Split('|')[0];
+            string newFilePath = string.Empty;
+            //var path = @"C:\\Temp\\100\\";
+            //var file = string.Empty;
 
-            if (file.ContentLength > 0)
+            try
             {
-                _authorService.SaveImage(userName, file.InputStream, file.FileName, "profilePics");
+                var stream = Request.InputStream;
+                if (String.IsNullOrEmpty(Request["qqfile"]))
+                {
+                    // IE
+                    HttpPostedFileBase postedFile = Request.Files[0];
+                    stream = postedFile.InputStream;
+                    //file = Path.Combine(path, System.IO.Path.GetFileName(Request.Files[0].FileName));
+                }
+                else
+                {
+                    //Webkit, Mozilla
+                    //file = Path.Combine(path, qqfile);
+                }
+
+                var buffer = new byte[stream.Length];
+                stream.Read(buffer, 0, buffer.Length);
+
+                if (stream.Length > 0)
+                {
+                    stream.Position = 0;
+                    newFilePath = _authorService.SaveProfileImage(userName, stream, qqfile, "profilePics");
+                }
+
+                //System.IO.File.WriteAllBytes(file, buffer);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message }, "application/json");
             }
 
-            return View("EditProfile");
+            newFilePath = ConfigurationManager.AppSettings["AzureStorageUri"] + userName + "/" + newFilePath;
+
+            return Json(new { success = true, message = "sweet", imgPath = newFilePath}, JsonRequestBehavior.AllowGet);
         }
     }
 }

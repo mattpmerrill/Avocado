@@ -99,6 +99,7 @@
     <Compile Include="Models\CreateAccountViewModel.cs" />
     <Compile Include="Models\People\CreativesViewModel.cs" />
     <Compile Include="Models\People\ViewWorkViewModel.cs" />
+    <Compile Include="Models\ProfileViewModel.cs" />
     <Compile Include="Models\SignInViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\NinjectDependencyResolver.cs" />
@@ -108,6 +109,7 @@
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\Estilo.css" />
+    <Content Include="Content\css\fileuploader.css" />
     <Content Include="Content\css\Layout.css" />
     <Content Include="Content\css\reveal.css" />
     <Content Include="Content\images\avatar.jpg" />
@@ -121,6 +123,7 @@
     <Content Include="Content\images\gnome_stock_person.png" />
     <Content Include="Content\images\hand_drawn_facebook96.png" />
     <Content Include="Content\images\line.jpg" />
+    <Content Include="Content\images\loading.gif" />
     <Content Include="Content\images\loginOR.png" />
     <Content Include="Content\images\man-small.png" />
     <Content Include="Content\images\modal-gloss.png" />
@@ -180,6 +183,7 @@
     <Content Include="Scripts\bootstrap-scrollspy.js" />
     <Content Include="Scripts\bootstrap-tabs.js" />
     <Content Include="Scripts\bootstrap-twipsy.js" />
+    <Content Include="Scripts\fileuploader.js" />
     <Content Include="Scripts\jquery-1.5.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.5.1.js" />
     <Content Include="Scripts\jquery-1.5.1.min.js" />
@@ -187,6 +191,8 @@
     <Content Include="Scripts\jquery-ui-1.8.10.custom.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.11.js" />
     <Content Include="Scripts\jquery-ui-1.8.11.min.js" />
+    <Content Include="Scripts\jquery.fileupload.js" />
+    <Content Include="Scripts\jquery.iframe-transport.js" />
     <Content Include="Scripts\jquery.infieldlabel.min.js" />
     <Content Include="Scripts\jquery.reveal.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />

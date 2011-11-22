@@ -28,7 +28,7 @@ namespace Avocado.Domain.Concrete
         /// <param name="fileStream"></param>
         /// <param name="fileName"></param>
         /// <param name="fileLocation"></param>
-        public void SaveImage(string userName, System.IO.Stream fileStream, string fileName, string fileLocation)
+        public string SaveProfileImage(string userName, System.IO.Stream fileStream, string fileName, string fileLocation)
         {
             var account = _data.Accounts.Where(x => x.UserName == userName).FirstOrDefault();
 
@@ -43,7 +43,7 @@ namespace Avocado.Domain.Concrete
 
             // Get and create the container
             CloudBlobContainer blobContainer = null;
-            blobContainer = blobClient.GetContainerReference("publicfiles");
+            blobContainer = blobClient.GetContainerReference(userName); //("publicfiles");
             blobContainer.CreateIfNotExist();
 
             // Setup the permissions on the container to be public
@@ -64,20 +64,20 @@ namespace Avocado.Domain.Concrete
             ImageBuilder.Current.Build(fileStream, msThumb, resizeCropSettingsThumb, false);
 
             //Generate a file path
-            string filePath = account.UserName + "/profile/" + fileName.Replace(" ", "");
-            string fileNameThumb = account.UserName + "/thumb/" + fileName.Replace(" ", "");
+            string fileNameProfile = "profile/" + fileName.Replace(" ", "");
+            string fileNameThumb = "thumb/" + fileName.Replace(" ", "");
 
             //if there are existing profile and thumb images delete them
             if (account.ProfileImage != null)
             {
-                var oldProfile = blobContainer.GetBlobReference(account.UserName + "/profile/" + account.ProfileImage);
+                var oldProfile = blobContainer.GetBlobReference("profile/" + account.ProfileImage);
                 oldProfile.Delete();
-                var oldThumb = blobContainer.GetBlobReference(account.UserName + "/thumb/" + account.ProfileImage);
+                var oldThumb = blobContainer.GetBlobReference("thumb/" + account.ProfileImage);
                 oldThumb.Delete();
             }
 
             // Create the Blob and upload the file
-            var blob = blobContainer.GetBlobReference(fileName);
+            var blob = blobContainer.GetBlobReference(fileNameProfile);
             var blobThumb = blobContainer.GetBlobReference(fileNameThumb);
             ms.Position = 0;
             msThumb.Position = 0;
@@ -88,6 +88,8 @@ namespace Avocado.Domain.Concrete
 
             //update account table with profile image filename
             //_membershipService.UpdateProfileImage(accountKey, HttpUtility.UrlEncode(fileData.FileName.Replace(" ", "")));
+
+            return fileNameProfile;
         }
     }
 }
