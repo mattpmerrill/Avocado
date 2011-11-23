@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Security;
+using Avocado.Domain.Entities;
 
 namespace Avocado.Domain.Abstract
 {
@@ -20,5 +21,8 @@ namespace Avocado.Domain.Abstract
         int GetAccountId(string userName);
         string GetAuthTicketFromSocialId(string socialId);
         string GetAuthTicketFromEmail(string email);
+        Account GetAccount(string userName);
+        Profile GetProfile(int accountId);
+        bool IsProfileUpdated(int accountId, string firstName, string lastName, string profileImage, string bio, string personalUrl);
     }
 }

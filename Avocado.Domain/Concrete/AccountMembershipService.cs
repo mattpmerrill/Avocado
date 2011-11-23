@@ -161,7 +161,9 @@ namespace Avocado.Domain.Concrete
         {
             try
             {
-                _data.Accounts.AddObject(new Account() { UserId = (Guid)userId, TwitterAccessToken = token, TwitterAccessSecret = secret, UserName = userName, TwitterUserId = twitterUserId });
+                Account newAccount = new Account() { UserId = (Guid)userId, TwitterAccessToken = token, TwitterAccessSecret = secret, UserName = userName, TwitterUserId = twitterUserId };
+                _data.Accounts.AddObject(newAccount);
+                _data.Profiles.AddObject(new Profile() { AccountId = newAccount.AccountId });
                 _data.SaveChanges();
 
                 return true;
@@ -177,7 +179,9 @@ namespace Avocado.Domain.Concrete
             try
             {
                 string fullName = ((firstName + " " + lastName).Length > 100) ? (firstName + " " + lastName).Substring(0, 100) : (firstName + " " + lastName);
-                _data.Accounts.AddObject(new Account() { UserId = (Guid)userId, UserName = userName, FirstName = firstName, LastName = lastName, FullName = fullName, FacebookUserId = FacebookId, TwitterUserId = TwitterId, Gender = gender, City = city, State = state, Locale = locale });
+                Account newAccount = new Account() { UserId = (Guid)userId, UserName = userName, FirstName = firstName, LastName = lastName, FullName = fullName, FacebookUserId = FacebookId, TwitterUserId = TwitterId, Gender = gender, City = city, State = state, Locale = locale };
+                _data.Accounts.AddObject(newAccount);
+                _data.Profiles.AddObject(new Profile() { AccountId = newAccount.AccountId });
                 _data.SaveChanges();
                 return true;
             }
@@ -190,6 +194,40 @@ namespace Avocado.Domain.Concrete
         public int GetAccountId(string userName)
         {
             return _data.Accounts.Where(x => x.aspnet_Users.LoweredUserName == userName.ToLower()).Select(x => x.AccountId).FirstOrDefault();
+        }
+
+        public Account GetAccount(string userName)
+        {
+            return _data.Accounts.Where(x => x.UserName == userName).FirstOrDefault();
+        }
+
+        public Profile GetProfile(int accountId)
+        {
+            return _data.Profiles.Where(x => x.AccountId == accountId).FirstOrDefault();
+        }
+
+        public bool IsProfileUpdated(int accountId, string firstName, string lastName, string profileImage, string bio, string personalUrl)
+        {
+            try
+            {
+                var account = _data.Accounts.Where(x => x.AccountId == accountId).FirstOrDefault();
+                account.FirstName = firstName;
+                account.LastName = lastName;
+                account.ProfileImage = profileImage;
+
+                var profile = _data.Profiles.Where(x => x.AccountId == accountId).FirstOrDefault();
+                profile.Bio = bio;
+                profile.PersonalUrl = personalUrl;
+
+                _data.SaveChanges();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                //TODO: log exceptions with ELMAH
+                return false;
+            }
         }
     }
 }

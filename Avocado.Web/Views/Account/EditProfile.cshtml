@@ -2,6 +2,7 @@
            
 @{
 	ViewBag.Title = "EditProfile";
+    var imagePath = System.Configuration.ConfigurationManager.AppSettings["AzureStorageUri"] + User.Identity.Name.Split('|')[0] + "/profile/" + Model.ProfileImage;
 }
 
 @section Head{
@@ -12,14 +13,30 @@
     <div class="row">
         <div class="span4">
             <div>
-                <img id="profilePic" src="@Url.Content("~/content/images/user-large.png")" alt="profile pic" />            
+                @{
+                    if (Model.ProfileImage != null)
+                    {
+                        <img id="profilePic" src="@imagePath" alt="profile pic" />
+                    }
+                    else 
+                    { 
+                        <img id="profilePic" src="@Url.Content("~/content/images/user-large.png")" alt="profile pic" />
+                    }
+                }
             </div>
             <div id="file-uploader">                      <noscript><p>Please enable JavaScript to use file uploader.</p></noscript>                     </div>
         </div>
         <div class="span12">
+            <div id="message" class="alert-message">
+              <a id="closeMessage" class="close" href="#">×</a>
+              <p></p>
+            </div>
+
             <h2>Update Your Profile</h2>
+            
             <div class="row-below">
-                @using (Html.BeginForm("UpdateProfile", "Account", FormMethod.Post)) {
+                @using (Html.BeginForm("UpdateProfile", "Account", FormMethod.Post, new { id="profileForm", name="profileForm" }))
+                {
                     <p class="form-input">
                             <label for="FirstName" style="width:200px">first name</label>
                             @Html.TextBoxFor(x => x.FirstName)
@@ -32,7 +49,7 @@
                     <br />
                     <p class="form-input">
                             <label for="Bio" style="width:300px">Tell us about yourself...</label>
-                            @Html.TextAreaFor(x => x.Bio, 10, 40, new { @class="profileTextArea" })
+                            @Html.TextAreaFor(x => x.Bio, 10, 40, new { @class = "profileTextArea" })
                     </p>
                     <br />
                     <p class="form-input">
@@ -40,6 +57,12 @@
                             @Html.TextBoxFor(x => x.PersonalUrl)
                     </p>
                     <br />
+                    
+                    <p>
+                        <input id="saveButton" type="button" class="btn" value="Save Profile" />
+                    </p>
+                    
+                    @Html.HiddenFor(x => x.ProfileImage)
                 }
             </div>
             
@@ -61,12 +84,49 @@
                 onProgress: function (id, fileName, loaded, total) { },
                 onComplete: function (id, fileName, responseJSON) {
                     if (responseJSON.success) {
+                        $('#ProfileImage').attr('value', fileName);
                         $('#profilePic').attr('src', responseJSON.imgPath);
                         $('.qq-upload-list').empty();
                         //alert('upload completed! the new file path is ' + responseJSON.imgPath);
                     }
                 }
             });
+
+            $('#message').hide();
+
+            $('#closeMessage').click(function () {
+                $('#message').fadeOut('slow');
+            });
+
+            $('#saveButton').click(function () {
+                UpdateProfile();
+            });
         });
+
+        function UpdateProfile() {
+            var formData = $("#profileForm").serialize();
+
+            $.ajax({
+                type: "POST",
+                url: "/Account/UpdateProfile",
+                data: formData,
+                dataType: "json",
+                success: function (data) {
+                    if (data.success == true) {
+                        $('#message p').html(data.message);
+                        $('#message').addClass('success');
+                        $('#message').fadeIn('slow');
+                        //alert(data.message);
+                    }
+                    else {
+                        $('#message p').html(data.message);
+                        $('#message').addClass('error');
+                        $('#message').fadeIn('slow');
+
+                        //alert(data.message);
+                    }
+                }
+            });
+        }
     </script>
 }

@@ -13,5 +13,6 @@ namespace Avocado.Web.Models
         public string Location { get; set; }
         public string PersonalUrl { get; set; }
         public string Bio { get; set; }
+        public string ProfileImage { get; set; }
     }
 }

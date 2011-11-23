@@ -265,7 +265,34 @@ namespace Avocado.Web.Controllers
 
         public ViewResult EditProfile()
         {
-            return View();
+            ProfileViewModel model = new ProfileViewModel();
+            var account = _membershipService.GetAccount(User.Identity.Name.Split('|')[0]);
+            var profile = _membershipService.GetProfile(Convert.ToInt32(User.Identity.Name.Split('|')[1]));
+
+            if (account != null)
+            {
+                model.ProfileImage = account.ProfileImage;
+                model.FirstName = account.FirstName;
+                model.LastName = account.LastName;
+            }
+
+            if (profile != null)
+            {
+                model.Bio = profile.Bio;
+                model.PersonalUrl = profile.PersonalUrl;
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public JsonResult UpdateProfile(ProfileViewModel model)
+        {
+            int accountId = Convert.ToInt32(User.Identity.Name.Split('|')[1]);
+            if (_membershipService.IsProfileUpdated(accountId, model.FirstName, model.LastName, model.ProfileImage, model.Bio, model.PersonalUrl))
+                return Json(new { success = true, message = "Your profile has been updated" }, JsonRequestBehavior.AllowGet);
+            else
+                return Json(new { success = false, message = "An error occurred while trying to update your profile" }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
