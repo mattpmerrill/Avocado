@@ -63,16 +63,17 @@ namespace Avocado.Domain.Concrete
             fileStream.Position = 0;
             ImageBuilder.Current.Build(fileStream, msThumb, resizeCropSettingsThumb, false);
 
+
             //Generate a file path
             string fileNameProfile = "profile/" + fileName.Replace(" ", "");
-            string fileNameThumb = "thumb/" + fileName.Replace(" ", "");
+            string fileNameThumb = "thumb/profile-pic"; //+ fileName.Replace(" ", "");
 
             //if there are existing profile and thumb images delete them
             if (account.ProfileImage != null)
             {
                 var oldProfile = blobContainer.GetBlobReference("profile/" + account.ProfileImage);
                 oldProfile.Delete();
-                var oldThumb = blobContainer.GetBlobReference("thumb/" + account.ProfileImage);
+                var oldThumb = blobContainer.GetBlobReference("thumb/profile-pic");
                 oldThumb.Delete();
             }
 
@@ -87,7 +88,15 @@ namespace Avocado.Domain.Concrete
             msThumb.Close();
 
             //update account table with profile image filename
-            //_membershipService.UpdateProfileImage(accountKey, HttpUtility.UrlEncode(fileData.FileName.Replace(" ", "")));
+            try
+            {
+                account.ProfileImage = fileName.Replace(" ", "");
+                _data.SaveChanges();
+            }
+            catch
+            {
+                //todo: log exceptions with ELMAH
+            }
 
             return fileNameProfile;
         }

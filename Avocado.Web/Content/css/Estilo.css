@@ -1,11 +1,28 @@
-﻿html
+﻿/*
+BOOTSTRAP OVERRIDES
+*/
+.menu-dropdown, .dropdown-menu 
+{
+    top:55px;
+}
+
+.dropdown-toggle
+{
+    height:35px;
+}
+
+/*
+END BOOTSTRAP OVERRIDES
+*/
+
+html
 {
     background-color:#fff;
 }
 
 body
 {
-    margin-top:40px; /*this will clear the topbar*/
+    margin-top:60px; /*this will clear the topbar*/
     background-color:#fff;
 }
 
@@ -329,6 +346,11 @@ ul li
 .thick-border
 {
     border:3px solid #ccc;
+}
+
+.pic-frame
+{
+    border:5px solid #ece9e9;
 }
 
 .profileTextArea

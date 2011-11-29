@@ -289,7 +289,7 @@ namespace Avocado.Web.Controllers
         public JsonResult UpdateProfile(ProfileViewModel model)
         {
             int accountId = Convert.ToInt32(User.Identity.Name.Split('|')[1]);
-            if (_membershipService.IsProfileUpdated(accountId, model.FirstName, model.LastName, model.ProfileImage, model.Bio, model.PersonalUrl))
+            if (_membershipService.IsProfileUpdated(accountId, model.FirstName, model.LastName, model.ProfileImage.Replace(" ", ""), model.Bio, model.PersonalUrl))
                 return Json(new { success = true, message = "Your profile has been updated" }, JsonRequestBehavior.AllowGet);
             else
                 return Json(new { success = false, message = "An error occurred while trying to update your profile" }, JsonRequestBehavior.AllowGet);
@@ -300,6 +300,7 @@ namespace Avocado.Web.Controllers
         {
             string userName = User.Identity.Name.Split('|')[0];
             string newFilePath = string.Empty;
+            string newLittleFilePath = string.Empty;
             //var path = @"C:\\Temp\\100\\";
             //var file = string.Empty;
 
@@ -336,8 +337,9 @@ namespace Avocado.Web.Controllers
             }
 
             newFilePath = ConfigurationManager.AppSettings["AzureStorageUri"] + userName + "/" + newFilePath;
+            newLittleFilePath = ConfigurationManager.AppSettings["AzureStorageUri"] + userName + "/thumb/profile-pic";
 
-            return Json(new { success = true, message = "sweet", imgPath = newFilePath}, JsonRequestBehavior.AllowGet);
+            return Json(new { success = true, message = "sweet", imgPath = newFilePath, littleImgPath = newLittleFilePath}, JsonRequestBehavior.AllowGet);
         }
     }
 }

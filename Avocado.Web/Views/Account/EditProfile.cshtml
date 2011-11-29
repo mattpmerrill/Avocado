@@ -16,11 +16,11 @@
                 @{
                     if (Model.ProfileImage != null)
                     {
-                        <img id="profilePic" src="@imagePath" alt="profile pic" />
+                        <img id="profilePic" class="pic-frame" src="@imagePath" alt="profile pic" />
                     }
                     else 
                     { 
-                        <img id="profilePic" src="@Url.Content("~/content/images/user-large.png")" alt="profile pic" />
+                        <img id="profilePic" class="pic-frame" src="@Url.Content("~/content/images/user-large.png")" alt="profile pic" />
                     }
                 }
             </div>
@@ -59,7 +59,7 @@
                     <br />
                     
                     <p>
-                        <input id="saveButton" type="button" class="btn" value="Save Profile" />
+                        <input id="saveButton" type="button" class="btn primary large" value="Save Profile" />
                     </p>
                     
                     @Html.HiddenFor(x => x.ProfileImage)
@@ -86,6 +86,7 @@
                     if (responseJSON.success) {
                         $('#ProfileImage').attr('value', fileName);
                         $('#profilePic').attr('src', responseJSON.imgPath);
+                        $('#little-profile-pic').attr('src', responseJSON.littleImgPath + '?' + Math.random());
                         $('.qq-upload-list').empty();
                         //alert('upload completed! the new file path is ' + responseJSON.imgPath);
                     }
