@@ -68,11 +68,13 @@
   <ItemGroup>
     <Compile Include="Abstract\IAuthorService.cs" />
     <Compile Include="Abstract\IBrowseService.cs" />
+    <Compile Include="Abstract\IFeedService.cs" />
     <Compile Include="Abstract\IFormsAuthenticationService.cs" />
     <Compile Include="Abstract\IAccountMembershipService.cs" />
     <Compile Include="Abstract\IPeopleService.cs" />
     <Compile Include="Concrete\AuthorService.cs" />
     <Compile Include="Concrete\BrowseService.cs" />
+    <Compile Include="Concrete\FeedService.cs" />
     <Compile Include="Concrete\PeopleService.cs" />
     <Compile Include="Entities\AvocadoEntities.Designer.cs">
       <AutoGen>True</AutoGen>

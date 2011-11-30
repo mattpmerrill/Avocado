@@ -60,5 +60,23 @@ namespace Avocado.Domain.Concrete
                 return 0;
             }
         }
+
+        public int UnFollow(string followerUserName, string followedUserId)
+        {
+            try
+            {
+                Guid follower = new Guid(followedUserId);
+                int followerAccountId = _data.Accounts.Where(x => x.aspnet_Users.UserName == followerUserName).Select(a => a.AccountId).SingleOrDefault();
+                int followedAccountId = _data.Accounts.Where(x => x.UserId == follower).Select(a => a.AccountId).SingleOrDefault();
+
+                Follow followToDelete = _data.Follows.Where(x => x.FollowerAccountId == followerAccountId && x.FollowedAccountId == followedAccountId).SingleOrDefault();
+                _data.Follows.DeleteObject(followToDelete);
+                return _data.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
     }
 }

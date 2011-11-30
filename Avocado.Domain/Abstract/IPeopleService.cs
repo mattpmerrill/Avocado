@@ -13,5 +13,6 @@ namespace Avocado.Domain.Abstract
         IQueryable<Post> getMoreWorkByUserName(string userName, int lastPostId);
         Account getUserAccount(string userName);
         int follow(string followerUserName, string followedUserId);
+        int UnFollow(string followerUserName, string followedUserId);
     }
 }

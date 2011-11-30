@@ -19,12 +19,19 @@
 @section Scripts{
     <script type="text/javascript">
         $('.post-list li').twipsy();
-
-        $('.follow').click(function () {
+        var buttonClicked;
+        $('.follow').live('click',function () {
+            buttonClicked = this;
             $.post("/People/Follow?follower=@_userName&followed=" + this.id,
                 function (data) {
                     if (data != "") {
-                        alert('now following');
+                        $(buttonClicked).html('Following').addClass('success').removeClass('follow').addClass('unfollow');
+                        $(buttonClicked).hover(function () {
+                            $(this).html('Unfollow').removeClass('success').addClass('danger');
+                        },
+                        function () {
+                            $(this).html('Following').removeClass('danger').addClass('success');
+                        });
                     }
                     else {
                         alert('there was an error trying to follow');
@@ -32,6 +39,34 @@
                     //$('div#lastPostsLoader').empty();
                 });
         });
+
+        $('.unfollow').live('click', function () {
+            buttonClicked = this;
+            $.post("/People/UnFollow?follower=@_userName&followed=" + this.id,
+                function (data) {
+                    if (data != "") {
+                        $(buttonClicked).html('Follow').removeClass('success').removeClass('danger').removeClass('unfollow').addClass('follow');
+                        $(buttonClicked).hover(function () {
+                            $(this).html('Follow').addClass('success');
+                        },
+                        function () {
+                            $(this).html('Follow').removeClass('success');
+                        });
+                    }
+                    else {
+                        alert('there was an error trying to follow');
+                    }
+                });
+            });
+
+        $('.unfollow').hover(function () {
+            $(this).html('Unfollow').removeClass('success').addClass('danger');
+            },
+            function () {
+                $(this).html('Following').removeClass('danger').addClass('success');
+            });
+
+
     </script>
 }
 
@@ -39,7 +74,7 @@
     <div class="row">
         <div class="span16">
             <ul class="tabs">
-              @if (Request.IsAuthenticated) { <li><a href="#">Feed</a></li> }
+              @if (Request.IsAuthenticated) { <li><a href="/Feed">Feed</a></li> }
               <li><a href="/Browse">Explore</a></li>
               <li class="active"><a href="/People">People</a></li>
             </ul>
@@ -62,7 +97,7 @@
                             {
                                 if (account.Followed.Any(x => x.FollowerAccountId == Convert.ToInt32(_accountId)))
                                 {
-                                    <button class="success btn disabled" style="width:95px; margin-bottom:5px;">Following</button>
+                                    <button id="@account.UserId" class="success btn unfollow" style="width:95px; margin-bottom:5px;">Following</button>
                                 }
                                 else
                                 { 

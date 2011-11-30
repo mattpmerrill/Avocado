@@ -80,5 +80,19 @@ namespace Avocado.Web.Controllers
 
         }
 
+        [HttpPost]
+        public string UnFollow(string follower, string followed)
+        {
+            if (_peopleServcie.UnFollow(follower, followed) > 0)
+            {
+                return "success";
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
     }
 }
