@@ -24,6 +24,11 @@ body
 {
     margin-top:60px; /*this will clear the topbar*/
     background-color:#fff;
+    /*background:transparent url('../../content/images/small-crackle-bright.png');
+    background:transparent url('../../content/images/old_wall.png');
+    background:transparent url('../../content/images/roughcloth.png');
+    background:transparent url('../../content/images/fancy_deboss.png');*/
+
 }
 
 footer

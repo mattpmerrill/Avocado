@@ -45,12 +45,12 @@
             $.post("/People/UnFollow?follower=@_userName&followed=" + this.id,
                 function (data) {
                     if (data != "") {
-                        $(buttonClicked).html('Follow').removeClass('success').removeClass('danger').removeClass('unfollow').addClass('follow');
+                        $(buttonClicked).html('Follow').removeClass('success danger unfollow').addClass('follow');
                         $(buttonClicked).hover(function () {
-                            $(this).html('Follow').addClass('success');
+                            $(this).html('Follow').removeClass('success danger');
                         },
                         function () {
-                            $(this).html('Follow').removeClass('success');
+                            $(this).html('Follow').removeClass('success danger');
                         });
                     }
                     else {
@@ -73,11 +73,7 @@
 <div class="container">
     <div class="row">
         <div class="span16">
-            <ul class="tabs">
-              @if (Request.IsAuthenticated) { <li><a href="/Feed">Feed</a></li> }
-              <li><a href="/Browse">Explore</a></li>
-              <li class="active"><a href="/People">People</a></li>
-            </ul>
+            @Html.Partial("_TabNavigation")
         </div>
     </div>
     <div class="row">
@@ -183,7 +179,11 @@
         </div>
         <div class="span4">
             <!--sidebar content goes here-->
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean metus nisl, lacinia at sollicitudin eu, pulvinar sit amet urna. In bibendum facilisis felis sed gravida. Sed eu velit orci, vel ornare diam. Nunc interdum facilisis arcu. Fusce congue tincidunt lectus in sodales. Nulla facilisi. Pellentesque tempus eros vel magna ullamcorper in interdum dui scelerisque. Duis elementum egestas eleifend. Donec vitae elit sed turpis blandit consectetur eget a tortor. Nunc mollis consectetur dignissim. Morbi ut congue leo. Ut ut tellus enim. Curabitur nec eleifend quam. Aliquam convallis ante nec nunc ornare sed vulputate augue pulvinar. Maecenas tortor enim, commodo vel bibendum eu, interdum non ipsum. Nunc gravida, sem eget faucibus malesuada, tellus eros viverra nisl, ac elementum ligula lorem in lacus.
+            @Html.Partial("_PostButton")
+            <div class="aside">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean metus nisl, lacinia at sollicitudin eu, pulvinar sit amet urna. In bibendum facilisis felis sed gravida. Sed eu velit orci, vel ornare diam. Nunc interdum facilisis arcu. Fusce congue tincidunt lectus in sodales. Nulla facilisi. Pellentesque tempus eros vel magna ullamcorper in interdum dui scelerisque. Duis elementum egestas eleifend. Donec vitae elit sed turpis blandit consectetur eget a tortor. Nunc mollis consectetur dignissim. Morbi ut congue leo. Ut ut tellus enim. Curabitur nec eleifend quam. Aliquam convallis ante nec nunc ornare sed vulputate augue pulvinar. Maecenas tortor enim, commodo vel bibendum eu, interdum non ipsum. Nunc gravida, sem eget faucibus malesuada, tellus eros viverra nisl, ac elementum ligula lorem in lacus.            
+            </div>
+            
         </div>
     </div>
 </div>

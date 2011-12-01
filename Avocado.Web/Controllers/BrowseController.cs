@@ -16,6 +16,7 @@ namespace Avocado.Web.Controllers
         public BrowseController(IBrowseService browseService)
         {
             _browseServcie = browseService;
+            ViewBag.ActiveTab = "explore-tab";
         }
 
         public ViewResult Index()

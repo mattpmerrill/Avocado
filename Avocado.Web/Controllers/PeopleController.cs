@@ -15,6 +15,7 @@ namespace Avocado.Web.Controllers
         public PeopleController(IPeopleService peopleService)
         {
             _peopleServcie = peopleService;
+            ViewBag.ActiveTab = "people-tab";
         }
 
         public ViewResult Index()

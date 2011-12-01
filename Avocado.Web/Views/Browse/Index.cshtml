@@ -16,11 +16,7 @@
 <div class="container">
     <div class="row">
         <div class="span16">
-            <ul class="tabs">
-              @if (Request.IsAuthenticated) { <li><a href="/Feed">Feed</a></li> }
-              <li class="active"><a href="/Browse">Explore</a></li>
-              <li><a href="/People">People</a></li>
-            </ul>
+            @Html.Partial("_TabNavigation")
         </div>
     </div>
     <div class="row">
@@ -81,15 +77,7 @@
         </div>
         <div class="span4">
             <!--side content will go here-->
-            <div class="aside">
-                <div class="alert-message block-message center-stuff">
-                    <h4>Start Sharing</h4>
-                    <button type="button" class="btn large danger">Post a Creation</button>
-                    <p class="row-below">
-                        post <span style="font-weight:bold;">anything</span> you created and tell us all about it!
-                    </p>
-                </div>
-            </div>
+            @Html.Partial("_PostButton")
         </div>
     </div>
 </div>

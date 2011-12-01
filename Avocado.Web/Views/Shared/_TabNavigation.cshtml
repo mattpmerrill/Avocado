@@ -1,0 +1,14 @@
+﻿<script type="text/javascript">
+    $(function () {
+        $('#@ViewBag.ActiveTab').addClass('active');
+    });
+</script>
+
+<ul id="tab-navigation" class="tabs">
+    @if (Request.IsAuthenticated) { 
+    <li id="feed-tab"><a href="/Feed">My Feed</a></li>
+    <li id="collections-tab"><a href="/Collections">My Collections</a></li>
+    }
+    <li id="explore-tab"><a href="/Browse">Explore</a></li>
+    <li id="people-tab"><a href="/People">People</a></li>
+</ul>
