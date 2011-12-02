@@ -79,6 +79,7 @@ namespace Avocado.Web
             kernel.Bind<IPeopleService>().To<PeopleService>().WithConstructorArgument("connectionString", ConfigurationManager.ConnectionStrings["AvocadoEntities"].ConnectionString);
             kernel.Bind<IAuthorService>().To<AuthorService>().WithConstructorArgument("connectionString", ConfigurationManager.ConnectionStrings["AvocadoEntities"].ConnectionString);
             kernel.Bind<IFeedService>().To<FeedService>().WithConstructorArgument("connectionString", ConfigurationManager.ConnectionStrings["AvocadoEntities"].ConnectionString);
+            kernel.Bind<ICollectionService>().To<CollectionService>().WithConstructorArgument("connectionString", ConfigurationManager.ConnectionStrings["AvocadoEntities"].ConnectionString);
             
             //tell ASP.net MVC to use Ninject DI container
             DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));

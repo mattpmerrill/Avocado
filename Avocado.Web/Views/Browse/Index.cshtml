@@ -19,6 +19,7 @@
             @Html.Partial("_TabNavigation")
         </div>
     </div>
+    
     <div class="row">
         <div class="span12">
             <!--main content will goes here-->
@@ -78,6 +79,13 @@
         <div class="span4">
             <!--side content will go here-->
             @Html.Partial("_PostButton")
+
+            <div class="aside">
+                <div class="alert-message block-message info">
+                    @Html.Partial("_Filters")
+                </div>
+            </div>
+            
         </div>
     </div>
 </div>

@@ -57,11 +57,10 @@
             <div class="container">
                 <a class="brand" href="#" id="sitename">Creativime</a>
                 <ul class="nav">
-                    <li>
-                        @if (Request.IsAuthenticated) { 
-                        <a href="/Feed">Feed</a>
-                        }
-                    </li>
+                    @if (Request.IsAuthenticated) { 
+                    <li><a href="/Feed">My Feed</a></li>
+                    <li><a href="/Collections">My Collections</a></li>
+                    }
                     <li class="dropdown">
                         
                         <a class="dropdown-toggle" href="/Browse">Explore</a>

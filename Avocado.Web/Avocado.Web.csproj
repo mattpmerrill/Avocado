@@ -88,6 +88,7 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BrowseController.cs" />
+    <Compile Include="Controllers\CollectionsController.cs" />
     <Compile Include="Controllers\FeedController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
@@ -114,15 +115,9 @@
     <Content Include="Content\css\fileuploader.css" />
     <Content Include="Content\css\Layout.css" />
     <Content Include="Content\css\reveal.css" />
-    <Content Include="Content\images\avatar.jpg" />
-    <Content Include="Content\images\avatar2.jpg" />
     <Content Include="Content\images\comment-medium.png" />
     <Content Include="Content\images\comment-small.png" />
-    <Content Include="Content\images\comment.png" />
     <Content Include="Content\images\facebook-btn.png" />
-    <Content Include="Content\images\favorites-small.png" />
-    <Content Include="Content\images\Girl-profile.png" />
-    <Content Include="Content\images\gnome_stock_person.png" />
     <Content Include="Content\images\hand_drawn_facebook96.png" />
     <Content Include="Content\images\line.jpg" />
     <Content Include="Content\images\loading.gif" />
@@ -297,6 +292,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_PostButton.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Collections\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_Filters.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

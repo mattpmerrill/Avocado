@@ -435,6 +435,20 @@ ul li
 .followed{ background-color:#c8c826;}
 .following{ background-color:#60aaec;}
 
+#filters-control
+{
+    margin:0 0 15px 0;
+    padding:0;
+    /*float:left;*/
+}
+
+#filters-control li
+{
+    /*float:left;*/
+    list-style-type:none;
+    padding:5px 5px;
+}
+
 .login-link
 {
     color:#536296;
