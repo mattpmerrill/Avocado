@@ -82,5 +82,20 @@ namespace Avocado.Web.Controllers
 
             return View("Details", model);
         }
+
+        [HttpPost]
+        public string Like(int postId, int accountId)
+        {
+            if (_browseServcie.Like(postId, accountId) > 0)
+            {
+                return "success";
+            }
+            else
+            {
+                return "fail";
+            }
+            
+        }
+
     }
 }

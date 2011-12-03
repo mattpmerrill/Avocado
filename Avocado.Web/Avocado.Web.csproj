@@ -98,6 +98,7 @@
     <Compile Include="Models\Browse\BrowseItem.cs" />
     <Compile Include="Models\Browse\BrowseViewModel.cs" />
     <Compile Include="Models\Browse\PostDetailsViewModel.cs" />
+    <Compile Include="Models\Collections\MyCollectionsViewModel.cs" />
     <Compile Include="Models\CreateAccountViewModel.cs" />
     <Compile Include="Models\Feed\FeedViewModel.cs" />
     <Compile Include="Models\People\CreativesViewModel.cs" />

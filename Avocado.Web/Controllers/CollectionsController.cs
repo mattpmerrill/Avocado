@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Avocado.Domain.Abstract;
+using Avocado.Web.Models.Collections;
 
 namespace Avocado.Web.Controllers
 {
@@ -17,9 +18,14 @@ namespace Avocado.Web.Controllers
             ViewBag.ActiveTab = "collections-tab";
         }
 
-        public ActionResult Index()
+        public ViewResult Index()
         {
-            return View();
+            int accountId = Convert.ToInt32(User.Identity.Name.Split('|')[1]);
+
+            MyCollectionsViewModel model = new MyCollectionsViewModel();
+            model.MyLikes = _collectionService.getMyLikes(accountId);
+
+            return View(model);
         }
 
     }

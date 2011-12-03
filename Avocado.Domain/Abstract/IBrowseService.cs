@@ -18,5 +18,8 @@ namespace Avocado.Domain.Abstract
         IEnumerable<Post> getAdditionalPostsFromCategory(string category, int lastPostId);
         IQueryable<Post> getLatestPostsByAuthor(int accountId);
         Post getPost(int postId);
+        int Like(int postId, int accountId);
+        
+
     }
 }

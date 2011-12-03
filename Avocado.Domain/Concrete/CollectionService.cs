@@ -25,5 +25,14 @@ namespace Avocado.Domain.Concrete
         {
             throw new NotImplementedException();
         }
+
+        public IQueryable<Post> getMyLikes(int accountId)
+        {
+            var myLikes = from p in _data.Posts
+                          join l in _data.Likes on p.PostId equals l.PostId
+                          where l.AccountId == accountId
+                          select p;
+            return myLikes;
+        }
     }
 }

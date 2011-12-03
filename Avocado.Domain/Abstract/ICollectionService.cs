@@ -10,5 +10,6 @@ namespace Avocado.Domain.Abstract
     {
         IQueryable<Post> GetSaves(int accountId);
         IQueryable<Post> GetMyCreations(int accountId);
+        IQueryable<Post> getMyLikes(int accountId);
     }
 }

@@ -83,6 +83,17 @@ namespace Avocado.Domain.Concrete
             return _data.Posts.FirstOrDefault(p => p.PostId == postId);
         }
 
+        public int Like(int postId, int accountId)
+        {
+            Entities.Like iLikie = new Like();
+            iLikie.AccountId = accountId;
+            iLikie.PostId = postId;
+            iLikie.InsertDate = DateTime.UtcNow;
+            _data.Likes.AddObject(iLikie);
+
+            return _data.SaveChanges();
+        }
+
         
     }
 }
