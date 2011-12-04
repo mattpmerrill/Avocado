@@ -16,14 +16,18 @@ namespace Avocado.Domain.Concrete
             _data = new AvocadoEntities(connectionString);
         }
 
-        public IQueryable<Entities.Post> GetSaves(int accountId)
+        public IQueryable<Entities.Post> GetMySaves(int accountId)
         {
-            throw new NotImplementedException();
+            var mySaves = from p in _data.Posts
+                          join s in _data.Saves on p.PostId equals s.PostId
+                          where s.AccountId == accountId
+                          select p;
+            return mySaves;
         }
 
         public IQueryable<Entities.Post> GetMyCreations(int accountId)
         {
-            throw new NotImplementedException();
+            return _data.Posts.Where(x => x.AccountId == accountId);
         }
 
         public IQueryable<Post> getMyLikes(int accountId)

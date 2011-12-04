@@ -22,9 +22,10 @@ namespace Avocado.Web.Controllers
         public ViewResult Index()
         {
             BrowseViewModel model = new BrowseViewModel();
-            model.Posts = _browseServcie.getLatestItemsFromAllCategories().ToList();
+            //model.Posts = _browseServcie.getLatestItemsFromAllCategories().ToList();
+            model.Posts = _browseServcie.getAllLatestItems().ToList();
 
-            return View(model);
+            return View("Latest", model);
         }
 
         public ViewResult Latest()
@@ -97,5 +98,18 @@ namespace Avocado.Web.Controllers
             
         }
 
+        [HttpPost]
+        public string Save(int postId, int accountId)
+        {
+            if (_browseServcie.Save(postId, accountId) > 0)
+            {
+                return "success";
+            }
+            else
+            {
+                return "fail";
+            }
+
+        }
     }
 }

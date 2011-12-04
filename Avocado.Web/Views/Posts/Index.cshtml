@@ -1,0 +1,70 @@
+﻿@model Avocado.Web.Models.Posts.MyPostsViewModel
+@{
+    ViewBag.Title = "Creativime";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="span16">
+            @Html.Partial("_TabNavigation")
+        </div>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <div>
+                <h3>Post A New Creation</h3>
+                @using(Html.BeginForm("action", "controller", FormMethod.Post, new { id="newPostForm" }))
+                {
+                    <p class="form-input">
+                        @Html.LabelFor(x => x.NewTitle, "Title")
+                        @Html.TextBoxFor(x => x.NewTitle)
+                    </p>
+                    
+                    <p class="form-input">
+                        @Html.LabelFor(x => x.NewDescription, "Description")
+                        @Html.TextAreaFor(x => x.NewDescription, 10, 40, new { @class = "profileTextArea" })
+                    </p>
+                }
+                
+            </div>
+            <hr />
+            @foreach (var post in Model.MyPosts)
+            {   
+                <h4>@post.Title by @post.Account.UserName</h4>
+                <div class="row">
+                    <div class="span4">
+                        <img src="../../Uploads/@post.Account.aspnet_Users.UserId.ToString()/@post.MainImage" alt="post image" />
+                    </div>
+                    <div class="span8">
+                        <div class="alert-message block-message">
+                            @post.Description
+                        </div>
+                        <div>
+                            @if (post.Comments.Count > 0)
+                            { 
+                                <div class="alert-message block-message info">
+                                    @foreach (var comment in post.Comments.Take(3))
+                                    { 
+                                        <div class="comment-block">
+                                            <img src="@Url.Content("~/Content/images/man-small.png")" style="margin-right:10px;" class="pull-left" alt="profile pic" />
+                                            @comment.Comment1
+                                        </div>
+                                    }
+                                        
+                                    @if (post.Comments.Count > 3)
+                                    { 
+                                        <div style="text-align:center"><a href="#">View All @post.Comments.Count() Comments...</a></div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <hr />
+            }
+        </div>
+        <div class="span4">
+            @Html.Partial("_ActivityBar")
+        </div>
+    </div>
+</div>

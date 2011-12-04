@@ -19,7 +19,6 @@ namespace Avocado.Domain.Abstract
         IQueryable<Post> getLatestPostsByAuthor(int accountId);
         Post getPost(int postId);
         int Like(int postId, int accountId);
-        
-
+        int Save(int postId, int accountId);
     }
 }

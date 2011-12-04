@@ -24,6 +24,8 @@ namespace Avocado.Web.Controllers
 
             MyCollectionsViewModel model = new MyCollectionsViewModel();
             model.MyLikes = _collectionService.getMyLikes(accountId);
+            model.MySaves = _collectionService.GetMySaves(accountId);
+            model.MyCreations = _collectionService.GetMyCreations(accountId);
 
             return View(model);
         }

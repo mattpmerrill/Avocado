@@ -40,14 +40,39 @@
                         });
                     }
                     else {
-                        alert('there was an error trying to follow');
+                        alert('there was an error trying to like');
+                    }
+                    //$('div#lastPostsLoader').empty();
+                });
+            });
+
+            $('.save-button').hover(function () {
+                $(this).attr('src', '@Url.Content("~/content/images/bookmark-small-selected.png")').css('cursor', 'pointer');
+            },
+            function () {
+                $(this).attr('src', '@Url.Content("~/Content/images/bookmark-small.png")');
+            });
+
+            $('.save-button').click(function () {
+                buttonClicked = this;
+                $.post("/Browse/Save?postId=" + this.id + "&accountId=@_accountId",
+                function (data) {
+                    if (data != "") {
+                        $(buttonClicked).removeClass('save-button').addClass('saved');
+                        $(buttonClicked).hover(function () {
+                            $(this).attr('src', '@Url.Content("~/content/images/bookmark-small-selected.png")');
+                        },
+                        function () {
+                            $(this).attr('src', '@Url.Content("~/content/images/bookmark-small-selected.png")');
+                        });
+                    }
+                    else {
+                        alert('there was an error trying to save');
                     }
                     //$('div#lastPostsLoader').empty();
                 });
             });
         });
-        
-        
     </script>
 }
 
@@ -81,11 +106,19 @@
                             var userName = post.Account.UserName;
                             string likeButtonImg = @Url.Content("~/Content/images/heart-small.png");
                             string likeButtonClass = "heart-button";
+                            string saveButtonImg = @Url.Content("~/Content/images/bookmark-small.png");
+                            string saveButtonClass = "save-button";
                             
                             if (post.Likes.Any(x => x.AccountId == Convert.ToInt32(@_accountId))) 
                             {
                                 likeButtonImg = @Url.Content("~/Content/images/heart-small-selected.png");
                                 likeButtonClass = "liked";
+                            }
+
+                            if (post.Saves.Any(x => x.AccountId == Convert.ToInt32(@_accountId)))
+                            {
+                                saveButtonImg = @Url.Content("~/Content/images/bookmark-small-selected.png");
+                                saveButtonClass = "saved";
                             }
                             
                             <div class="span4">
@@ -96,7 +129,7 @@
                                         <h5 class="title-link"><a href="/Browse/Category/@post.Category.Name/@post.PostId">@((post.Title.Length > 25) ? post.Title.ToString().Substring(0, 25) + "...": post.Title)</a></h5> <!--can be 28 characters long-->
                                         <div id="stats" class="item-stats">
                                             <span class="item-likes pull-left" title="likes"><img id="@post.PostId" class="@likeButtonClass" src="@likeButtonImg" alt="likes" />@post.Likes.Count()</span>
-                                            <span class="item-saves pull-left" title="saves"><img src="@Url.Content("~/Content/images/bookmark-small.png")" alt="saves" />@post.Saves.Count()</span>
+                                            <span class="item-saves pull-left" title="saves"><img id="@post.PostId" class="@saveButtonClass" src="@saveButtonImg" alt="saves" />@post.Saves.Count()</span>
                                             <span class="item-comments pull-left" title="comments"><img src="@Url.Content("~/Content/images/comment-small.png")" alt="comments" />@post.Comments.Count()</span>
                                             <span class="item-sparks pull-left" title="sparks are awarded when you inspire another creation on Creativime!"><img src="@Url.Content("~/Content/images/spark-small.png")" alt="sparks" />@post.OriginPost.Count()</span>
                                             &nbsp;

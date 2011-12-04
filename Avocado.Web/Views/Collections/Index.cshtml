@@ -4,6 +4,16 @@
     ViewBag.Title = "Creativime";
 }
 
+@section Head{
+    <script src="@Url.Content("~/Scripts/bootstrap-twipsy.js")" type="text/javascript"></script>
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        $('.collection-set img').twipsy();
+    </script>
+}
+
 <div class="container">
     <div class="row">
         <div class="span16">
@@ -13,27 +23,27 @@
     <div class="row">
         <div class="span12">
             <h1>All your favorites in one spot</h1>
-            <div class="row-below">
-                <h2>My Likes</h2>
-                @foreach (var post in Model.MyLikes)
+            <div class="row-below collection-set">
+                <h3>My Saves (@Model.MySaves.Count())</h3>
+                @foreach (var post in Model.MySaves)
                 {
-                    <img src="../../Uploads/@post.Account.aspnet_Users.UserId.ToString()/@post.MainImage" alt="post image" width="100" height="75" />
+                    <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img title="@post.Title" src="../../Uploads/@post.Account.aspnet_Users.UserId.ToString()/@post.MainImage" alt="post image" width="100" height="75" /></a>
                 }
             </div>
             <hr />
-            <div class="row-below">
-                <h2>My Saves</h2>
-                @foreach (var post in Model.MyLikes)
+            <div class="row-below collection-set">
+                <h3>My Creations (@Model.MyCreations.Count())</h3>
+                @foreach (var post in Model.MyCreations)
                 {
-                    <img src="../../Uploads/@post.Account.aspnet_Users.UserId.ToString()/@post.MainImage" alt="post image" />
+                    <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img title="@post.Title" src="../../Uploads/@post.Account.aspnet_Users.UserId.ToString()/@post.MainImage" alt="post image" width="100" height="75" /></a>
                 }
             </div>
             <hr />
-            <div class="row-below">
-                <h2>My Creations</h2>
+            <div class="row-below collection-set">
+                <h3>My Likes (@Model.MyLikes.Count())</h3>
                 @foreach (var post in Model.MyLikes)
                 {
-                    <img src="../../Uploads/@post.Account.aspnet_Users.UserId.ToString()/@post.MainImage" alt="post image" />
+                    <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img title="@post.Title" src="../../Uploads/@post.Account.aspnet_Users.UserId.ToString()/@post.MainImage" alt="post image" width="100" height="75" /></a>
                 }
             </div>
         </div>

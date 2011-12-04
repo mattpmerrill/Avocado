@@ -94,6 +94,15 @@ namespace Avocado.Domain.Concrete
             return _data.SaveChanges();
         }
 
-        
+        public int Save(int postId, int accountId)
+        {
+            Entities.Save save = new Save();
+            save.AccountId = accountId;
+            save.PostId = postId;
+            save.SaveDate = DateTime.UtcNow;
+            _data.Saves.AddObject(save);
+
+            return _data.SaveChanges();
+        }
     }
 }

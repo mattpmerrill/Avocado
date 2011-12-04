@@ -4,7 +4,7 @@
 {
     <div class="span4 row-item latest-post" id="@post.PostId">
         <div class="item-container">
-            <a href="#"><img src="../../Uploads/@post.Account.UserId.ToString()/@post.MainImage" class="item-image" alt="" /></a><br />
+            <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img src="../../Uploads/@post.Account.UserId.ToString()/@post.MainImage" class="item-image" alt="" /></a><br />
             <div class="item-info">
                 <h5>@((post.Title.Length > 25) ? post.Title.ToString().Substring(0, 25) + "..." : post.Title)</h5> <!--can be 28 characters long-->
                 <div id="stats" class="item-stats">

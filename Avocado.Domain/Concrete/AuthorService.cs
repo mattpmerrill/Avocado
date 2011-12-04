@@ -100,5 +100,10 @@ namespace Avocado.Domain.Concrete
 
             return fileNameProfile;
         }
+
+        public IQueryable<Post> GetMyPosts(int accountId)
+        {
+            return _data.Posts.Where(x => x.AccountId == accountId);
+        }
     }
 }

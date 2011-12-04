@@ -9,5 +9,7 @@ namespace Avocado.Web.Models.Collections
     public class MyCollectionsViewModel
     {
         public IQueryable<Post> MyLikes { get; set; }
+        public IQueryable<Post> MySaves { get; set; }
+        public IQueryable<Post> MyCreations { get; set; }
     }
 }
