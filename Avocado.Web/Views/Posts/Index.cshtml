@@ -2,6 +2,9 @@
 @{
     ViewBag.Title = "Creativime";
 }
+@section Head{
+    <link href="@Url.Content("~/Content/css/fileuploader.css")" rel="stylesheet" type="text/css" />
+}
 
 <div class="container">
     <div class="row">
@@ -15,6 +18,12 @@
                 <h3>Post A New Creation</h3>
                 @using(Html.BeginForm("action", "controller", FormMethod.Post, new { id="newPostForm" }))
                 {
+                    <div><img id="mainImage" class="pic-frame" src="http://placehold.it/500x250&text=upload+your+image" alt="your image" /></div>
+                    <p class="row-below">
+                        <span id="file-uploader">      
+                            <noscript>Please enable JavaScript to use file uploader.</noscript>         
+                        </span>
+                    </p>
                     <p class="form-input">
                         @Html.LabelFor(x => x.NewTitle, "Title")
                         @Html.TextBoxFor(x => x.NewTitle)
@@ -68,3 +77,65 @@
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/fileuploader.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            var uploader = new qq.FileUploader({
+                allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                sizeLimit: 7340032,
+                minSizeLimit: 1,
+                buttonTitle: 'browse...', //text for uploader button
+                buttonText: 'Select Image', //title for uploader button
+                element: document.getElementById('file-uploader'),
+                action: '/Posts/UploadFiles',
+                onProgress: function (id, fileName, loaded, total) { },
+                onComplete: function (id, fileName, responseJSON) {
+                    if (responseJSON.success) {
+                        //$('#mainImage').attr('value', fileName);
+                        $('#mainImage').attr('src', responseJSON.imgPath);
+                        $('.qq-upload-list').empty();
+                        //alert('upload completed! the new file path is ' + responseJSON.imgPath);
+                    }
+                }
+            });
+
+            //            $('#message').hide();
+
+            //            $('#closeMessage').click(function () {
+            //                $('#message').fadeOut('slow');
+            //            });
+
+            //            $('#saveButton').click(function () {
+            //                UpdateProfile();
+            //            });
+        });
+
+        function UpdateProfile() {
+            var formData = $("#profileForm").serialize();
+
+            $.ajax({
+                type: "POST",
+                url: "/Account/UpdateProfile",
+                data: formData,
+                dataType: "json",
+                success: function (data) {
+                    if (data.success == true) {
+                        $('#message p').html(data.message);
+                        $('#message').addClass('success');
+                        $('#message').fadeIn('slow');
+                        //alert(data.message);
+                    }
+                    else {
+                        $('#message p').html(data.message);
+                        $('#message').addClass('error');
+                        $('#message').fadeIn('slow');
+
+                        //alert(data.message);
+                    }
+                }
+            });
+        }
+    </script>
+}

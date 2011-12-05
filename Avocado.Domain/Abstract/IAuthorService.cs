@@ -11,5 +11,6 @@ namespace Avocado.Domain.Abstract
     {
         string SaveProfileImage(string userName, Stream fileStream, string fileName, string fileLocation);
         IQueryable<Post> GetMyPosts(int accountId);
+        string SavePostImage(string userName, Stream fileStream, string fileName);
     }
 }

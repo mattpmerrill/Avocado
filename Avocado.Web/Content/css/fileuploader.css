@@ -1,8 +1,9 @@
-.qq-uploader { position:relative; width: 100%;}
+#file-uploader{width:50%;}
+.qq-uploader { position:relative; width: 50%;}
 
 .qq-upload-button {
-    display:block; /* or inline-block */
-    width: 145px; padding: 7px 0; text-align:center;    
+    display:inline-block; /* or inline-block */
+    width: 145px; padding: 15px 0; text-align:center;    
     background:#880000; border-bottom:1px solid #ddd;color:#fff;
     cursor: pointer;
 }
