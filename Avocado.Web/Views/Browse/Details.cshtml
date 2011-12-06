@@ -2,7 +2,7 @@
            
 @{
     ViewBag.Title = "Creativime";
-    var imagePath = @Url.Content("~/Uploads");
+    var _imagePath = System.Configuration.ConfigurationManager.AppSettings["AzureStorageUri"];
 }
 
 <div class="container">
@@ -25,7 +25,7 @@
             <div class="clear container">
                 <div class="row">
                     <div class="span5">
-                        <img src="@imagePath/@Model.Post.Account.UserId.ToString()/@Model.Post.MainImage" alt="" /><br />
+                        <img src="@_imagePath/@Model.Post.Account.UserName.ToLower()/main/@Model.Post.MainImage" alt="" /><br />
                         likes : @Model.Post.Likes.Count()
                         sparks : @Model.Post.OriginPost.Count()
                         commments : @Model.Post.Comments.Count()

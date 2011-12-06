@@ -1,6 +1,7 @@
 ﻿@model Avocado.Web.Models.Posts.MyPostsViewModel
 @{
     ViewBag.Title = "Creativime";
+    var _imagePath = System.Configuration.ConfigurationManager.AppSettings["AzureStorageUri"] + "/" + User.Identity.Name.Split('|')[0];
 }
 @section Head{
     <link href="@Url.Content("~/Content/css/fileuploader.css")" rel="stylesheet" type="text/css" />
@@ -14,11 +15,26 @@
     </div>
     <div class="row">
         <div class="span12">
+            <div id="message" class="alert-message">
+              <a id="closeMessage" class="close" href="#">×</a>
+              <p></p>
+            </div>
             <div>
-                <h3>Post A New Creation</h3>
-                @using(Html.BeginForm("action", "controller", FormMethod.Post, new { id="newPostForm" }))
+                <div>
+                    <input id="getStartedButton" type="button" class="btn large danger pull-left" value="Post A New Creation!" />
+                </div>
+                
+                @using(Html.BeginForm("SaveNewPost", "Posts", FormMethod.Post, new { id="newPostForm", @class="clear" }))
                 {
-                    <div><img id="mainImage" class="pic-frame" src="http://placehold.it/500x250&text=upload+your+image" alt="your image" /></div>
+                    <h3>Post A New Creation</h3>
+                    
+                    @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "alert-message error" })
+
+                    <div>
+                        <img id="mainImage" class="pic-frame" src="http://placehold.it/500x250&text=upload+your+image" alt="your image" />
+                        @Html.ValidationMessageFor(x => x.NewMainImage, "Main Image Required")
+                    </div>
+                    
                     <p class="row-below">
                         <span id="file-uploader">      
                             <noscript>Please enable JavaScript to use file uploader.</noscript>         
@@ -27,24 +43,44 @@
                     <p class="form-input">
                         @Html.LabelFor(x => x.NewTitle, "Title")
                         @Html.TextBoxFor(x => x.NewTitle)
+                        @Html.ValidationMessageFor(x => x.NewTitle, "Title Required")
                     </p>
                     
                     <p class="form-input">
                         @Html.LabelFor(x => x.NewDescription, "Description")
                         @Html.TextAreaFor(x => x.NewDescription, 10, 40, new { @class = "profileTextArea" })
+                        @Html.ValidationMessageFor(x => x.NewDescription, "Description Required")
                     </p>
+                    
+                    <p>
+                        @Html.DropDownList("CategoriesValue", Model.Categories, "Select a Category")
+                        @Html.ValidationMessageFor(x => x.NewPostCategory, "Category Required")
+                    </p>
+                    
+                    <p>
+                        <input id="cancelButton" type="button" class="btn large danger pull-left" style="margin-right:5px;" value="Cancel" />
+                        <input id="newPostButton" type="submit" class="btn large info pull-left" value="Save Post" />
+                    </p>
+                    
+                    @Html.HiddenFor(x => x.NewMainImage)
+                    @Html.HiddenFor(x => x.NewPostCategory)
                 }
                 
             </div>
+            <div class="clear"></div>
             <hr />
-            @foreach (var post in Model.MyPosts)
+            @foreach (var post in Model.MyPosts.OrderByDescending(x => x.InsertDate))
             {   
-                <h4>@post.Title by @post.Account.UserName</h4>
-                <div class="row">
-                    <div class="span4">
-                        <img src="../../Uploads/@post.Account.aspnet_Users.UserId.ToString()/@post.MainImage" alt="post image" />
+                <div>
+                    <h4 class="pull-left">@post.Title </h4>
+                    <h6 class="pull-right">by @post.Account.UserName</h6>
+                </div>
+                
+                <div class="row clear">
+                    <div class="span5">
+                        <img class="pic-frame" src="@_imagePath/medium/@post.MainImage" alt="post image" />
                     </div>
-                    <div class="span8">
+                    <div class="span7">
                         <div class="alert-message block-message">
                             @post.Description
                         </div>
@@ -81,6 +117,17 @@
 @section Scripts{
     <script type="text/javascript" src="@Url.Content("~/Scripts/fileuploader.js")"></script>
     <script type="text/javascript">
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+            var regexS = "[\\?&]" + name + "=([^&#]*)";
+            var regex = new RegExp(regexS);
+            var results = regex.exec(window.location.href);
+            if (results == null)
+                return "";
+            else
+                return decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+
         $(function () {
             var uploader = new qq.FileUploader({
                 allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
@@ -93,7 +140,7 @@
                 onProgress: function (id, fileName, loaded, total) { },
                 onComplete: function (id, fileName, responseJSON) {
                     if (responseJSON.success) {
-                        //$('#mainImage').attr('value', fileName);
+                        $('#NewMainImage').attr('value', fileName);
                         $('#mainImage').attr('src', responseJSON.imgPath);
                         $('.qq-upload-list').empty();
                         //alert('upload completed! the new file path is ' + responseJSON.imgPath);
@@ -101,23 +148,46 @@
                 }
             });
 
-            //            $('#message').hide();
+            if (getParameterByName('from') == "button") {
+                $('#newPostForm').show();
+                $('#getStartedButton').hide();
+            }
+            else {
+                $('#newPostForm').hide();
+            }
 
-            //            $('#closeMessage').click(function () {
-            //                $('#message').fadeOut('slow');
-            //            });
 
-            //            $('#saveButton').click(function () {
-            //                UpdateProfile();
-            //            });
+            $('#getStartedButton').click(function () {
+                $('#newPostForm').slideDown('slow');
+                $(this).fadeOut('slow');
+            });
+
+            $('#cancelButton').click(function () {
+                $('#newPostForm').slideUp('Slow');
+                $('#getStartedButton').fadeIn('slow');
+            });
+
+            $('#message').hide();
+
+            $('#closeMessage').click(function () {
+                $('#message').fadeOut('slow');
+            });
+
+            $('#newPostForm').live("submit", function (event) {
+                event.preventDefault();
+                SaveNewPost();
+            });
+
+            $('#CategoriesValue').change(function () {
+                $('#NewPostCategory').attr('value', $(this).val());
+            });
         });
 
-        function UpdateProfile() {
-            var formData = $("#profileForm").serialize();
-
+        function SaveNewPost() {
+            var formData = $("#newPostForm").serialize();
             $.ajax({
                 type: "POST",
-                url: "/Account/UpdateProfile",
+                url: "/Posts/SaveNewPost",
                 data: formData,
                 dataType: "json",
                 success: function (data) {
@@ -136,6 +206,8 @@
                     }
                 }
             });
+            
+            
         }
     </script>
 }

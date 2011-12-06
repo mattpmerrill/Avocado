@@ -20,9 +20,12 @@ namespace Avocado.Domain.Concrete
         {
             var myFollows = _data.Follows.Where(x => x.FollowerAccountId == accountId);
 
-            var myFeed = from p in _data.Posts
-                         join mf in myFollows on p.AccountId equals mf.FollowedAccountId
-                         select p;
+            var myFeed = (from p in _data.Posts
+                          join mf in myFollows on p.AccountId equals mf.FollowedAccountId
+                          select p)
+                         .Union(from pp in _data.Posts
+                                where pp.AccountId == accountId
+                                select pp);
 
             return myFeed;
         }

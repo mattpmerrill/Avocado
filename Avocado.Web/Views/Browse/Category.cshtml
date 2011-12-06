@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Category";
     var category = Model.Category;
+    var _imagePath = System.Configuration.ConfigurationManager.AppSettings["AzureStorageUri"];
 }
 
 @section Head{
@@ -66,7 +67,7 @@
                         <div class="span4 row-item latest-post" id="@post.PostId">
                             <div class="item-container">
                                 @{ var imagePath = @Url.Content("~/Uploads"); }
-                                <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img src="@imagePath/@post.Account.UserId.ToString()/@post.MainImage" class="item-image" alt="" /></a><br />
+                                <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img src="@_imagePath/@post.Account.UserName.ToLower()/small/@post.MainImage" class="item-image" alt="" /></a><br />
                                 <div class="item-info">
                                     <h5 class="title-link"><a href="/Browse/Category/@post.Category.Name/@post.PostId">@((post.Title.Length > 25) ? post.Title.ToString().Substring(0, 25) + "..." : post.Title)</a></h5> <!--can be 28 characters long-->
                                     <div id="stats" class="item-stats">

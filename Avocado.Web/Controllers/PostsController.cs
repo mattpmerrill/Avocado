@@ -24,7 +24,10 @@ namespace Avocado.Web.Controllers
             int accountId = Convert.ToInt32(User.Identity.Name.Split('|')[1]);
             MyPostsViewModel model = new MyPostsViewModel();
             model.MyPosts = _authorService.GetMyPosts(accountId);
-
+            var allCategories = _authorService.GetAllCategories();
+            SelectList categoryList = new SelectList(allCategories.ToList(), "CategoryId", "Name");
+            model.Categories = categoryList;
+            
             return View(model);
         }
 
@@ -69,11 +72,27 @@ namespace Avocado.Web.Controllers
                 return Json(new { success = false, message = ex.Message }, "application/json");
             }
 
-            newFilePath = ConfigurationManager.AppSettings["AzureStorageUri"] + userName + "/" + newFilePath;
+            newFilePath = ConfigurationManager.AppSettings["AzureStorageUri"] + "/" + userName + "/" + newFilePath;
             //newLittleFilePath = ConfigurationManager.AppSettings["AzureStorageUri"] + userName + "/thumb/profile-pic";
 
             return Json(new { success = true, message = "sweet", imgPath = newFilePath }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult SaveNewPost(MyPostsViewModel model)
+        {
+            if(model.CategoriesValue != "")
+            {
+                int accountId = Convert.ToInt32(User.Identity.Name.Split('|')[1]);
+                if (_authorService.IsNewPostSaved(accountId, model.NewTitle, model.NewDescription, Convert.ToInt32(model.CategoriesValue), model.NewMainImage.Replace(" ", "")))
+                    return Json(new { success = true, message = "Your post has been saved" }, JsonRequestBehavior.AllowGet);
+                else
+                    return Json(new { success = false, message = "An error occurred while trying to save your post" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { success = false, message = "Please choose a category for your post." }, JsonRequestBehavior.AllowGet);
+            }
+        } 
     }
 }

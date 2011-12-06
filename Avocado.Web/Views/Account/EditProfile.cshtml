@@ -2,7 +2,7 @@
            
 @{
 	ViewBag.Title = "EditProfile";
-    var imagePath = System.Configuration.ConfigurationManager.AppSettings["AzureStorageUri"] + User.Identity.Name.Split('|')[0] + "/profile/" + Model.ProfileImage;
+    var imagePath = System.Configuration.ConfigurationManager.AppSettings["AzureStorageUri"] + "/" + User.Identity.Name.Split('|')[0] + "/profile/" + Model.ProfileImage;
 }
 
 @section Head{
@@ -82,6 +82,8 @@
                 allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
                 sizeLimit: 7340032,
                 minSizeLimit: 1,
+                buttonTitle: 'browse...', //text for uploader button
+                buttonText: 'Change Image', //title for uploader button
                 element: document.getElementById('file-uploader'),
                 action: '/Account/UploadFiles',
                 onProgress: function (id, fileName, loaded, total) { },
@@ -103,7 +105,7 @@
             });
 
             $('#saveButton').click(function () {
-                UpdateProfile();
+               UpdateProfile();
             });
         });
 

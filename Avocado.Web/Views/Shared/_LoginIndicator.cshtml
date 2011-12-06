@@ -2,7 +2,7 @@
 
 @if (Request.IsAuthenticated)
 {
-    var imagePath = System.Configuration.ConfigurationManager.AppSettings["AzureStorageUri"] + User.Identity.Name.Split('|')[0] + "/thumb/profile-pic";
+    var imagePath = System.Configuration.ConfigurationManager.AppSettings["AzureStorageUri"] + "/" + User.Identity.Name.Split('|')[0] + "/thumb/profile-pic";
     HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(imagePath);
     request.Method = "HEAD";
 

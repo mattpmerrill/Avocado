@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Creativime";
+    var _imagePath = System.Configuration.ConfigurationManager.AppSettings["AzureStorageUri"];
 }
 
 @section Head{
@@ -27,7 +28,7 @@
                 <h3>My Saves (@Model.MySaves.Count())</h3>
                 @foreach (var post in Model.MySaves)
                 {
-                    <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img title="@post.Title" src="../../Uploads/@post.Account.aspnet_Users.UserId.ToString()/@post.MainImage" alt="post image" width="100" height="75" /></a>
+                    <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img title="@post.Title" src="@_imagePath/@post.Account.UserName.ToLower()/small/@post.MainImage" alt="post image" width="100" height="75" /></a>
                 }
             </div>
             <hr />
@@ -35,7 +36,7 @@
                 <h3>My Creations (@Model.MyCreations.Count())</h3>
                 @foreach (var post in Model.MyCreations)
                 {
-                    <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img title="@post.Title" src="../../Uploads/@post.Account.aspnet_Users.UserId.ToString()/@post.MainImage" alt="post image" width="100" height="75" /></a>
+                    <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img title="@post.Title" src="@_imagePath/@post.Account.UserName.ToLower()/small/@post.MainImage" alt="post image" width="100" height="75" /></a>
                 }
             </div>
             <hr />
@@ -43,7 +44,7 @@
                 <h3>My Likes (@Model.MyLikes.Count())</h3>
                 @foreach (var post in Model.MyLikes)
                 {
-                    <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img title="@post.Title" src="../../Uploads/@post.Account.aspnet_Users.UserId.ToString()/@post.MainImage" alt="post image" width="100" height="75" /></a>
+                    <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img title="@post.Title" src="@_imagePath/@post.Account.UserName.ToLower()/small/@post.MainImage" alt="post image" width="100" height="75" /></a>
                 }
             </div>
         </div>

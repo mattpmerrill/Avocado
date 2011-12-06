@@ -1,6 +1,7 @@
 ﻿@model Avocado.Web.Models.Feed.FeedViewModel
 @{
     ViewBag.Title = "Creativime";
+    var _imagePath = System.Configuration.ConfigurationManager.AppSettings["AzureStorageUri"];
 }
 
 <div class="container">
@@ -12,14 +13,17 @@
     <div class="row">
         <div class="span12">
             <h1>Latest Creations From Your Friends</h1>
-            @foreach (var post in Model.MyFeed)
+            @foreach (var post in Model.MyFeed.OrderByDescending(x => x.InsertDate))
             {   
-                <h4>@post.Title by @post.Account.UserName</h4>
-                <div class="row">
-                    <div class="span4">
-                        <img src="../../Uploads/@post.Account.aspnet_Users.UserId.ToString()/@post.MainImage" alt="post image" />
+                <div>
+                    <h4 class="pull-left">@post.Title </h4><h6 class="pull-right">by @post.Account.UserName</h6>
+                </div>
+                
+                <div class="row clear">
+                    <div class="span5">
+                        <img class="pic-frame" src="@_imagePath/@post.Account.UserName.ToLower()/medium/@post.MainImage" alt="post image" />
                     </div>
-                    <div class="span8">
+                    <div class="span7">
                         <div class="alert-message block-message">
                             @post.Description
                         </div>
