@@ -1,6 +1,8 @@
 ﻿@model Avocado.Web.Models.People.ViewWorkViewModel
 @{
     ViewBag.Title = "Creativime";
+    var _imagePath = System.Configuration.ConfigurationManager.AppSettings["AzureStorageUri"];
+
 }
 
 @section Head{
@@ -105,8 +107,8 @@
                     <div class="title-header">@post.Title <span class="pull-right"><a href="/Browse/Category/@post.Category.Name/@post.PostId">view details</a></span></div>
                     <div class="container">
                         <div class="row">
-                            <div class="span4">
-                                <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img src="../../Uploads/@Model.UserAccount.UserId.ToString()/@post.MainImage" alt="" /></a>
+                            <div class="span5">
+                                <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img class="pic-frame" src="@_imagePath/@Model.UserAccount.UserName.ToLower()/medium/@post.MainImage" alt="" /></a>
                                 <div class="well item-stats">
                                     <span class="item-likes pull-left">
                                         <img src="@Url.Content("~/Content/images/heart-small.png")" alt="likes" />@post.Likes.Count()<br />
@@ -117,7 +119,7 @@
                                     <div class="clear"></div>
                                 </div>
                             </div>
-                            <div class="span8">
+                            <div class="span7">
                                 <div class="alert-message block-message">
                                     @post.Description
                                 </div>

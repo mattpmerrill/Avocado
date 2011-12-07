@@ -89,7 +89,7 @@
                         <div class="span2">
                             @if (account.ProfileImage != null)
                             {
-                                <a href="People/ViewWork/@account.UserName"><img src="@_imagePath/@account.UserName/profile/@account.ProfileImage" alt="profile pic" class="avatar-large" /></a>
+                                <a href="People/ViewWork/@account.UserName"><img src="@_imagePath/@account.UserName.ToLower()/profile/@account.ProfileImage" alt="profile pic" class="avatar-large pic-frame" /></a>
                             }
                             else
                             { 

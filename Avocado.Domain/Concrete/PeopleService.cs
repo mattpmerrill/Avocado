@@ -18,7 +18,7 @@ namespace Avocado.Domain.Concrete
 
         public IQueryable<Entities.Account> getTopCreatives()
         {
-            IQueryable<Account> topCreatives = _data.Accounts.Where(x => x.Followed.Count() > 0).Take(10);
+            IQueryable<Account> topCreatives = _data.Accounts.Where(x => x.Posts.Count() > 0).Take(10);
             return topCreatives;
         }
 
