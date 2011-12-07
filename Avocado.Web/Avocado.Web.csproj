@@ -101,7 +101,6 @@
     <Compile Include="Models\Browse\PostDetailsViewModel.cs" />
     <Compile Include="Models\Collections\MyCollectionsViewModel.cs" />
     <Compile Include="Models\CreateAccountViewModel.cs" />
-    <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\Feed\FeedViewModel.cs" />
     <Compile Include="Models\People\CreativesViewModel.cs" />
     <Compile Include="Models\People\ViewWorkViewModel.cs" />

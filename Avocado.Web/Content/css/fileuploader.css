@@ -3,9 +3,12 @@
 
 .qq-upload-button {
     display:inline-block; /* or inline-block */
-    width: 145px; padding: 15px 0; text-align:center;    
+    width: 145px; padding: 10px 0; text-align:center;    
     background:#880000; border-bottom:1px solid #ddd;color:#fff;
     cursor: pointer;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
 }
 .qq-upload-button-hover {background:#cc0000; cursor: pointer;}
 .qq-upload-button-focus {outline:1px dotted black; cursor: pointer;}

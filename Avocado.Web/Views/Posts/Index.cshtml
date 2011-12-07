@@ -20,10 +20,9 @@
               <p></p>
             </div>
             <div>
-                <div>
-                    <input id="getStartedButton" type="button" class="btn large danger pull-left" value="Post A New Creation!" />
+                <div id="getStarted" class="alert-message block-message center-stuff">
+                    <h4 style="text-decoration:underline;">Click Here To Start A New Post</h4>
                 </div>
-                
                 @using(Html.BeginForm("SaveNewPost", "Posts", FormMethod.Post, new { id="newPostForm", @class="clear" }))
                 {
                     <h3>Post A New Creation</h3>
@@ -42,25 +41,25 @@
                     </p>
                     <p class="form-input">
                         @Html.LabelFor(x => x.NewTitle, "Title")
-                        @Html.TextBoxFor(x => x.NewTitle)
+                        @Html.TextBoxFor(x => x.NewTitle, new { @class="span12" })
                         @Html.ValidationMessageFor(x => x.NewTitle, "Title Required")
                     </p>
                     
                     <p class="form-input">
                         @Html.LabelFor(x => x.NewDescription, "Description")
-                        @Html.TextAreaFor(x => x.NewDescription, 10, 40, new { @class = "profileTextArea" })
+                        @Html.TextAreaFor(x => x.NewDescription, 10, 40, new { @class = "profileTextArea span12" })
                         @Html.ValidationMessageFor(x => x.NewDescription, "Description Required")
                     </p>
                     
-                    <p>
+                    <p class="form-input">
                         @Html.DropDownList("CategoriesValue", Model.Categories, "Select a Category")
                         @Html.ValidationMessageFor(x => x.NewPostCategory, "Category Required")
                     </p>
                     
-                    <p>
-                        <input id="cancelButton" type="button" class="btn large danger pull-left" style="margin-right:5px;" value="Cancel" />
-                        <input id="newPostButton" type="submit" class="btn large info pull-left" value="Save Post" />
-                    </p>
+                    <div class="actions" style="padding-left:25px;">
+                        <input id="newPostButton" type="submit" class="btn large primary" value="Save Post" />
+                        <input id="cancelButton" type="button" class="btn large" value="Cancel" />
+                    </div>
                     
                     @Html.HiddenFor(x => x.NewMainImage)
                     @Html.HiddenFor(x => x.NewPostCategory)
@@ -69,6 +68,10 @@
             </div>
             <div class="clear"></div>
             <hr />
+            <div class="main-title-header">
+                <h2>My Posted Creations (@Model.MyPosts.Count())</h2>
+            </div>
+            
             @foreach (var post in Model.MyPosts.OrderByDescending(x => x.InsertDate))
             {   
                 <div>
@@ -150,21 +153,29 @@
 
             if (getParameterByName('from') == "button") {
                 $('#newPostForm').show();
-                $('#getStartedButton').hide();
+                $('#getStarted').hide();
             }
             else {
                 $('#newPostForm').hide();
             }
 
+            $('#getStarted').hover(function () {
+                $(this).removeClass('warning').addClass('info').css('cursor', 'pointer');
+                $('#getStarted h4').css('color', '#af4646');
+            },
+            function () {
+                $(this).removeClass('info').addClass('warning');
+                $('#getStarted h4').css('color', '#404040');
+            });
 
-            $('#getStartedButton').click(function () {
+            $('#getStarted').click(function () {
                 $('#newPostForm').slideDown('slow');
                 $(this).fadeOut('slow');
             });
 
             $('#cancelButton').click(function () {
                 $('#newPostForm').slideUp('Slow');
-                $('#getStartedButton').fadeIn('slow');
+                $('#getStarted').fadeIn('slow');
             });
 
             $('#message').hide();

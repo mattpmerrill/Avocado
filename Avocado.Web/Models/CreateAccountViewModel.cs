@@ -12,6 +12,7 @@ namespace Avocado.Web.Models
     {
         [Required(ErrorMessage="username required")]
         [DisplayName("create a username")]
+        [RegularExpression(@"[a-zA-Z0-9]", ErrorMessage="letters & numbers only")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage="email required")]

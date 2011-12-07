@@ -4,6 +4,7 @@
     ViewBag.Title = "Creativime";
     string _userName = null;
     string _accountId = null;
+    var _imagePath = System.Configuration.ConfigurationManager.AppSettings["AzureStorageUri"];
     
     if (Request.IsAuthenticated)
     {
@@ -79,14 +80,22 @@
     <div class="row">
         <div class="span12">
             <!--main content goes here-->
-            <h1>Get to know the creative community!</h1>
+            <h1 style="font-weight:normal;">Get to know the creative community!</h1>
 
             @foreach (var account in Model.Accounts) 
             { 
                 <section id="@account.UserName" class="row-item">
                     <div class="row">
                         <div class="span2">
-                            <a href="People/ViewWork/@account.UserName"><img src="../../Content/images/user-large.png" alt="profile pic" class="avatar-large" /></a><br />
+                            @if (account.ProfileImage != null)
+                            {
+                                <a href="People/ViewWork/@account.UserName"><img src="@_imagePath/@account.UserName/profile/@account.ProfileImage" alt="profile pic" class="avatar-large" /></a>
+                            }
+                            else
+                            { 
+                                <a href="People/ViewWork/@account.UserName"><img src="../../Content/images/user-large.png" alt="profile pic" class="avatar-large" /></a>
+                            }
+                            <br />
                             
                             
                             @if (Request.IsAuthenticated)

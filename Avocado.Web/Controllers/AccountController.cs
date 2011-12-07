@@ -336,8 +336,8 @@ namespace Avocado.Web.Controllers
                 return Json(new { success = false, message = ex.Message }, "application/json");
             }
 
-            newFilePath = ConfigurationManager.AppSettings["AzureStorageUri"] + userName + "/" + newFilePath;
-            newLittleFilePath = ConfigurationManager.AppSettings["AzureStorageUri"] + userName + "/thumb/profile-pic";
+            newFilePath = ConfigurationManager.AppSettings["AzureStorageUri"] + "/" + userName + "/" + newFilePath;
+            newLittleFilePath = ConfigurationManager.AppSettings["AzureStorageUri"] + "/" + userName + "/thumb/profile-pic";
 
             return Json(new { success = true, message = "sweet", imgPath = newFilePath, littleImgPath = newLittleFilePath}, JsonRequestBehavior.AllowGet);
         }

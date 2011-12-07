@@ -73,13 +73,22 @@
             {
                 @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "ui-state-error" })
 
-                @Html.TextBoxFor(x => x.Email, new { @class = "form-input", placeholder="your email address" })<br /><br />
-        
-                @Html.PasswordFor(x => x.Password, new { @class = "form-input", placeholder="password" })<br /><br />
-    
-                <div>
-                    <input type="submit" class="btn primary large" value="Log In" />
-                </div>
+                <fieldset>
+                    <p class="form-input">
+                        @Html.LabelFor(x => x.SignInUserName, "user name")
+                        @Html.TextBoxFor(x => x.SignInUserName)
+                    </p>
+                
+                    <p class="form-input">
+                        @Html.LabelFor(x => x.SignInPassword, "password")
+                        @Html.PasswordFor(x => x.SignInPassword)
+                    </p>
+               
+                    <div>
+                        <input type="submit" class="btn primary large" value="Log In" />
+                    </div>
+                </fieldset>
+                
             }        
         </div>
 

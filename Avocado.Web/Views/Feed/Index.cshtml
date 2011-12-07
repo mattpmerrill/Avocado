@@ -12,7 +12,10 @@
     </div>
     <div class="row">
         <div class="span12">
-            <h1>Latest Creations From Your Friends</h1>
+            <div class="main-title-header">
+                <h2>Latest Creations From Your Friends</h2>
+            </div>
+            
             @foreach (var post in Model.MyFeed.OrderByDescending(x => x.InsertDate))
             {   
                 <div>
