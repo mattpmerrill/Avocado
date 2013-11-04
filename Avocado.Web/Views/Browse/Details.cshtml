@@ -13,7 +13,7 @@
     </div>
     <div class="row">
         <div class="span12">
-            <h1><span class="pull-left">@Model.Post.Title </span><span class="author-title pull-right"><a href="/People/ViewWork/@Model.Post.Account.UserName">back to @Model.Post.Account.UserName's work</span></h1>
+            <h1 class="light-h1"><span class="pull-left">@Model.Post.Title </span><span class="author-title pull-right"><a href="/People/ViewWork/@Model.Post.Account.UserName">@Model.Post.Account.UserName's work</span></h1>
             <div class="clear"></div>
             
             <ul class="breadcrumb">
@@ -24,42 +24,38 @@
 
             <div class="clear container">
                 <div class="row">
-                    <div class="span5">
-                        <img src="@_imagePath/@Model.Post.Account.UserName.ToLower()/main/@Model.Post.MainImage" alt="" /><br />
-                        likes : @Model.Post.Likes.Count()
-                        sparks : @Model.Post.OriginPost.Count()
-                        commments : @Model.Post.Comments.Count()
+                    <div class="span10">
+                        <img class="pic-frame" src="@_imagePath/@Model.Post.Account.UserName.ToLower()/main/@Model.Post.MainImage" alt="" /><br />
                     </div>
-
-                    <div class="span7">
-                        <div class="row-item">
-                            @if (Request.IsAuthenticated)
-                            { 
-                                <a class="action-bar-like pull-left" href="#">
-                                    <img src="@Url.Content("~/content/images/heart48.png")" alt="" /><br />
-                                    <span>Like</span>
-                                </a>
-                                <a class="action-bar-save pull-left" href="#">
-                                    <img src="@Url.Content("~/content/images/bookmark-medium.png")" alt="" /><br />
-                                    <span>Save</span>
-                                </a>
-                            }
-                            else
-                            { 
-                                <a class="action-bar-like pull-left modal-button" href="#">
-                                    <img src="@Url.Content("~/content/images/heart48.png")" alt="" /><br />
-                                    <span>Sign in to Like</span>
-                                </a>
-                                <a class="action-bar-save pull-left modal-button" href="#">
-                                    <img src="@Url.Content("~/content/images/bookmark-medium.png")" alt="" /><br />
-                                    <span>Sign in to Save</span>
-                                </a>
-                            }
-                        </div>
-                        <div class="clear">&nbsp;</div>
-                        <div class="clear alert-message block-message">
-                            <h5>Description</h5>
-                            <div class="clear"></div>
+                    <div class="span2">
+                    @if (Request.IsAuthenticated)
+                    { 
+                        <a class="action-bar-like pull-left" href="#">
+                            <img src="@Url.Content("~/content/images/heart48.png")" alt="" /><br />
+                            <span>@Model.Post.Likes.Count()</span>
+                        </a>
+                        <a class="action-bar-save pull-left" href="#">
+                            <img src="@Url.Content("~/content/images/bookmark-medium.png")" alt="" /><br />
+                            <span>@Model.Post.Saves.Count()</span>
+                        </a>
+                    }
+                    else
+                    { 
+                        <a class="action-bar-like pull-left modal-button" href="#">
+                            <img src="@Url.Content("~/content/images/heart48.png")" alt="" /><br />
+                            <span>Sign in to Like</span>
+                        </a>
+                        <a class="action-bar-save pull-left modal-button" href="#">
+                            <img src="@Url.Content("~/content/images/bookmark-medium.png")" alt="" /><br />
+                            <span>Sign in to Save</span>
+                        </a>
+                    }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span12">
+                        <h5>Description</h5>
+                        <div class="alert-message block-message">
                             @Model.Post.Description
                         </div>
                     </div>

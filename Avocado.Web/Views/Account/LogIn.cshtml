@@ -66,46 +66,40 @@
 
 <div class="container">
     <div class="row">
-        <div class="span8">
+        <div class="span7">
             <h1>Sign In</h1>
-
+            
             @using (Html.BeginForm("LogIn", "Account", FormMethod.Post, new { autocomplete="off" }))
             {
-                @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "ui-state-error" })
+                @Html.ValidationSummary(excludePropertyErrors: false, message: "", htmlAttributes: new { @class = "alert-message error validation-summary-errors" })
 
-                <fieldset>
-                    <p class="form-input">
-                        @Html.LabelFor(x => x.SignInUserName, "user name")
-                        @Html.TextBoxFor(x => x.SignInUserName)
-                    </p>
+                <p class="form-input">
+                    <label for="username">username</label>
+                    @Html.TextBoxFor(x => x.SignInUserName, new { id="username", name="username" })
+                </p>
                 
-                    <p class="form-input">
-                        @Html.LabelFor(x => x.SignInPassword, "password")
-                        @Html.PasswordFor(x => x.SignInPassword)
-                    </p>
+                <p class="form-input">
+                    <label for="password">password</label>
+                    @Html.PasswordFor(x => x.SignInPassword, new { id="password", name="password"})
+                </p>
                
-                    <div>
-                        <input type="submit" class="btn primary large" value="Log In" />
-                    </div>
-                </fieldset>
+                <div>
+                    <input type="submit" class="btn primary large" value="Log In" />
+                </div>
                 
             }        
         </div>
 
-        <div class="span8">
+        <div class="span2 large logo" style="padding-top:100px;">or</div>
+        <div class="span7">
             <h1>Already Social?</h1>
-            <h4>Sign in with your account below.</h4>
-            <p>
-                <fb:login-button 
-                    autologoutlink="true"
-                    size="large" 
-                    perms="email,publish_stream">
-                    Login with Facebook
-                </fb:login-button>
-            </p>
-            <p>
-                <img src="@Url.Content("~/content/images/sign-in-with-twitter-d.png")" alt="sign in with Twitter" id="customTwitterLogin" />
-            </p>
+            <div class="row-below">
+                <a id="facebookButton" href="#" class="facebookButton login-link"><img src="@Url.Content("~/content/images/hand_drawn_facebook64.png")" alt="sign in with Facebook" style="vertical-align:middle;" /> sign in with Facebook</a>
+            </div>
+            <div class="row-below">
+                <a id="twitterButton" class="twitterButton login-link" href="#"><img src="@Url.Content("~/content/images/hand_drawn_twitter_follow64.png")" alt="sign in with Twitter" style="vertical-align:middle;" />
+                    sign in with Twitter</a>
+            </div>             
         </div>
     </div>
 </div>

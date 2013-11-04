@@ -133,7 +133,7 @@ namespace Avocado.Domain.Concrete
 
             //ImageResizer
             //The resizing settings can specify any of 30 commands.. See http://imageresizing.net for details.
-            ResizeSettings resizeCropSettings = new ResizeSettings("width=500&format=jpg&crop=auto");
+            ResizeSettings resizeCropSettings = new ResizeSettings("width=575&format=jpg&crop=auto");
             ResizeSettings resizeCropSettingsMedium = new ResizeSettings("width=250&format=jpg&crop=auto");
             ResizeSettings resizeCropSettingsSmall = new ResizeSettings("width=218&height=170&format=jpg&crop=auto");
 

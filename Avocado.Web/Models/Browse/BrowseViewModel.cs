@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Avocado.Domain.Entities;
+using System.Data.Entity;
 
 namespace Avocado.Web.Models.Browse
 {

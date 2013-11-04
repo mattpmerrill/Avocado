@@ -1,2 +1,5 @@
-﻿
-Account activity will go here
+﻿@if(User.Identity.IsAuthenticated){
+    <div>
+        Account activity will go here
+    </div>
+}

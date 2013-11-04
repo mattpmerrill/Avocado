@@ -80,11 +80,12 @@
     <div class="row">
         <div class="span12">
             <!--main content goes here-->
-            <h1 style="font-weight:normal;">Get to know the creative community!</h1>
+            <h1 class="light-h1">Get to know the creative community!</h1>
 
             @foreach (var account in Model.Accounts) 
             { 
                 <section id="@account.UserName" class="row-item">
+                    <h3 class="light-h1"><a href="People/ViewWork/@account.UserName">@account.UserName</a></h3>
                     <div class="row">
                         <div class="span2">
                             @if (account.ProfileImage != null)
@@ -127,8 +128,8 @@
                             
                         </div>
                         <div class="span3">
-                            <h4><a href="People/ViewWork/@account.UserName">@account.UserName</a></h4>
                             
+                           
                             @*<ul class="stats-list">
                                 <li><a href="People/ViewWork/@account.UserName">@account.Posts.Count() Posts</a></li>
                                 <li><a href="#">@account.Followed.Count() Followers</a></li>
@@ -165,12 +166,13 @@
                         </div>
                         
                         <div class="span7">
-                            <div class="title-header">Most Popular Creations</div>
+                            <div class="title-header">Latest Creations</div>
                             <ul class="post-list">
-                                @foreach (var post in account.Posts.OrderByDescending(p => p.Likes.Count).Where(p => p.Likes.Count > 0).Take(4))
+                                @*(var post in account.Posts.OrderByDescending(p => p.Likes.Count).Where(p => p.Likes.Count > 0).Take(4))*@
+                                @foreach(var post in account.Posts.Take(4)) 
                                 { 
                                     <li title="@post.Title">
-                                        <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img src="../../Uploads/@post.Account.aspnet_Users.UserId.ToString()/@post.MainImage" alt="" /></a>
+                                        <a href="/Browse/Category/@post.Category.Name/@post.PostId"><img src="@_imagePath/@post.Account.UserName.ToLower()/small/@post.MainImage" alt="" /></a>
                                     </li>
                                 }
                             </ul>
